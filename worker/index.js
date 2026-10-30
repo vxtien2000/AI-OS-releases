@@ -25,10 +25,29 @@ async function newestZip() {
   }
 }
 
+const MEDIA = /\.(mp4|webm)$/;  // Safari plays video only when it can ask for byte ranges (206)
+
+async function ranged(request, response) {
+  const m = /^bytes=(\d*)-(\d*)$/.exec(request.headers.get("Range") || "");
+  if (request.method !== "GET" || !m || response.status !== 200 || (m[1] === "" && m[2] === "")) return response;
+  const body = await response.arrayBuffer();  // the demo videos are under a megabyte
+  const size = body.byteLength;
+  const start = m[1] === "" ? Math.max(0, size - Number(m[2])) : Number(m[1]);
+  const end = m[1] === "" || m[2] === "" ? size - 1 : Math.min(Number(m[2]), size - 1);
+  if (start > end || start >= size) {
+    return new Response(null, { status: 416, headers: { "Content-Range": `bytes */${size}` } });
+  }
+  const headers = new Headers(response.headers);
+  headers.set("Content-Range", `bytes ${start}-${end}/${size}`);
+  headers.set("Content-Length", String(end - start + 1));
+  return new Response(body.slice(start, end + 1), { status: 206, headers });
+}
+
 function finish(response, pathname) {
   const r = new Response(response.body, response);
   for (const [k, v] of Object.entries(HEADERS)) r.headers.set(k, v);
-  if (r.status === 200 && LONG_CACHE.test(pathname)) r.headers.set("Cache-Control", "public, max-age=86400");
+  if ((r.status === 200 || r.status === 206) && LONG_CACHE.test(pathname)) r.headers.set("Cache-Control", "public, max-age=86400");
+  if (MEDIA.test(pathname)) r.headers.set("Accept-Ranges", "bytes");
   return r;
 }
 
@@ -44,6 +63,7 @@ export default {
       return finish(Response.redirect((await newestZip()) || RELEASES, 302), pathname);
     }
     if (pathname === "/releases") return finish(Response.redirect(RELEASES, 302), pathname);
-    return finish(await env.ASSETS.fetch(request), pathname);
+    const asset = await env.ASSETS.fetch(request);
+    return finish(MEDIA.test(pathname) ? await ranged(request, asset) : asset, pathname);
   },
 };
