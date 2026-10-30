@@ -1,0 +1,8 @@
+{
+  // Cloudflare Worker for aiosqa.com: deployed on every push to main (Workers Builds), or by hand with
+  // `npx wrangler deploy` from this folder.
+  "name": "quiet-disk-558e",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./site", "binding": "ASSETS", "run_worker_first": true }
+}

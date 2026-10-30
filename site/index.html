@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-OS: end-to-end iOS tests your AI agent runs</title>
+<meta name="description" content="AI-OS lets AI agents and QA run end-to-end tests on iOS simulators and real iPhones, from Claude Code, Claude Desktop or any MCP client. Free and open source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · shape: Workbench (swapped from Marquee Hero: the page must show the product) · genre: modern-minimal · theme: Cobalt (by request) · job: try · draw: adb16b
+ * hero: Counter · nav: edge-aligned · footer: mast · imagery: screenshots 4 (capture.mjs), no photographs · signature: the real setup window mid-run, beside the download
+ * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P, a tool page argues little; it argues that a test should ask instead of hang, and shows that exchange */
+/* Hallmark · dismissed 58 · the window holds the five-step listing, whose JSON lines count as words but read as one code object */
+/* Hallmark · answered F25 · on a phone the run log shows only the step running now; the recorded video carries the whole run */
+@import url("./tokens.css");
+@import url("./base.css");
+
+/* chrome */
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.wordmark { font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); }
+
+/* keys */
+.key { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-display); white-space: nowrap; text-decoration: none; cursor: pointer; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.key:disabled, .key[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+.key--primary { background: var(--color-accent); border-color: var(--color-accent-edge); color: var(--color-accent-ink); box-shadow: var(--shadow-key-accent); }
+.key--small { min-height: 44px; padding: 0 var(--space-md); }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+a:not(.key):not(.wordmark):hover { text-decoration-color: var(--color-accent); }
+a:not(.key):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* hero */
+.hero { position: relative; padding-block: var(--space-2xl); }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(var(--color-glyph-1) 1px, transparent 1.5px); background-size: var(--cell-w) var(--cell-h); mask-image: linear-gradient(90deg, transparent 0, var(--color-ink) 55%, var(--color-ink) 100%); /* a mask reads alpha only */ }
+.hero .container { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; min-height: calc(100dvh - 72px - 2 * var(--space-2xl)); }
+.hero h1 { max-width: 12ch; }
+.hero .lead { margin-top: var(--space-lg); color: var(--color-ink-2); max-width: 34ch; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.terms { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
+.shot { margin: 0; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); box-shadow: var(--shadow-card); }
+@supports (corner-shape: bevel) { .shot { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+[data-kind="product"] > img { filter: none; mix-blend-mode: normal; }
+[data-kind="product"]:has(> img)::before { content: none; }
+.shot > picture { position: absolute; inset: 0; z-index: 1; }
+.shot > picture > img { width: 100%; height: 100%; object-fit: cover; object-position: 0 0; }
+@media (max-width: 60rem) {
+  .hero .container { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); min-height: 0; }
+}
+@media (max-width: 40rem) {
+  .shot[data-m] { aspect-ratio: var(--m) !important; }
+}
+
+/* sections */
+.section { padding-block: var(--section-gap) 0; }
+.section--l { padding-block: var(--section-gap-l) 0; }
+.section--s { padding-block: var(--section-gap-s) 0; }
+.headblock { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
+.headblock .lead { color: var(--color-ink-2); }
+code, pre, kbd { font-family: var(--font-outlier); }
+
+/* the mapping: steps in, what AI-OS does out */
+.mapping { background: var(--color-graphite); color: var(--color-graphite-ink); border-radius: var(--radius-card); overflow: hidden; }
+@supports (corner-shape: bevel) { .mapping { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+.mapping__head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); padding: var(--space-sm) var(--space-xl); background: var(--color-graphite-2); color: var(--color-graphite-muted); font-size: var(--text-sm); }
+.mapping ol { list-style: none; margin: 0; padding: var(--space-lg) var(--space-xl) var(--space-xl); display: grid; gap: var(--space-xs); }
+.mapping li { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); align-items: baseline; padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-graphite-glyph-1); }
+.mapping li:first-child { border-top: 0; }
+.mapping code { font-size: var(--text-sm); color: var(--color-accent-2); overflow-wrap: anywhere; }
+.mapping p { color: var(--color-graphite-ink); }
+
+/* screens behind a switch */
+.switch .tabs { display: inline-flex; gap: var(--space-2xs); padding: var(--space-2xs); background: var(--color-paper-3); border-radius: var(--radius-input); margin-bottom: var(--space-xl); }
+.tab { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid transparent; border-radius: var(--radius-input); background: transparent; color: var(--color-ink-2); font: 500 var(--text-md)/1 var(--font-display); cursor: pointer; white-space: nowrap; transition: transform var(--dur-micro) var(--ease-out); }
+.tab:hover { color: var(--color-ink); }
+.tab:active { transform: translateY(1px); }
+.tab:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.tab[aria-selected="true"] { background: var(--color-key-face); color: var(--color-ink); border-color: var(--color-rule-2); box-shadow: var(--shadow-key); }
+.tab:disabled { opacity: 0.55; cursor: not-allowed; }
+.panel { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--gap-columns); align-items: start; }
+.panel + .panel { margin-top: var(--space-2xl); }
+.js .panel + .panel { margin-top: 0; }
+.panel .shot { aspect-ratio: 4 / 3; }
+.panel .shot > img { object-position: 0 0; }
+.panel h3 { margin-bottom: var(--space-sm); }
+.panel p { color: var(--color-ink-2); }
+
+/* questions, not hangs */
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap-columns); }
+.pane { padding: var(--space-xl); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); }
+@supports (corner-shape: bevel) { .pane { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+.pane--wash { background: var(--color-accent-wash); border-color: var(--color-glyph-2); }
+.pane h3 { margin-bottom: var(--space-md); }
+.pane p { color: var(--color-ink-2); }
+.pane pre { margin: var(--space-lg) 0 0; padding: var(--space-md); background: var(--color-graphite); color: var(--color-accent-2); border-radius: var(--radius-input); font-size: var(--text-sm); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* the ruler: measured seconds */
+.measure { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+.big { font: 600 clamp(4rem, 8vw, 7.5rem)/0.95 var(--font-display); letter-spacing: var(--tracking-display); font-variant-numeric: tabular-nums; }
+.big small { font-size: 0.4em; font-weight: 500; color: var(--color-ink-2); }
+.measure .cond { margin-top: var(--space-md); color: var(--color-ink-2); max-width: 44ch; }
+.ruler { margin: 0; }
+.ruler ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-lg); }
+.ruler li { display: grid; gap: var(--space-xs); }
+.ruler .label { display: flex; justify-content: space-between; gap: var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
+.ruler .label b { font: 500 var(--text-md)/1.2 var(--font-display); color: var(--color-ink); }
+.ruler .track { position: relative; height: 12px; border-bottom: var(--rule-hair) solid var(--color-rule-2); }
+.ruler .span { position: absolute; bottom: -1px; height: 12px; left: calc(var(--from) / 1.5 * 100%); width: calc((var(--to) - var(--from)) / 1.5 * 100%); min-width: 3px; border-inline: 2px solid var(--color-accent); background: var(--color-accent-wash); }
+.ruler .scale { display: flex; justify-content: space-between; margin-top: var(--space-sm); font: 400 var(--text-xs)/1 var(--font-outlier); color: var(--color-muted); }
+
+/* the API table */
+.api { width: 100%; border-collapse: collapse; }
+.api th, .api td { padding: var(--space-md) var(--space-lg) var(--space-md) 0; text-align: left; vertical-align: baseline; border-top: var(--rule-hair) solid var(--color-rule); }
+.api thead th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-muted); border-top: 0; white-space: nowrap; }
+.api tbody th { width: 30%; font: 400 var(--text-md)/1.3 var(--font-outlier); color: var(--color-ink); white-space: nowrap; }
+.api td { color: var(--color-ink-2); }
+
+/* what it needs */
+.rows { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gap-columns); }
+.rows dl { margin: 0; }
+.rows .row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: var(--gap-columns); padding-block: var(--space-lg); border-top: var(--rule-hair) solid var(--color-rule); }
+.rows .row:first-child { border-top: 0; padding-top: 0; }
+.rows dt { font: 500 var(--text-title)/1.2 var(--font-display); letter-spacing: var(--tracking-display); }
+.rows dd { margin: 0; color: var(--color-ink-2); }
+
+/* the close */
+.close { margin-top: var(--section-gap); padding-block: var(--section-gap-s); background: var(--color-paper-2); border-top: var(--rule-hair) solid var(--color-rule); }
+.close .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+.close .lead { margin-top: var(--space-md); color: var(--color-ink-2); }
+.close .shot { aspect-ratio: 1296 / 750; }
+
+/* footer: a mast */
+.foot { padding-block: var(--space-3xl) var(--space-xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.foot .mast { font: 600 clamp(4rem, 12vw, 10rem)/0.9 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); }
+.foot nav ul { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-xl); }
+.foot nav a { white-space: nowrap; }
+.foot .legal { margin-top: var(--space-xl); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
+
+@media (max-width: 60rem) {
+  .headblock, .mapping__head, .mapping li, .panel, .pair, .measure, .rows, .rows .row, .close .container { grid-template-columns: minmax(0, 1fr); }
+  .mapping__head span + span { display: none; }
+  .mapping li { gap: var(--space-2xs); }
+  .measure, .close .container { gap: var(--space-xl); }
+  .switch .tabs { display: flex; overflow-x: auto; }
+  .api tbody th { width: auto; white-space: normal; }
+}
+@media (max-width: 40rem) {
+  .api thead { display: none; }
+  .api tr { display: grid; padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-rule); }
+  .api th, .api td { border-top: 0; padding: var(--space-2xs) 0; }
+}
+
+/* the hero demo: the phone as recorded, the run's steps as AI-OS logged them */
+.demo { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-lg); align-items: center; margin: 0; }
+.demo__phone { position: relative; aspect-ratio: 600 / 1304; max-height: calc(100dvh - 200px); width: 100%; justify-self: end; border-radius: var(--cut-l); overflow: hidden; background: var(--color-graphite); outline: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent); outline-offset: -1px; }
+.demo__phone video, .demo__phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.demo__log { background: var(--color-graphite); color: var(--color-graphite-ink); border-radius: var(--radius-card); overflow: hidden; }
+@supports (corner-shape: bevel) { .demo__log { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+.demo__head { display: flex; justify-content: space-between; gap: var(--space-md); padding: var(--space-sm) var(--space-lg); background: var(--color-graphite-2); font-size: var(--text-sm); color: var(--color-graphite-muted); }
+.demo__head b { font-weight: 500; color: var(--color-graphite-ink); }
+.demo__steps { list-style: none; margin: 0; padding: var(--space-sm) var(--space-lg); display: grid; }
+.demo__steps li { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: var(--space-sm); align-items: baseline; padding-block: var(--space-2xs); }
+.demo__steps code { font-size: var(--text-xs); color: var(--color-graphite-ink); overflow-wrap: anywhere; }
+.demo__steps .ms { font: 400 var(--text-xs)/1 var(--font-outlier); color: var(--color-graphite-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.demo__steps .mark { width: 12px; height: 12px; align-self: center; border-radius: 50%; border: 1.5px solid var(--color-graphite-glyph-2); }
+.demo__steps li[data-state="ok"] .mark { border: 0; border-radius: 0; background: var(--color-success); clip-path: polygon(14% 52%, 0 66%, 38% 100%, 100% 22%, 86% 8%, 38% 72%); }
+.demo__steps li[data-state="run"] .mark { border-color: var(--color-accent-2); border-top-color: transparent; animation: demo-spin 0.9s linear infinite; }
+.demo__steps li[data-state="wait"] code, .demo__steps li[data-state="wait"] .ms { color: var(--color-graphite-glyph-3); }
+.demo__steps li[data-state="wait"] .ms, .demo__steps li[data-state="run"] .ms { visibility: hidden; }
+@keyframes demo-spin { to { transform: rotate(360deg); } }
+.demo__foot { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); padding: var(--space-sm) var(--space-lg); border-top: var(--rule-hair) solid var(--color-graphite-glyph-1); font-size: var(--text-sm); }
+.demo__status { color: var(--color-accent-2); }
+.demo__pause { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-graphite-glyph-2); border-radius: var(--radius-input); background: transparent; color: var(--color-graphite-ink); font: 500 var(--text-sm)/1 var(--font-display); cursor: pointer; transition: transform var(--dur-micro) var(--ease-out); }
+.demo__pause:hover { border-color: var(--color-graphite-muted); }
+.demo__pause:active { transform: translateY(1px); }
+.demo__pause:focus-visible { outline: 2px solid var(--color-accent-2); outline-offset: 2px; }
+.demo__pause:disabled { opacity: 0.55; cursor: not-allowed; }
+html:not(.js) .demo__pause { display: none; }
+@media (prefers-reduced-motion: reduce) { .demo__pause { display: none; } .demo__steps li[data-state="run"] .mark { animation: none; } }
+@media (max-width: 60rem) { .demo { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); } .demo__phone { max-height: none; } }
+@media (max-width: 40rem) {
+  .demo { grid-template-columns: minmax(0, 1fr); }
+  .demo__phone { width: 72%; justify-self: center; }
+  .demo__steps li[data-state="wait"], .demo__steps li[data-state="ok"]:not(.is-last) { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="#main" aria-label="AI-OS, home">AI-OS</a>
+    <a class="key key--small" href="#download">Download</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-head">
+    <div class="container">
+      <div>
+        <h1 id="hero-head">End-to-end iOS tests, run by your AI</h1>
+        <p class="lead">Simulators and real iPhones, driven over MCP from Claude Code or Desktop.</p>
+        <div class="actions">
+          <a class="key key--primary" href="/download">Download for Mac</a>
+          <a class="key" href="#run">How steps work</a>
+        </div>
+        <p class="terms">Free and open source (MIT). A Mac with Apple silicon and Xcode.</p>
+      </div>
+      <figure class="demo" data-loop data-demo data-total="28616" aria-label="A real AI-OS run, recorded: an iPhone 17 Pro simulator adds a contact in Contacts while the steps pass">
+        <div class="demo__phone">
+          <video muted loop playsinline preload="metadata" poster="images/demo-poster.jpg" width="600" height="1304" aria-hidden="true">
+            <source src="images/demo-phone.webm" type="video/webm">
+            <source src="images/demo-phone.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption class="demo__log">
+          <div class="demo__head"><b>Contacts: add a contact</b><span>iPhone 17 Pro</span></div>
+          <ol class="demo__steps" data-steps='[1075, 5017, 814, 1210, 1838, 3588, 3502, 3531, 1920, 2894, 1740, 395, 1092]'>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="terminate 'com.apple.MobileAddressBook'">terminate Contacts</code><span class="ms">1.1 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="launch 'com.apple.MobileAddressBook'">launch Contacts</code><span class="ms">5.0 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">814 ms</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Add'</code><span class="ms">1.2 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'New Contact'</code><span class="ms">1.8 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'First name'</code><span class="ms">3.6 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Last name'</code><span class="ms">3.5 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Company'</code><span class="ms">3.5 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Done'</code><span class="ms">1.9 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'Mai Example'</code><span class="ms">2.9 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>back</code><span class="ms">1.7 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">395 ms</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>assert 'Mai Example'</code><span class="ms">1.1 s</span></li>
+          </ol>
+          <div class="demo__foot"><span class="demo__status" role="status">Passed, 13 of 13, in 28.6 s</span><button class="demo__pause" type="button" data-loop-toggle>Pause</button></div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="run" aria-labelledby="run-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="run-head">A test is a list of steps</h2>
+      </div>
+      <div class="mapping" aria-label="Steps an agent sends, and what AI-OS does with each">
+        <div class="mapping__head"><span>steps</span><span>AI-OS</span></div>
+        <ol>
+          <li><code>{"tap": "Log in"}</code><p>Taps only an enabled target.</p></li>
+          <li><code>{"fill": {"field": "Email Address", "text": "qa@example.com"}}</code><p>Finds the box by label, types, checks.</p></li>
+          <li><code>{"type_secret": {"field": "Password", "key": "APP_PASSWORD"}}</code><p>Types a saved password; replies show [secret].</p></li>
+          <li><code>{"wait_for": "Home", "timeout": 8}</code><p>Waits by looking, never by sleeping.</p></li>
+          <li><code>{"assert": "Welcome"}</code><p>Exact label or whole words, with case.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--l" aria-labelledby="ask-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="ask-head">Questions, not hangs</h2>
+        <p class="lead">A step that cannot go on asks your agent.</p>
+      </div>
+      <div class="pair">
+        <div class="pane">
+          <h3>The first time</h3>
+          <p>“Save Password?” covers the screen. The run returns a question; the agent answers and goes on.</p>
+        </div>
+        <div class="pane pane--wash">
+          <h3>Every time after</h3>
+          <p>A rule taps through it.</p>
+<pre><code>{"when": "Save Password?", "tap": "Not Now"}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="app-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="app-head">Setup fetches iOS, the driver, simslim</h2>
+        <p class="lead">No Terminal needed.</p>
+      </div>
+      <div class="switch" data-switch>
+        <div class="tabs" role="tablist" aria-label="Screens of the AI-OS app">
+          <button class="tab" type="button" role="tab" id="t-setup" aria-controls="p-setup" aria-selected="true">Setup</button>
+          <button class="tab" type="button" role="tab" id="t-check" aria-controls="p-check" aria-selected="false" tabindex="-1">Setup check</button>
+          <button class="tab" type="button" role="tab" id="t-logins" aria-controls="p-logins" aria-selected="false" tabindex="-1">Logins</button>
+        </div>
+        <div class="panel" role="tabpanel" id="p-setup" aria-labelledby="t-setup">
+          <figure class="shot" style="aspect-ratio: 1296 / 770; --m: 760 / 560" data-m data-slot="setup" data-kind="product" data-alt="The AI-OS setup window part way through">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="images/setup-m.png" width="760" height="560">
+              <img src="images/setup-top.png" width="1296" height="770" loading="lazy" alt="The AI-OS setup window: four steps done, the simulator driver building">
+            </picture>
+          </figure>
+          <div><h3>Setup</h3><p>Installs what the Mac is missing, step by step.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-check" aria-labelledby="t-check">
+          <figure class="shot" style="aspect-ratio: 1520 / 1124; --m: 1060 / 620" data-m data-slot="check" data-kind="product" data-alt="The Setup check card in the AI-OS app">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="images/check-m.png" width="1060" height="620">
+              <img src="images/dash-check-home-desktop-part.png" width="1520" height="1124" loading="lazy" alt="Setup check: Xcode, iOS versions, disk, memory, simslim and the AI connection pass; the simulator driver is missing, with its fix">
+            </picture>
+          </figure>
+          <div><h3>Setup check</h3><p>What is ready, and how to fix the rest.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-logins" aria-labelledby="t-logins">
+          <figure class="shot" style="aspect-ratio: 1520 / 1278; --m: 1060 / 470" data-m data-slot="logins" data-kind="product" data-alt="The Logins card in the AI-OS app">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="images/logins-m.png" width="1060" height="470">
+              <img src="images/dash-logins-home-desktop-part.png" width="1520" height="1278" loading="lazy" alt="Logins: a saved password named APP_PASSWORD, two apps that may receive it, and the builds folder">
+            </picture>
+          </figure>
+          <div><h3>Logins</h3><p>Passwords by name. The AI never sees them.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--l" aria-labelledby="speed-head">
+    <div class="container measure">
+      <div>
+        <h2 id="speed-head" class="visually-hidden">Measured speed</h2>
+        <p class="big">43 to 45 <small>s</small></p>
+        <p class="cond">A 30-step flow on three iOS 27 simulators at once, on an Apple M4 with 16 GB.</p>
+      </div>
+      <figure class="ruler" aria-label="Chart: measured time per action, in seconds">
+        <ul>
+          <li><span class="label"><b>Read the screen</b><span>0.07 to 0.18 s</span></span><span class="track"><span class="span" style="--from: 0.07; --to: 0.18"></span></span></li>
+          <li><span class="label"><b>A check</b><span>0.05 to 0.3 s</span></span><span class="track"><span class="span" style="--from: 0.05; --to: 0.3"></span></span></li>
+          <li><span class="label"><b>A tap step</b><span>0.5 to 0.9 s</span></span><span class="track"><span class="span" style="--from: 0.5; --to: 0.9"></span></span></li>
+          <li><span class="label"><b>A tap on an iPhone over Wi-Fi</b><span>about 1.4 s</span></span><span class="track"><span class="span" style="--from: 1.35; --to: 1.45"></span></span></li>
+        </ul>
+        <div class="scale" aria-hidden="true"><span>0</span><span>0.5 s</span><span>1 s</span><span>1.5 s</span></div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tools-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="tools-head">The tools your agent calls</h2>
+      </div>
+      <table class="api">
+        <thead><tr><th scope="col">Tool</th><th scope="col">What it does</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">aios_start</th><td>Turns devices on; installs an app clean.</td></tr>
+          <tr><th scope="row">aios_screen</th><td>The screen as text; an image on request.</td></tr>
+          <tr><th scope="row">aios_act</th><td>Runs steps; returns results or a question.</td></tr>
+          <tr><th scope="row">aios_run</th><td>Several devices at once, in the background.</td></tr>
+          <tr><th scope="row">aios_capture</th><td>Screenshot, video start and stop.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="needs" aria-labelledby="needs-head">
+    <div class="container rows">
+      <h2 id="needs-head">Xcode, disk and an AI agent</h2>
+      <dl>
+        <div class="row"><dt>Apple silicon</dt><dd>Intel Macs are not tested.</dd></div>
+        <div class="row"><dt>Xcode</dt><dd>Free. Setup opens the App Store if missing.</dd></div>
+        <div class="row"><dt>Disk</dt><dd>About 7.5 GB per iOS version, 1 to 2 GB per simulator.</dd></div>
+        <div class="row"><dt>An AI agent</dt><dd>Claude Code, Claude Desktop or any MCP client.</dd></div>
+        <div class="row"><dt>A real iPhone</dt><dd>Optional. A free Apple ID signs for 7 days.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="close" id="download" aria-labelledby="dl-head">
+    <div class="container">
+      <div>
+        <h2 id="dl-head">Free for Apple silicon Macs</h2>
+        <p class="lead">Setup ends with a first request to copy into Claude Code.</p>
+        <div class="actions">
+          <a class="key key--primary" href="/download">Download for Mac</a>
+        </div>
+        <p class="terms">The first time, macOS asks you to allow it: Privacy &amp; Security, Open Anyway.</p>
+      </div>
+      <figure class="shot" style="--m: 1296 / 440" data-m data-slot="close" data-kind="product" data-alt="The AI-OS setup window's last screen">
+        <picture>
+              <source media="(max-width: 40rem)" srcset="images/done-m.png" width="1296" height="440">
+              <img src="images/setup-done-home-desktop-part.png" width="1296" height="750" loading="lazy" alt="The last screen of AI-OS setup: AI-OS is ready">
+            </picture>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <p class="mast" aria-hidden="true">AI-OS</p>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="#run">A test run</a></li>
+        <li><a href="#needs">What it needs</a></li>
+        <li><a href="#download">Download</a></li>
+        <li><a href="/releases">All releases</a></li>
+      </ul>
+    </nav>
+    <p class="legal">MIT licence, by Bruce Vu. Uses <a href="https://github.com/appium/WebDriverAgent">WebDriverAgent</a> and <a href="https://github.com/MobAI-App/simslim">simslim</a>.</p>
+  </div>
+</footer>
+<script>
+document.documentElement.classList.add('js');
+// The hero demo: plays the recorded run and ticks each step at the time AI-OS logged for it.
+document.querySelectorAll('[data-demo]').forEach((fig) => {
+  const video = fig.querySelector('video'), btn = fig.querySelector('[data-loop-toggle]'), status = fig.querySelector('.demo__status');
+  const rows = [...fig.querySelectorAll('.demo__steps li')], ms = JSON.parse(fig.querySelector('[data-steps]').dataset.steps);
+  const ends = ms.reduce((a, m) => a.concat((a.length ? a[a.length - 1] : 0) + m), []);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const s = { seen: false, hover: false, focus: false, held: reduce.matches };
+  const paint = () => {
+    const t = video.currentTime * 1000, done = ends.filter((e) => e <= t).length;
+    rows.forEach((r, i) => { r.dataset.state = i < done ? 'ok' : i === done ? 'run' : 'wait'; r.classList.toggle('is-last', i === Math.max(done - 1, 0)); });
+    status.textContent = done >= rows.length ? `Passed, ${rows.length} of ${rows.length}, in ${(ends[ends.length - 1] / 1000).toFixed(1)} s` : `Step ${done + 1} of ${rows.length}`;
+  };
+  const tick = () => { if (!video.paused) { paint(); requestAnimationFrame(tick); } };
+  const sync = () => {
+    const run = s.seen && !s.hover && !s.focus && !s.held;
+    fig.classList.toggle('is-running', run);
+    if (run) video.play().then(() => requestAnimationFrame(tick)).catch(() => {}); else video.pause();
+    btn.textContent = s.held ? 'Play' : 'Pause';
+  };
+  if (reduce.matches) return;  // the poster and every step passed, as the page loads
+  video.addEventListener('loadedmetadata', paint);
+  video.addEventListener('seeked', paint);
+  btn.addEventListener('click', () => { s.held = !s.held; sync(); });
+  [['pointerenter', 'hover', true], ['pointerleave', 'hover', false], ['focusin', 'focus', true], ['focusout', 'focus', false]].forEach(([e, k, v]) => fig.addEventListener(e, () => { s[k] = v; sync(); }));
+  new IntersectionObserver(([e]) => { s.seen = e.isIntersecting; sync(); }).observe(fig);
+});
+document.querySelectorAll('[data-switch]').forEach((sw) => {
+  const tabs = [...sw.querySelectorAll('[role="tab"]')];
+  const show = (t, focus) => {
+    tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+    if (focus) t.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(t));
+    t.addEventListener('keydown', (e) => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { e.preventDefault(); show(tabs[(i + d + tabs.length) % tabs.length], true); } });
+  });
+  show(tabs[0]);
+});
+</script>
+<script>window.hallmarkSlots = (m) => { for (const [k, v] of Object.entries(m)) { const s = document.querySelector(`[data-slot="${k}"]`); if (!s) continue; const im = new Image(); im.src = typeof v === 'string' ? v : v.src; im.alt = (typeof v === 'object' && v.alt) || s.dataset.alt || ''; s.querySelectorAll(':scope > img').forEach((o) => o.remove()); s.prepend(im); } };
+document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', () => i.remove(), { once: true }); });</script>
+</body>
+</html>
