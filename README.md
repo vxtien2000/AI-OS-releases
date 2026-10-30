@@ -1,7 +1,7 @@
 # AI-OS
 
 End-to-end app testing on iOS simulators and real iPhones, for AI agents (through MCP: Claude Code, Claude Desktop,
-Codex, any MCP client) and for QA (a local dashboard and a CLI). Free and open source (MIT).
+Codex, any MCP client) and for QA (a local dashboard and a CLI). Free to use.
 
 ## Download
 **[Download the latest AI-OS for Mac](https://aiosqa.dpdns.org/download)** (or from
@@ -30,4 +30,5 @@ Edit `site/`, then push to `main`: Cloudflare deploys it (Workers Builds, connec
 A new release needs no change here: the download buttons point to `/download`.
 
 ## Licence
-MIT, copyright Bruce Vu.
+Proprietary, copyright Bruce Vu: free to use from these releases; no copying, modifying or reverse engineering
+(see the LICENSE file in each release). Versions up to 0.16.1 were released under MIT.

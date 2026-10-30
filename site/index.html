@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI-OS: end-to-end iOS tests your AI agent runs</title>
-<meta name="description" content="AI-OS lets AI agents and QA run end-to-end tests on iOS simulators and real iPhones, from Claude Code, Claude Desktop, Codex or any MCP client. Free and open source.">
+<meta name="description" content="AI-OS lets AI agents and QA run end-to-end tests on iOS simulators and real iPhones, from Claude Code, Claude Desktop, Codex or any MCP client. Free to use.">
 <link rel="canonical" href="https://aiosqa.dpdns.org/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#f7f9fc">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aiosqa.dpdns.org/">
-<meta property="og:title" content="AI-OS: end-to-end iOS tests, run by your AI">
-<meta property="og:description" content="Simulators and real iPhones, driven over MCP from Claude or Codex. Free and open source.">
+<meta property="og:title" content="AI-OS: let your AI test your iPhone app">
+<meta property="og:description" content="Simulators and real iPhones, driven over MCP from Claude or Codex. Free to use.">
 <meta property="og:image" content="https://aiosqa.dpdns.org/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,14 +26,16 @@
  * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P, a tool page argues little; it argues that a test should ask instead of hang, and shows that exchange */
 /* Hallmark · dismissed 58 · the window holds the five-step listing, whose JSON lines count as words but read as one code object */
+/* Hallmark · dismissed 19 · the owner's licence line: from 0.17.0 the LICENSE itself says all rights reserved, beside free to use */
 /* Hallmark · answered F25 · on a phone the run log shows only the step running now; the recorded video carries the whole run */
 @import url("./tokens.css");
 @import url("./base.css");
 
 /* chrome */
+html { scroll-behavior: smooth; }  /* base.css turns it off under reduced motion */
 .skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
 .skip:focus-visible { top: var(--space-md); }
-.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
 .nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
 .wordmark { font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); }
 
@@ -116,6 +118,7 @@ code, pre, kbd { font-family: var(--font-outlier); }
 /* the ruler: measured seconds */
 .measure { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
 .big { font: 600 clamp(4rem, 8vw, 7.5rem)/0.95 var(--font-display); letter-spacing: var(--tracking-display); font-variant-numeric: tabular-nums; }
+.measure h2 + .big { margin-top: var(--space-lg); }
 .big small { font-size: 0.4em; font-weight: 500; color: var(--color-ink-2); }
 .measure .cond { margin-top: var(--space-md); color: var(--color-ink-2); max-width: 44ch; }
 .ruler { margin: 0; }
@@ -217,13 +220,13 @@ html:not(.js) .demo__pause { display: none; }
   <section class="hero" aria-labelledby="hero-head">
     <div class="container">
       <div>
-        <h1 id="hero-head">End-to-end iOS tests, run by your AI</h1>
-        <p class="lead">Simulators and real iPhones, driven over MCP from Claude or Codex.</p>
+        <h1 id="hero-head">Let your AI test your iPhone app</h1>
+        <p class="lead">It taps, types and checks, on simulators and real iPhones.</p>
         <div class="actions">
           <a class="key key--primary" href="/download">Download for Mac</a>
-          <a class="key" href="#run">How steps work</a>
+          <a class="key" href="#run">See how it tests</a>
         </div>
-        <p class="terms">Free and open source (MIT). A Mac with Apple silicon and Xcode.</p>
+        <p class="terms">Free to use. For Macs with Apple silicon and Xcode.</p>
       </div>
       <figure class="demo" data-loop data-demo data-total="28616" aria-label="A real AI-OS run, recorded: an iPhone 17 Pro simulator adds a contact in Contacts while the steps pass">
         <div class="demo__phone">
@@ -247,7 +250,7 @@ html:not(.js) .demo__pause { display: none; }
             <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'Mai Example'</code><span class="ms">2.9 s</span></li>
             <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>back</code><span class="ms">1.7 s</span></li>
             <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">395 ms</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>assert 'Mai Example'</code><span class="ms">1.1 s</span></li>
+            <li data-state="ok" class="is-last"><span class="mark" aria-hidden="true"></span><code>assert 'Mai Example'</code><span class="ms">1.1 s</span></li>
           </ol>
           <div class="demo__foot"><span class="demo__status" role="status">Passed, 13 of 13, in 28.6 s</span><button class="demo__pause" type="button" data-loop-toggle>Pause</button></div>
         </figcaption>
@@ -258,7 +261,7 @@ html:not(.js) .demo__pause { display: none; }
   <section class="section" id="run" aria-labelledby="run-head">
     <div class="container">
       <div class="headblock">
-        <h2 id="run-head">A test is a list of steps</h2>
+        <h2 id="run-head">Every step looks before it acts</h2>
       </div>
       <div class="mapping" aria-label="Steps an agent sends, and what AI-OS does with each">
         <div class="mapping__head"><span>steps</span><span>AI-OS</span></div>
@@ -266,8 +269,8 @@ html:not(.js) .demo__pause { display: none; }
           <li><code>{"tap": "Log in"}</code><p>Taps only an enabled target.</p></li>
           <li><code>{"fill": {"field": "Email Address", "text": "qa@example.com"}}</code><p>Finds the box by label, types, checks.</p></li>
           <li><code>{"type_secret": {"field": "Password", "key": "APP_PASSWORD"}}</code><p>Types a saved password; replies show [secret].</p></li>
-          <li><code>{"wait_for": "Home", "timeout": 8}</code><p>Waits by looking, never by sleeping.</p></li>
-          <li><code>{"assert": "Welcome"}</code><p>Exact label or whole words, with case.</p></li>
+          <li><code>{"wait_for": "Home", "timeout": 8}</code><p>Waits for the screen, never for a timer.</p></li>
+          <li><code>{"assert": "Welcome"}</code><p>Exact words, never a near miss.</p></li>
         </ol>
       </div>
     </div>
@@ -277,16 +280,16 @@ html:not(.js) .demo__pause { display: none; }
     <div class="container">
       <div class="headblock">
         <h2 id="ask-head">Questions, not hangs</h2>
-        <p class="lead">A step that cannot go on asks your agent.</p>
+        <p class="lead">A stuck step asks your agent.</p>
       </div>
       <div class="pair">
         <div class="pane">
           <h3>The first time</h3>
-          <p>“Save Password?” covers the screen. The run returns a question; the agent answers and goes on.</p>
+          <p>“Save Password?” appears. The agent answers; the run goes on.</p>
         </div>
         <div class="pane pane--wash">
           <h3>Every time after</h3>
-          <p>A rule taps through it.</p>
+          <p>One rule, and it never asks again.</p>
 <pre><code>{"when": "Save Password?", "tap": "Not Now"}</code></pre>
         </div>
       </div>
@@ -296,8 +299,8 @@ html:not(.js) .demo__pause { display: none; }
   <section class="section" aria-labelledby="app-head">
     <div class="container">
       <div class="headblock">
-        <h2 id="app-head">Setup fetches iOS, the driver, simslim</h2>
-        <p class="lead">No Terminal needed.</p>
+        <h2 id="app-head">Set up in one window</h2>
+        <p class="lead">iOS, the simulator driver and simslim, installed for you. No Terminal.</p>
       </div>
       <div class="switch" data-switch>
         <div class="tabs" role="tablist" aria-label="Screens of the AI-OS app">
@@ -312,7 +315,7 @@ html:not(.js) .demo__pause { display: none; }
               <img src="images/setup-top.png" width="1296" height="770" loading="lazy" alt="The AI-OS setup window: four steps done, the simulator driver building">
             </picture>
           </figure>
-          <div><h3>Setup</h3><p>Installs what the Mac is missing, step by step.</p></div>
+          <div><h3>Setup</h3><p>Installs only what your Mac is missing, and shows each step.</p></div>
         </div>
         <div class="panel" role="tabpanel" id="p-check" aria-labelledby="t-check">
           <figure class="shot" style="aspect-ratio: 1520 / 1124; --m: 1060 / 620" data-m data-slot="check" data-kind="product" data-alt="The Setup check card in the AI-OS app">
@@ -321,7 +324,7 @@ html:not(.js) .demo__pause { display: none; }
               <img src="images/dash-check-home-desktop-part.png" width="1520" height="1124" loading="lazy" alt="Setup check: Xcode, iOS versions, disk, memory, simslim and the AI connection pass; the simulator driver is missing, with its fix">
             </picture>
           </figure>
-          <div><h3>Setup check</h3><p>What is ready, and how to fix the rest.</p></div>
+          <div><h3>Setup check</h3><p>See what is ready, and how to fix the rest.</p></div>
         </div>
         <div class="panel" role="tabpanel" id="p-logins" aria-labelledby="t-logins">
           <figure class="shot" style="aspect-ratio: 1520 / 1309; --m: 1060 / 470" data-m data-slot="logins" data-kind="product" data-alt="The Logins card in the AI-OS app">
@@ -330,7 +333,7 @@ html:not(.js) .demo__pause { display: none; }
               <img src="images/dash-logins-home-desktop-part.png" width="1520" height="1309" loading="lazy" alt="Logins: a saved password named APP_PASSWORD, two apps that may receive it, and the builds folder">
             </picture>
           </figure>
-          <div><h3>Logins</h3><p>Passwords by name. The AI never sees them.</p></div>
+          <div><h3>Logins</h3><p>Save test passwords by name. Your AI types them without seeing them.</p></div>
         </div>
       </div>
     </div>
@@ -339,9 +342,9 @@ html:not(.js) .demo__pause { display: none; }
   <section class="section--l" aria-labelledby="speed-head">
     <div class="container measure">
       <div>
-        <h2 id="speed-head" class="visually-hidden">Measured speed</h2>
+        <h2 id="speed-head">Three simulators, 30 steps, under a minute</h2>
         <p class="big">43 to 45 <small>s</small></p>
-        <p class="cond">A 30-step flow on three iOS 27 simulators at once, on an Apple M4 with 16 GB.</p>
+        <p class="cond">All three passed at once. iOS 27, on an Apple M4 with 16 GB.</p>
       </div>
       <figure class="ruler" aria-label="Chart: measured time per action, in seconds">
         <ul>
@@ -358,7 +361,7 @@ html:not(.js) .demo__pause { display: none; }
   <section class="section" aria-labelledby="tools-head">
     <div class="container">
       <div class="headblock">
-        <h2 id="tools-head">The tools your agent calls</h2>
+        <h2 id="tools-head">Works with Claude, Codex and any MCP client</h2>
       </div>
       <table class="api">
         <thead><tr><th scope="col">Tool</th><th scope="col">What it does</th></tr></thead>
@@ -366,8 +369,8 @@ html:not(.js) .demo__pause { display: none; }
           <tr><th scope="row">aios_start</th><td>Turns devices on; installs an app clean.</td></tr>
           <tr><th scope="row">aios_screen</th><td>The screen as text; an image on request.</td></tr>
           <tr><th scope="row">aios_act</th><td>Runs steps; returns results or a question.</td></tr>
-          <tr><th scope="row">aios_run</th><td>Several devices at once, in the background.</td></tr>
-          <tr><th scope="row">aios_capture</th><td>Screenshot, video start and stop.</td></tr>
+          <tr><th scope="row">aios_run</th><td>Several devices at once.</td></tr>
+          <tr><th scope="row">aios_capture</th><td>Screenshots and screen video.</td></tr>
         </tbody>
       </table>
     </div>
@@ -375,12 +378,12 @@ html:not(.js) .demo__pause { display: none; }
 
   <section class="section" id="needs" aria-labelledby="needs-head">
     <div class="container rows">
-      <h2 id="needs-head">Xcode, disk and an AI agent</h2>
+      <h2 id="needs-head">What your Mac needs</h2>
       <dl>
         <div class="row"><dt>Apple silicon</dt><dd>Intel Macs are not tested.</dd></div>
         <div class="row"><dt>Xcode</dt><dd>Free. Setup opens the App Store if missing.</dd></div>
-        <div class="row"><dt>Disk</dt><dd>About 7.5 GB per iOS version, 1 to 2 GB per simulator.</dd></div>
-        <div class="row"><dt>An AI agent</dt><dd>Claude Code, Claude Desktop, Codex or any MCP client.</dd></div>
+        <div class="row"><dt>Disk</dt><dd>About 7.5 GB per iOS version, plus 1 to 2 GB a simulator.</dd></div>
+        <div class="row"><dt>An AI agent</dt><dd>Optional: the dashboard works without one.</dd></div>
         <div class="row"><dt>A real iPhone</dt><dd>Optional. A free Apple ID signs for 7 days.</dd></div>
       </dl>
     </div>
@@ -389,8 +392,8 @@ html:not(.js) .demo__pause { display: none; }
   <section class="close" id="download" aria-labelledby="dl-head">
     <div class="container">
       <div>
-        <h2 id="dl-head">Free for Apple silicon Macs</h2>
-        <p class="lead">Setup ends with a first request to copy into Claude Code.</p>
+        <h2 id="dl-head">Give your AI an iPhone</h2>
+        <p class="lead">Free to use. Setup ends with a first test to paste into your agent.</p>
         <div class="actions">
           <a class="key key--primary" href="/download">Download for Mac</a>
         </div>
@@ -417,7 +420,7 @@ html:not(.js) .demo__pause { display: none; }
         <li><a href="/releases">All releases</a></li>
       </ul>
     </nav>
-    <p class="legal">MIT licence, by Bruce Vu. Uses <a href="https://github.com/appium/WebDriverAgent">WebDriverAgent</a> and <a href="https://github.com/MobAI-App/simslim">simslim</a>.</p>
+    <p class="legal">© 2026 Bruce Vu. Free to use, all rights reserved. Uses <a href="https://github.com/appium/WebDriverAgent">WebDriverAgent</a> and <a href="https://github.com/MobAI-App/simslim">simslim</a>.</p>
   </div>
 </footer>
 <script>
@@ -444,7 +447,7 @@ document.querySelectorAll('[data-demo]').forEach((fig) => {
   if (reduce.matches) return;  // the poster and every step passed, as the page loads
   video.addEventListener('loadedmetadata', paint);
   video.addEventListener('seeked', paint);
-  btn.addEventListener('click', () => { s.held = !s.held; sync(); });
+  btn.addEventListener('click', () => { s.held = !s.held; if (!s.held) s.hover = s.focus = false; sync(); });  // Play plays now, though the pointer and focus are on the figure
   [['pointerenter', 'hover', true], ['pointerleave', 'hover', false], ['focusin', 'focus', true], ['focusout', 'focus', false]].forEach(([e, k, v]) => fig.addEventListener(e, () => { s[k] = v; sync(); }));
   new IntersectionObserver(([e]) => { s.seen = e.isIntersecting; sync(); }).observe(fig);
 });

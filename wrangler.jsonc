@@ -1,5 +1,5 @@
 {
-  // Cloudflare Worker for aiosqa.com: deployed on every push to main (Workers Builds), or by hand with
+  // Cloudflare Worker "quiet-disk-558e", serving https://aiosqa.dpdns.org: deployed on every push to main (Workers Builds), or by hand with
   // `npx wrangler deploy` from this folder. Keep this file in step with the dashboard: a deploy applies what is here.
   "name": "quiet-disk-558e",
   "main": "worker/index.js",
