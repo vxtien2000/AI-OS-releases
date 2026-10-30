@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found · AI-OS</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · checked: 2026-10-30 · genre: modern-minimal · theme: Cobalt (by request)
+ * built: Hallmark · the site's not-found page, in the landing page's tokens · v2.0.0 */
+@import url("/tokens.css");
+@import url("/base.css");
+main { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-2xl) var(--gutter); }
+.box { max-width: 36rem; }
+.box p { margin-top: var(--space-md); color: var(--color-ink-2); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.key { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.key--primary { background: var(--color-accent); border-color: var(--color-accent-edge); color: var(--color-accent-ink); box-shadow: var(--shadow-key-accent); }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="box">
+    <h1>This page is not here</h1>
+    <p>The address may be old or mistyped. AI-OS lives on the home page, and the newest version is one click away.</p>
+    <div class="actions">
+      <a class="key key--primary" href="/">AI-OS home</a>
+      <a class="key" href="/download">Download for Mac</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
