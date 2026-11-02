@@ -5,6 +5,8 @@
   "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "assets": { "directory": "./site", "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "404-page" },
+  // Counts for /download and the page's /e beacon (no cookies, no IPs); read them with tools/site-stats.sh.
+  "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "aios_site" }],
   "observability": {
     "logs": {
       "enabled": true,

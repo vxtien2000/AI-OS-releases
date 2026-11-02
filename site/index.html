@@ -223,7 +223,7 @@ html:not(.js) .demo__pause { display: none; }
         <h1 id="hero-head">Let your AI test your iPhone app</h1>
         <p class="lead">It taps, types and checks, on simulators and real iPhones.</p>
         <div class="actions">
-          <a class="key key--primary" href="/download">Download for Mac</a>
+          <a class="key key--primary" href="/download?from=hero">Download for Mac</a>
           <a class="key" href="#run">See how it tests</a>
         </div>
         <p class="terms">Free to use. For Macs with Apple silicon and Xcode.</p>
@@ -395,7 +395,7 @@ html:not(.js) .demo__pause { display: none; }
         <h2 id="dl-head">Give your AI an iPhone</h2>
         <p class="lead">Free to use. Setup ends with a first test to paste into your agent.</p>
         <div class="actions">
-          <a class="key key--primary" href="/download">Download for Mac</a>
+          <a class="key key--primary" href="/download?from=footer">Download for Mac</a>
         </div>
         <p class="terms">The first time, macOS asks you to allow it: Privacy &amp; Security, Open Anyway.</p>
       </div>
@@ -466,5 +466,39 @@ document.querySelectorAll('[data-switch]').forEach((sw) => {
 </script>
 <script>window.hallmarkSlots = (m) => { for (const [k, v] of Object.entries(m)) { const s = document.querySelector(`[data-slot="${k}"]`); if (!s) continue; const im = new Image(); im.src = typeof v === 'string' ? v : v.src; im.alt = (typeof v === 'object' && v.alt) || s.dataset.alt || ''; s.querySelectorAll(':scope > img').forEach((o) => o.remove()); s.prepend(im); } };
 document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', () => i.remove(), { once: true }); });</script>
+<script>
+// Measurement: counts only. No cookies, no storage, no visitor id; nothing is sent when the browser asks not to be
+// tracked. On open: the referring site. On leaving: seconds on the page, how far it was scrolled (%), which sections
+// came into view and which tabs were opened. The Worker (/e) keeps only known names and numbers.
+(() => {
+  if (navigator.globalPrivacyControl || navigator.doNotTrack === '1' || !navigator.sendBeacon) return;
+  const send = (e) => { try { navigator.sendBeacon('/e', JSON.stringify(e)); } catch {} };
+  const start = Date.now(), seen = new Set(), tabs = new Set();
+  let depth = 0, sent = false, hidden = 0, hiddenAt = 0;
+  send({ k: 'view', r: document.referrer && new URL(document.referrer).host !== location.host ? document.referrer : '' });
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) seen.add(e.target.getAttribute('aria-labelledby').replace(/-head$/, ''));
+  }), { threshold: 0.4 });
+  document.querySelectorAll('main section[aria-labelledby]').forEach((x) => io.observe(x));
+  const scrolled = () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    depth = Math.max(depth, h > 0 ? Math.round(100 * scrollY / h) : 100);
+  };
+  addEventListener('scroll', scrolled, { passive: true });
+  scrolled();
+  document.querySelectorAll('[role="tab"]').forEach((t) => t.addEventListener('click', () => tabs.add(t.id.replace(/^t-/, ''))));
+  const leave = () => {  // once per page view; time in a hidden tab does not count
+    if (sent) return;
+    sent = true;
+    const away = hiddenAt ? Date.now() - hiddenAt : 0;
+    send({ k: 'engage', s: Math.round((Date.now() - start - hidden - away) / 1000), d: depth, v: [...seen], t: [...tabs] });
+  };
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { hiddenAt = Date.now(); leave(); }
+    else if (hiddenAt) { hidden += Date.now() - hiddenAt; hiddenAt = 0; }
+  });
+  addEventListener('pagehide', leave);
+})();
+</script>
 </body>
 </html>

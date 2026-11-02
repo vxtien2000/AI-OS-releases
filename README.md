@@ -23,6 +23,12 @@ click Update. Each update is signed; the app takes no other.
 - **`worker/index.js` and `wrangler.jsonc`:** the Cloudflare Worker for https://aiosqa.dpdns.org. It serves `site/`
   (https only, with a not-found page), plus `/download`, which always sends the newest release's zip (it reads
   `latest.json`), and `/releases`.
+- **Measurement (counts only):** the Worker counts each `/download` (which button: `?from=hero|footer`, country,
+  referring site) and the page sends one anonymous beacon when it opens and one when it is left (`/e`: seconds on the
+  page, how far it was scrolled, sections seen, tabs opened). No cookies, no browser storage, no IP addresses, no
+  visitor ids; nothing is sent by browsers that ask not to be tracked (Global Privacy Control, Do Not Track). The
+  counts go to a Cloudflare Workers Analytics Engine dataset (`aios_site`, kept 3 months). Read them with
+  `CLOUDFLARE_ACCOUNT_ID=... CLOUDFLARE_API_TOKEN=... tools/site-stats.py [days]` (token: Account Analytics Read).
 
 ## Changing the site
 Edit `site/`, then push to `main`: Cloudflare deploys it (Workers Builds, connected to this repository). By hand:

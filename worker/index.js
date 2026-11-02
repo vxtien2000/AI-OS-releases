@@ -25,6 +25,56 @@ async function newestZip() {
   }
 }
 
+// ---- Measurement: counts only, no cookies, no IP addresses, no visitor ids (Workers Analytics Engine "EVENTS") ----
+// download: one row per /download, with the button (?from=hero|footer, else direct), country and referring site.
+// view / engage: sent by the page itself (navigator.sendBeacon to /e) when it opens and when it is left: seconds on
+// the page, how far it was scrolled, which sections came into view and which tabs were opened. Browsers that ask
+// not to be tracked (Global Privacy Control, Do Not Track) send nothing.
+const FROM = new Set(["hero", "footer"]);
+const SECTIONS = new Set(["hero", "run", "ask", "app", "speed", "tools", "needs", "dl"]);
+const TABS = new Set(["setup", "check", "logins"]);
+
+function host(value) {  // only the site name of a referrer, never its path or query
+  try {
+    return new URL(value).hostname.slice(0, 100);
+  } catch {
+    return "";
+  }
+}
+
+function record(env, kind, blobs, doubles = []) {
+  try {
+    env.EVENTS?.writeDataPoint({ indexes: [kind], blobs, doubles });  // not configured (wrangler dev): nothing
+  } catch {}  // measuring must never break the page or the download
+}
+
+function picks(list, allowed) {  // known names only, each once, in a fixed order
+  return Array.isArray(list) ? [...allowed].filter((x) => list.includes(x)).join(",") : "";
+}
+
+async function beacon(request, env, url) {
+  const origin = request.headers.get("Origin");
+  if (origin && origin !== url.origin) return new Response(null, { status: 403 });
+  const text = await request.text();
+  if (text.length > 1024) return new Response(null, { status: 413 });
+  let e;
+  try {
+    e = JSON.parse(text);
+  } catch {
+    return new Response(null, { status: 400 });
+  }
+  if (!e || typeof e !== "object" || !["view", "engage"].includes(e.k)) return new Response(null, { status: 400 });
+  const country = request.cf?.country || "";
+  if (e.k === "view") {
+    record(env, "view", [host(e.r), country]);
+  } else {
+    const seconds = Math.min(Math.max(Number(e.s) || 0, 0), 3600);
+    const depth = Math.min(Math.max(Number(e.d) || 0, 0), 100);
+    record(env, "engage", [picks(e.v, SECTIONS), picks(e.t, TABS), country], [seconds, depth]);
+  }
+  return new Response(null, { status: 204 });
+}
+
 const MEDIA = /\.(mp4|webm)$/;  // Safari plays video only when it can ask for byte ranges (206)
 
 async function ranged(request, response) {
@@ -60,7 +110,14 @@ export default {
     }
     const { pathname } = url;
     if (pathname === "/download" || pathname === "/download/") {
+      const from = url.searchParams.get("from");
+      record(env, "download", [FROM.has(from) ? from : "direct", request.cf?.country || "",
+        host(request.headers.get("Referer") || "")]);
       return finish(Response.redirect((await newestZip()) || RELEASES, 302), pathname);
+    }
+    if (pathname === "/e") {
+      if (request.method !== "POST") return finish(new Response(null, { status: 405, headers: { Allow: "POST" } }), pathname);
+      return finish(await beacon(request, env, url), pathname);
     }
     if (pathname === "/releases") return finish(Response.redirect(RELEASES, 302), pathname);
     const asset = await env.ASSETS.fetch(request);
