@@ -475,7 +475,8 @@ document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && 
   const send = (e) => { try { navigator.sendBeacon('/e', JSON.stringify(e)); } catch {} };
   const start = Date.now(), seen = new Set(), tabs = new Set();
   let depth = 0, sent = false, hidden = 0, hiddenAt = 0;
-  send({ k: 'view', r: document.referrer && new URL(document.referrer).host !== location.host ? document.referrer : '' });
+  const from = document.referrer ? new URL(document.referrer) : null;  // only the site's origin, never its path or query
+  send({ k: 'view', r: from && from.host !== location.host ? from.origin : '' });
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (e.isIntersecting) seen.add(e.target.getAttribute('aria-labelledby').replace(/-head$/, ''));
   }), { threshold: 0.4 });

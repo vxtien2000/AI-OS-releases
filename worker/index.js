@@ -53,8 +53,7 @@ function picks(list, allowed) {  // known names only, each once, in a fixed orde
 }
 
 async function beacon(request, env, url) {
-  const origin = request.headers.get("Origin");
-  if (origin && origin !== url.origin) return new Response(null, { status: 403 });
+  if (request.headers.get("Origin") !== url.origin) return new Response(null, { status: 403 });  // browsers send it with every POST
   const text = await request.text();
   if (text.length > 1024) return new Response(null, { status: 413 });
   let e;
