@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy · AI-OS</title>
+<meta name="description" content="What data AI-OS handles, where it stays, what leaves your Mac, and what the website counts.">
+<link rel="canonical" href="https://aiosqa.dpdns.org/privacy">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f7f9fc">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · checked: 2026-11-02 · genre: modern-minimal · theme: Cobalt (by request)
+ * built: Hallmark · the privacy notice, a long document in the landing page's tokens, not a redesign · v2.0.0
+ * critique: one column of text at reading measure; tables keep the page's hairlines; no measurement script
+ * answered: 58 a legal notice is read in full, not scanned; 19 the footer line matches the home page's, the owner's words
+ */
+/* The privacy notice, in the landing page's tokens. Source text: AI-OS/analysis/publish-drafts/PRIVACY.md; keep the two in step.
+ * No measurement script on this page. */
+@import url("/tokens.css");
+@import url("/base.css");
+html, body { overflow-x: clip; }  /* also in base.css; restated so the page holds without it */
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.wordmark { font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); }
+.key { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+a:not(.key):not(.wordmark):hover { text-decoration-color: var(--color-accent); }
+.doc { max-width: 48rem; padding-block: var(--space-3xl) var(--section-gap-s); }
+.doc .updated { margin-top: var(--space-md); color: var(--color-muted); font-size: var(--text-sm); }
+.doc .short { margin-top: var(--space-xl); padding: var(--space-lg); border: var(--rule-hair) solid var(--color-rule); background: var(--color-paper-2); border-radius: var(--radius-input); max-width: none; }
+.doc h2 { margin-top: var(--space-3xl); font-size: var(--text-2xl); text-wrap: balance; }
+.doc p, .doc ul, .doc .table { margin-top: var(--space-md); }
+.doc ul { padding-left: 1.25em; max-width: 65ch; }
+.doc li + li { margin-top: var(--space-xs); }
+.doc a { overflow-wrap: anywhere; }
+.doc code { font-family: var(--font-outlier); font-size: 0.88em; background: var(--color-paper-2); border: var(--rule-hair) solid var(--color-rule); border-radius: 4px; padding: 0.05em 0.3em; overflow-wrap: anywhere; }
+.table { overflow-x: auto; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-input); }
+table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+th, td { text-align: left; vertical-align: top; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+tr:last-child td { border-bottom: 0; }
+th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-2); }
+.foot { padding-block: var(--space-2xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.foot nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-xl); }
+.foot .legal { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+@media (max-width: 40rem) {
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  tr { display: block; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+  tr:last-child { border-bottom: 0; }
+  td { display: block; padding: var(--space-3xs) 0; border: 0; }
+  td::before { content: attr(data-label); display: block; color: var(--color-muted); font-size: var(--text-xs); }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="/" aria-label="AI-OS, home">AI-OS</a>
+    <a class="key" href="/#download">Download</a>
+  </div>
+</header>
+
+<main id="main" class="container">
+<article class="doc">
+  <h1>AI-OS privacy notice</h1>
+  <p class="updated">Last updated: 2 November 2026</p>
+
+  <p>AI-OS is a tool that runs on your Mac and lets AI agents and people test iOS apps on simulators and iPhones. This notice explains what data AI-OS handles, where it stays, and what leaves your Mac.</p>
+
+  <p class="short"><strong>In short:</strong> AI-OS has no accounts, no analytics and no telemetry. Everything it stores stays on your Mac. AI-OS itself never sends your data to an AI model; your own AI agent does that, under its provider’s terms.</p>
+
+  <h2 id="who">Who we are</h2>
+  <p>AI-OS is made by Bruce Vu. Contact: <a href="mailto:vxtien@lolconsultants.com">vxtien@lolconsultants.com</a>.</p>
+
+  <h2 id="stores">What AI-OS stores, and where</h2>
+  <p>All of it is on your Mac, readable only by your macOS user:</p>
+  <div class="table"><table>
+    <thead><tr><th scope="col">What</th><th scope="col">Where</th></tr></thead>
+    <tbody>
+      <tr><td data-label="What">Settings (device names, folders, your signing team for a real iPhone)</td><td data-label="Where"><code>~/.config/ai-os/config.json</code></td></tr>
+      <tr><td data-label="What">Passwords you choose to add, for test accounts</td><td data-label="Where"><code>~/.config/ai-os/secrets.env</code> (AI-OS refuses to use it unless only you can read it)</td></tr>
+      <tr><td data-label="What">Notes your AI agents keep about each app</td><td data-label="Where"><code>~/.config/ai-os/notes/</code></td></tr>
+      <tr><td data-label="What">Screenshots, videos and run records</td><td data-label="Where"><code>~/Desktop/ai-os-captures/</code> (you can change this)</td></tr>
+      <tr><td data-label="What">Working state and logs</td><td data-label="Where"><code>~/.cache/ai-os/</code>, <code>~/Library/Application Support/ai-os/</code></td></tr>
+      <tr><td data-label="What">When the app last checked for updates</td><td data-label="Where">The app’s preferences (<code>local.ai-os.app</code>)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Screenshots and videos can contain whatever the app under test shows. Use test accounts and test data.</p>
+  <p>Remove everything with <code>~/ai-os/uninstall.sh</code> (it asks before removing your settings, passwords and captures).</p>
+
+  <h2 id="passwords">Passwords</h2>
+  <ul>
+    <li>Your AI agent never sees a password. It asks AI-OS to type one by its name (for example <code>TEST_USER_PW</code>).</li>
+    <li>AI-OS types a password only into a password field of an app you allowed, never into a web page, and never while the screen is being recorded. It takes no screenshot for 2 seconds afterwards.</li>
+    <li>Everything AI-OS returns or writes (replies to your agent, terminal output, run records) is checked, and any password value is replaced with <code>[secret]</code>.</li>
+  </ul>
+
+  <h2 id="ai">AI processing</h2>
+  <p>AI-OS does not contain or call any AI model. When you connect an AI agent (for example Claude Code, Claude Desktop or Codex), that agent reads screen text and screenshots from AI-OS and sends them to its AI provider, under the provider’s own terms. Check those terms before testing confidential apps:</p>
+  <ul>
+    <li>Anthropic (Claude Code): <a href="https://code.claude.com/docs/en/data-usage">data usage</a> and <a href="https://www.anthropic.com/legal/privacy">privacy policy</a></li>
+    <li>OpenAI (Codex): <a href="https://developers.openai.com/api/docs/guides/your-data">your data</a> and <a href="https://openai.com/policies/privacy-policy/">privacy policy</a></li>
+  </ul>
+  <p>Business and API plans of these providers usually have stricter data terms than personal plans.</p>
+
+  <h2 id="network">What AI-OS sends over the network</h2>
+  <div class="table"><table>
+    <thead><tr><th scope="col">When</th><th scope="col">To</th><th scope="col">What</th></tr></thead>
+    <tbody>
+      <tr><td data-label="When">The app checks for updates (at most once a day, and when you choose Check for Updates)</td><td data-label="To">GitHub (<code>github.com/vxtien2000/AI-OS-releases</code>)</td><td data-label="What">A normal download request. GitHub sees your IP address. No identifier is added</td></tr>
+      <tr><td data-label="When">You accept an update</td><td data-label="To">GitHub</td><td data-label="What">The download of the new version</td></tr>
+      <tr><td data-label="When">Installing</td><td data-label="To">GitHub (WebDriverAgent, simslim), Apple (iOS for simulators, through Xcode), Homebrew (ffmpeg, only if you agree)</td><td data-label="What">Normal downloads</td></tr>
+      <tr><td data-label="When">While testing</td><td data-label="To">Only your Mac, your simulators and your iPhone (over the cable or your local Wi-Fi)</td><td data-label="What">Nothing leaves your network</td></tr>
+    </tbody>
+  </table></div>
+  <p>The dashboard listens only on your Mac (<code>127.0.0.1</code>), behind a random key.</p>
+  <p>These services have their own privacy terms: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a>, <a href="https://www.apple.com/legal/privacy/">Apple</a> and <a href="https://docs.brew.sh/Analytics">Homebrew</a>.</p>
+
+  <h2 id="website">The website</h2>
+  <p>This site is served by <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>. To run and protect it, Cloudflare keeps the site’s request logs for 3 days (the request, the response and related metadata, which may include your IP address). The site’s pages load their fonts from Google Fonts, so your browser also contacts Google, under <a href="https://policies.google.com/privacy">Google’s privacy policy</a>. The site sets no cookies and stores nothing in your browser.</p>
+  <p>To learn whether the page is useful, the site keeps a few counts that do not identify anyone:</p>
+  <div class="table"><table>
+    <thead><tr><th scope="col">When</th><th scope="col">What is counted</th></tr></thead>
+    <tbody>
+      <tr><td data-label="When">You open the home page</td><td data-label="What is counted">The site that linked to it, if another site did (its name only, for example <code>github.com</code>, never the page or search on it), and your country</td></tr>
+      <tr><td data-label="When">You download AI-OS through the site’s <code>/download</code> link</td><td data-label="What is counted">Which of the two Download for Mac buttons you used, if any, your country, and the site the link was on (its name only)</td></tr>
+      <tr><td data-label="When">You leave the home page</td><td data-label="What is counted">How many seconds you spent on it (time in a hidden tab does not count), how far you scrolled (as a percentage), which sections came into view and which tabs you opened</td></tr>
+    </tbody>
+  </table></div>
+  <p>Your country comes from Cloudflare. These counts carry no IP address, no cookie and no identifier, so they cannot be linked to you or to one another. They are kept by Cloudflare (Workers Analytics Engine) for 3 months, then deleted.</p>
+  <p>If your browser asks sites not to track you (Global Privacy Control or Do Not Track), the page sends nothing at all. The site uses no third-party analytics, advertising, heatmaps or session recording.</p>
+
+  <h2 id="rights">Your choices and rights</h2>
+  <p>Because AI-OS keeps your data on your Mac, you can see, change or delete it at any time in the folders above. For questions about data on the website or in support emails, write to <a href="mailto:vxtien@lolconsultants.com">vxtien@lolconsultants.com</a>. Depending on where you live, you may have the right to access, correct or delete personal data about you, and to complain to your data protection authority.</p>
+
+  <h2 id="support">Support emails</h2>
+  <p>If you email us, we keep your message and address to answer you, and delete them when they are no longer needed to answer you. Please do not send passwords or customer data; <code>run.json</code> and <code>doctor</code> output already have passwords removed.</p>
+
+  <h2 id="changes">Changes</h2>
+  <p>We will update this notice when AI-OS’s data handling changes, and note the change in the release notes.</p>
+</article>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#download">Download</a></li>
+        <li><a href="/releases">All releases</a></li>
+        <li><a href="/privacy" aria-current="page">Privacy</a></li>
+      </ul>
+    </nav>
+    <p class="legal">© 2026 Bruce Vu. Free to use, all rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>
