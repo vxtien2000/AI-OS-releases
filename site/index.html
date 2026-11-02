@@ -37,7 +37,8 @@ html { scroll-behavior: smooth; }  /* base.css turns it off under reduced motion
 .skip:focus-visible { top: var(--space-md); }
 .nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
 .nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
-.wordmark { font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); }
+.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); }
+.wordmark__mark { width: 28px; height: 28px; flex: none; }
 
 /* keys */
 .key { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-display); white-space: nowrap; text-decoration: none; cursor: pointer; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
@@ -211,7 +212,7 @@ html:not(.js) .demo__pause { display: none; }
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
   <div class="container">
-    <a class="wordmark" href="#main" aria-label="AI-OS, home">AI-OS</a>
+    <a class="wordmark" href="#main" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
     <a class="key key--small" href="#download">Download</a>
   </div>
 </header>
