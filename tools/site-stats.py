@@ -64,16 +64,22 @@ def report(days, downloads, views, engage, github):
     by = {}
     for r in downloads:
         by[r["button"]] = by.get(r["button"], 0) + r["n"]
+    labels = {"hero": "top 'Download for Mac' button (first screen)",
+              "footer": "bottom 'Download for Mac' button (last section; the header and footer 'Download' links scroll to it)",
+              "direct": "no button: /download opened from a link elsewhere, for example the README"}
     for b in ("hero", "footer", "direct"):
-        out.append(f"  {by.get(b, 0):6g}  {b}" + ("  (a link elsewhere, for example the README)" if b == "direct" else " button"))
+        out.append(f"  {by.get(b, 0):6g}  {labels[b]}")
 
     w = sum(r["w"] for r in engage)
     out.append(f"\nEngagement ({w:g} page views measured when left)")
     if w:
         out.append(f"  time on the page: median {weighted_median([(r['seconds'], r['w']) for r in engage]):.0f} s, "
                    f"average {sum(r['seconds'] * r['w'] for r in engage) / w:.0f} s")
-        out.append(f"  scrolled: median {weighted_median([(r['depth'], r['w']) for r in engage]):.0f}%, "
-                   f"to the end (90% or more) {100 * sum(r['w'] for r in engage if r['depth'] >= 90) / w:.0f}%")
+        out.append("  how far down the page people scrolled (deepest point, 100% = bottom):")
+        for lo, hi, name in ((0, 25, "0-24%  (stayed near the top)"), (25, 50, "25-49%"), (50, 75, "50-74%"),
+                             (75, 90, "75-89%"), (90, 101, "90-100% (reached the end)")):
+            n = sum(r["w"] for r in engage if lo <= r["depth"] < hi)
+            out.append(f"    {name:28} {n:4g}  {100 * n / w:3.0f}%")
         out.append("  saw each section: " + ", ".join(
             f"{s} {100 * sum(r['w'] for r in engage if s in r['sections'].split(',')) / w:.0f}%" for s in SECTIONS))
         tabs = {}
