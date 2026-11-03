@@ -123,12 +123,13 @@ code, pre, kbd { font-family: var(--font-outlier); }
 .big small { font-size: 0.4em; font-weight: 500; color: var(--color-ink-2); }
 .measure .cond { margin-top: var(--space-md); color: var(--color-ink-2); max-width: 44ch; }
 .ruler { margin: 0; }
-.ruler ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-lg); }
+.ruler ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-md); }
 .ruler li { display: grid; gap: var(--space-xs); }
 .ruler .label { display: flex; justify-content: space-between; gap: var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
 .ruler .label b { font: 500 var(--text-md)/1.2 var(--font-display); color: var(--color-ink); }
 .ruler .track { position: relative; height: 12px; border-bottom: var(--rule-hair) solid var(--color-rule-2); }
-.ruler .span { position: absolute; bottom: -1px; height: 12px; left: calc(var(--from) / 1.5 * 100%); width: calc((var(--to) - var(--from)) / 1.5 * 100%); min-width: 3px; border-inline: 2px solid var(--color-accent); background: var(--color-accent-wash); }
+.ruler .span { position: absolute; bottom: -1px; height: 12px; left: calc(var(--from) / var(--max, 1.5) * 100%); width: calc((var(--to) - var(--from)) / var(--max, 1.5) * 100%); min-width: 3px; border-inline: 2px solid var(--color-accent); background: var(--color-accent-wash); }
+.ruler figcaption { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
 .ruler .scale { display: flex; justify-content: space-between; margin-top: var(--space-sm); font: 400 var(--text-xs)/1 var(--font-outlier); color: var(--color-muted); }
 
 /* the API table */
@@ -159,6 +160,19 @@ code, pre, kbd { font-family: var(--font-outlier); }
 .foot nav a { white-space: nowrap; }
 .foot .legal { margin-top: var(--space-xl); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
 
+/* how it compares: one row per question, one column per tool; the table scrolls sideways on a narrow screen */
+.compare { overflow-x: auto; }
+.compare table { width: 100%; min-width: 60rem; border-collapse: collapse; }
+.compare th, .compare td { padding: var(--space-md) var(--space-md) var(--space-md) 0; text-align: left; vertical-align: top; border-top: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); line-height: 1.4; }
+.compare thead th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-muted); border-top: 0; }
+.compare thead th.us, .compare .us { color: var(--color-ink); font-weight: 600; }
+.compare tbody th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-ink); width: 13rem; }
+.compare td { color: var(--color-ink-2); }
+.compare-note { margin-top: var(--space-lg); color: var(--color-muted); font-size: var(--text-sm); max-width: 80ch; }
+.measured { margin-top: var(--space-3xl); }
+.measured h3 { font: 500 var(--text-title)/1.2 var(--font-display); letter-spacing: var(--tracking-display); margin: 0 0 var(--space-lg); }
+.measured table { min-width: 36rem; }
+
 @media (max-width: 60rem) {
   .headblock, .mapping__head, .mapping li, .panel, .pair, .measure, .rows, .rows .row, .close .container { grid-template-columns: minmax(0, 1fr); }
   .mapping__head span + span { display: none; }
@@ -168,6 +182,7 @@ code, pre, kbd { font-family: var(--font-outlier); }
   .api tbody th { width: auto; white-space: normal; }
 }
 @media (max-width: 40rem) {
+  .compare tbody th { width: 8.5rem; }
   .api thead { display: none; }
   .api tr { display: grid; padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-rule); }
   .api th, .api td { border-top: 0; padding: var(--space-2xs) 0; }
@@ -229,7 +244,7 @@ html:not(.js) .demo__pause { display: none; }
         </div>
         <p class="terms">Free to use. For Macs with Apple silicon, macOS 26 (Tahoe) or later, and Xcode 26 or later.</p>
       </div>
-      <figure class="demo" data-loop data-demo data-total="28616" aria-label="A real AI-OS run, recorded: an iPhone 17 Pro simulator adds a contact in Contacts while the steps pass">
+      <figure class="demo" data-loop data-demo data-total="22659" aria-label="A real AI-OS run, recorded: an iPhone 18 Pro simulator adds a contact in Contacts while the steps pass">
         <div class="demo__phone">
           <video muted loop playsinline preload="metadata" poster="images/demo-poster.jpg" width="600" height="1304" aria-hidden="true">
             <source src="images/demo-phone.webm" type="video/webm">
@@ -237,23 +252,23 @@ html:not(.js) .demo__pause { display: none; }
           </video>
         </div>
         <figcaption class="demo__log">
-          <div class="demo__head"><b>Contacts: add a contact</b><span>iPhone 17 Pro</span></div>
-          <ol class="demo__steps" data-steps='[1075, 5017, 814, 1210, 1838, 3588, 3502, 3531, 1920, 2894, 1740, 395, 1092]'>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="terminate 'com.apple.MobileAddressBook'">terminate Contacts</code><span class="ms">1.1 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="launch 'com.apple.MobileAddressBook'">launch Contacts</code><span class="ms">5.0 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">814 ms</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Add'</code><span class="ms">1.2 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'New Contact'</code><span class="ms">1.8 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'First name'</code><span class="ms">3.6 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Last name'</code><span class="ms">3.5 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Company'</code><span class="ms">3.5 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Done'</code><span class="ms">1.9 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'Mai Example'</code><span class="ms">2.9 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>back</code><span class="ms">1.7 s</span></li>
-            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">395 ms</span></li>
-            <li data-state="ok" class="is-last"><span class="mark" aria-hidden="true"></span><code>assert 'Mai Example'</code><span class="ms">1.1 s</span></li>
+          <div class="demo__head"><b>Contacts: add a contact</b><span>iPhone 18 Pro</span></div>
+          <ol class="demo__steps" data-steps='[1021,  2793,  450,  948,  1606,  3482,  2645,  2678,  1772,  2119,  1520,  427,  1198]'>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="terminate 'com.apple.MobileAddressBook'">terminate Contacts</code><span class="ms">1.0 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="launch 'com.apple.MobileAddressBook'">launch Contacts</code><span class="ms">2.8 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">450 ms</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Add'</code><span class="ms">948 ms</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'New Contact'</code><span class="ms">1.6 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'First name'</code><span class="ms">3.5 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Last name'</code><span class="ms">2.6 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Company'</code><span class="ms">2.7 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Done'</code><span class="ms">1.8 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'Mai Example'</code><span class="ms">2.1 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>back</code><span class="ms">1.5 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">427 ms</span></li>
+            <li data-state="ok" class="is-last"><span class="mark" aria-hidden="true"></span><code>assert 'Mai Example'</code><span class="ms">1.2 s</span></li>
           </ol>
-          <div class="demo__foot"><span class="demo__status" role="status">Passed, 13 of 13, in 28.6 s</span><button class="demo__pause" type="button" data-loop-toggle>Pause</button></div>
+          <div class="demo__foot"><span class="demo__status" role="status">Passed, 13 of 13, in 22.7 s</span><button class="demo__pause" type="button" data-loop-toggle>Pause</button></div>
         </figcaption>
       </figure>
     </div>
@@ -347,13 +362,68 @@ html:not(.js) .demo__pause { display: none; }
         <p class="big">20 to 24 <small>s</small></p>
         <p class="cond">Add a contact in Contacts: open the app, fill three boxes, save, check the list. It passed in every run of AI-OS 0.18.0 we made: an iPhone 17 Pro simulator with iOS 26.5, on an Apple M4 with 16 GB, 3 November 2026.</p>
       </div>
-      <figure class="ruler" aria-label="Chart: measured time per action, in seconds">
+      <figure class="ruler" style="--max: 4" aria-label="Chart: measured time per step, in seconds">
         <ul>
-          <li><span class="label"><b>Read the screen</b><span>0.3 to 0.8 s</span></span><span class="track"><span class="span" style="--from: 0.3; --to: 0.8"></span></span></li>
-          <li><span class="label"><b>A tap step</b><span>0.8 to 1.5 s</span></span><span class="track"><span class="span" style="--from: 0.8; --to: 1.5"></span></span></li>
+          <li><span class="label"><b>Read the screen</b><span>0.2 to 0.8 s</span></span><span class="track"><span class="span" style="--from: 0.22; --to: 0.8"></span></span></li>
+          <li><span class="label"><b>Wait for something to show</b><span>0.2 to 1.9 s</span></span><span class="track"><span class="span" style="--from: 0.24; --to: 1.86"></span></span></li>
+          <li><span class="label"><b>Tap</b><span>0.8 to 1.4 s</span></span><span class="track"><span class="span" style="--from: 0.75; --to: 1.37"></span></span></li>
+          <li><span class="label"><b>Go back</b><span>1.2 to 1.3 s</span></span><span class="track"><span class="span" style="--from: 1.2; --to: 1.32"></span></span></li>
+          <li><span class="label"><b>Check that something shows</b><span>1.3 to 1.6 s</span></span><span class="track"><span class="span" style="--from: 1.31; --to: 1.57"></span></span></li>
+          <li><span class="label"><b>Open an app</b><span>2.2 to 3.6 s</span></span><span class="track"><span class="span" style="--from: 2.25; --to: 3.62"></span></span></li>
+          <li><span class="label"><b>Fill a text box (typed, then read back)</b><span>2.8 to 3.6 s</span></span><span class="track"><span class="span" style="--from: 2.82; --to: 3.64"></span></span></li>
+          <li><span class="label"><b>Scroll to an item</b><span>2.8 to 3.3 s</span></span><span class="track"><span class="span" style="--from: 2.83; --to: 3.28"></span></span></li>
         </ul>
-        <div class="scale" aria-hidden="true"><span>0</span><span>0.5 s</span><span>1 s</span><span>1.5 s</span></div>
+        <div class="scale" aria-hidden="true"><span>0</span><span>1 s</span><span>2 s</span><span>3 s</span><span>4 s</span></div>
+        <figcaption class="cond">Most steps (from the 10th to the 90th percentile) in 10 runs of two tests, Contacts and Settings: 145 steps and 230 screen reads.</figcaption>
       </figure>
+    </div>
+  </section>
+
+  <section class="section" id="why" aria-labelledby="why-head">
+    <div class="container rows">
+      <h2 id="why-head">Why AI-OS</h2>
+      <dl>
+        <div class="row"><dt>A whole test in one call</dt><dd>Your agent sends every step at once. AI-OS reads the screen before each one, waits until it stops moving, and prefers the exact label. In our test below, the agent needed 6 turns where the other tools needed 19 to 21.</dd></div>
+        <div class="row"><dt>It asks instead of hanging</dt><dd>When something unexpected shows up, like a permission prompt or a missing button, AI-OS stops and asks your agent, with the screen and the closest matches. The agent answers and the test carries on from that step.</dd></div>
+        <div class="row"><dt>Passwords stay out of the chat</dt><dd>Your agent asks for a password by its name and AI-OS types it. The value never reaches the AI and is blanked in every result.</dd></div>
+        <div class="row"><dt>Real iPhones with a free Apple ID</dt><dd>Setup signs the iPhone driver with your own Apple ID. A free one works; it is signed again every 7 days.</dd></div>
+        <div class="row"><dt>Several devices, and you can take over</dt><dd>Run on several simulators at once and watch them live. Take control of a device and the AI's next actions on it are refused until you hand it back.</dd></div>
+        <div class="row"><dt>Nothing about you leaves your Mac</dt><dd>No telemetry. AI-OS runs on this Mac and only goes online to check for updates and, during setup, to download what it needs: the simulator driver, simslim, iOS for simulators and, if you agree, ffmpeg.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="compare" aria-labelledby="compare-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="compare-head">How it compares</h2>
+        <p class="lead">Where AI-OS stands out, next to other tools that let an AI agent use an iPhone, as their own docs and code describe them.</p>
+      </div>
+      <div class="compare" role="region" aria-label="Comparison table" tabindex="0">
+        <table>
+          <thead><tr><th scope="col"><span class="visually-hidden">Question</span></th><th scope="col" class="us">AI-OS</th><th scope="col">Mobile MCP</th><th scope="col">MobileBuildMCP</th><th scope="col">Maestro</th><th scope="col">Appium MCP</th><th scope="col">MobAI</th><th scope="col">Xcode 27</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">The agent drives a real iPhone, with no signing to set up</th><td class="us">Yes: setup signs it with your Apple ID, a free one works</td><td>You supply a provisioning profile</td><td>No real iPhone: its screen tools need a simulator</td><td>No real iPhone: iOS simulators only</td><td>You choose a provisioning profile</td><td>Real iPhones; how it signs is not stated</td><td>Apple has not said agents can</td></tr>
+            <tr><th scope="row">A whole test in one call, with waits and checks</th><td class="us">Yes</td><td>A batch of actions, without waits or checks between them</td><td>A batch of up to 100 taps; waiting is a separate call</td><td>Yes, as a YAML flow</td><td>No: one action per call</td><td>Yes, in its own script language</td><td>Not documented</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">Checked on 3 November 2026 against each project's documentation, pricing page and source code. Tools change quickly: if something here is out of date, <a href="/feedback">tell us</a>.</p>
+
+      <div class="measured">
+        <h3>Measured: the same test, run by an AI agent</h3>
+        <div class="compare" role="region" aria-label="Measured results" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Tool</th><th scope="col">Passed</th><th scope="col">Time (median)</th><th scope="col">Agent turns (median)</th><th scope="col">Cost per run (median)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row" class="us">AI-OS 0.18</th><td class="us">5 of 5</td><td class="us">39 s</td><td class="us">6</td><td class="us">$0.08</td></tr>
+              <tr><th scope="row">Mobile MCP 1.0.16</th><td>4 of 5</td><td>42 s</td><td>21</td><td>$0.16</td></tr>
+              <tr><th scope="row">MobileBuildMCP 2.7.1</th><td>5 of 5</td><td>52 s</td><td>19</td><td>$0.15</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="compare-note">Add a contact in Contacts and check it is in the list, on an iPhone 17 Pro simulator with iOS 26.5, on an Apple M4 with 16 GB. Claude Code with Claude Sonnet, given one tool at a time and the same request; 5 runs each on 3 November 2026; every contact an agent reported was checked in the simulator's contacts. AI-OS ran from its source a few hours before 0.18.0 was released; the one later change is not used by this test. A small test: one app, one flow. An earlier run of Mobile MCP the same day: 5 of 5, 37 s, 16 turns, $0.15.</p>
+      </div>
     </div>
   </section>
 
@@ -415,11 +485,13 @@ html:not(.js) .demo__pause { display: none; }
     <nav aria-label="Footer">
       <ul>
         <li><a href="#run">A test run</a></li>
+        <li><a href="#why">Why AI-OS</a></li>
+        <li><a href="#compare">How it compares</a></li>
         <li><a href="#needs">What it needs</a></li>
         <li><a href="#download">Download</a></li>
         <li><a href="/releases">All releases</a></li>
         <li><a href="/privacy">Privacy</a></li>
-        <li><a href="https://github.com/vxtien2000/AI-OS-releases/issues">Report a problem</a></li>
+        <li><a href="/feedback">Feedback</a></li>
       </ul>
     </nav>
     <p class="legal">© 2026 Bruce Vu. Free to use, all rights reserved. Uses <a href="https://github.com/appium/WebDriverAgent">WebDriverAgent</a> and <a href="https://github.com/MobAI-App/simslim">simslim</a>.</p>

@@ -31,7 +31,7 @@ async function newestZip() {
 // the page, how far it was scrolled, which sections came into view and which tabs were opened. Browsers that ask
 // not to be tracked (Global Privacy Control, Do Not Track) send nothing.
 const FROM = new Set(["hero", "footer"]);
-const SECTIONS = new Set(["hero", "run", "ask", "app", "speed", "tools", "needs", "dl"]);
+const SECTIONS = new Set(["hero", "run", "ask", "app", "speed", "why", "compare", "tools", "needs", "dl"]);
 const TABS = new Set(["setup", "check", "logins"]);
 
 function host(value) {  // only the site name of a referrer, never its path or query
@@ -72,6 +72,70 @@ async function beacon(request, env, url) {
     record(env, "engage", [picks(e.v, SECTIONS), picks(e.t, TABS), country], [seconds, depth]);
   }
   return new Response(null, { status: 204 });
+}
+
+// ---- Feedback: the form on /feedback, emailed to the maker through Resend (https://resend.com) ----
+// Secrets (wrangler secret put, never in this public repository): RESEND_API_KEY, FEEDBACK_TO (the address that gets
+// the mail); optional FEEDBACK_FROM (a sender on a domain verified in Resend; default Resend's test sender, which can
+// only write to the Resend account's own address) and TURNSTILE_SECRET (Cloudflare Turnstile, checked when set).
+// Nothing is stored: only a count per kind goes to EVENTS. A filled trap field or a form sent within 3 s of opening
+// is a bot: it gets "ok" and nothing is sent.
+const KINDS = new Set(["problem", "idea", "question", "other"]);
+const EMAIL = /^[^\s@<>(),;:"]{1,64}@[^\s@<>(),;:"]{1,190}\.[A-Za-z]{2,24}$/;
+
+function json(body, status = 200) {
+  return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json; charset=utf-8" } });
+}
+
+function clean(value, max) {  // one line or a text, with control characters (but not new lines and tabs) taken out
+  return typeof value === "string" ? value.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim().slice(0, max) : "";
+}
+
+async function feedback(request, env, url) {
+  if (request.headers.get("Origin") !== url.origin) return json({ error: "Send it from the feedback page." }, 403);
+  const text = await request.text();
+  if (text.length > 12000) return json({ error: "That message is too long." }, 413);
+  let f;
+  try {
+    f = JSON.parse(text);
+  } catch {
+    return json({ error: "The message was not readable. Please try again." }, 400);
+  }
+  if (!f || typeof f !== "object") return json({ error: "The message was not readable. Please try again." }, 400);
+  if (clean(f.website, 200) || !(Number(f.ms) >= 3000)) return json({ ok: true });  // a bot: answer as if sent
+  const kind = KINDS.has(f.kind) ? f.kind : "other";
+  const message = clean(f.message, 5000), version = clean(f.version, 40).replace(/\s+/g, " ");
+  const mac = clean(f.mac, 80).replace(/\s+/g, " "), email = clean(f.email, 200);
+  if (message.length < 10) return json({ error: "Please write a little more (at least 10 characters)." }, 400);
+  if (email && !EMAIL.test(email)) return json({ error: "That email address does not look right. Fix it, or leave it empty." }, 400);
+  if (!env.RESEND_API_KEY || !env.FEEDBACK_TO) return json({ error: "Feedback is not set up yet. Please try again later." }, 503);
+  if (env.TURNSTILE_SECRET) {
+    const check = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST",
+      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: clean(f["cf-turnstile-response"], 2048) }) })
+      .then((r) => r.json()).catch(() => ({}));
+    if (!check.success) return json({ error: "The spam check did not pass. Please reload the page and try again." }, 400);
+  }
+  const country = request.cf?.country || "";
+  const lines = [message, "", "—", `Kind: ${kind}`, `AI-OS: ${version || "not given"}`, `Mac: ${mac || "not given"}`,
+    `Reply to: ${email || "not given"}`, `Country: ${country || "unknown"}`, `Sent: ${new Date().toISOString()}`];
+  const first = message.split("\n")[0].slice(0, 60);
+  const sent = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      from: env.FEEDBACK_FROM || "AI-OS feedback <onboarding@resend.dev>",
+      to: [env.FEEDBACK_TO],
+      ...(email ? { reply_to: email } : {}),
+      subject: `AI-OS ${kind}: ${first}`,
+      text: lines.join("\n"),
+    }),
+  }).catch(() => null);
+  if (!sent || !sent.ok) {
+    console.log("feedback: Resend answered", sent ? sent.status : "nothing");  // the status only, never the message
+    return json({ error: "The message was not sent. Please try again in a minute." }, 502);
+  }
+  record(env, "feedback", [kind, country]);
+  return json({ ok: true });
 }
 
 const MEDIA = /\.(mp4|webm)$/;  // Safari plays video only when it can ask for byte ranges (206)
@@ -118,6 +182,7 @@ export default {
       if (request.method !== "POST") return finish(new Response(null, { status: 405, headers: { Allow: "POST" } }), pathname);
       return finish(await beacon(request, env, url), pathname);
     }
+    if (pathname === "/feedback" && request.method === "POST") return finish(await feedback(request, env, url), pathname);
     if (pathname === "/releases") return finish(Response.redirect(RELEASES, 302), pathname);
     const asset = await env.ASSETS.fetch(request);
     return finish(MEDIA.test(pathname) ? await ranged(request, asset) : asset, pathname);
