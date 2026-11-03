@@ -1,11 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-localized>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy · AI-OS</title>
 <meta name="description" content="What data AI-OS handles, where it stays, what leaves your Mac, and what the website counts.">
 <link rel="canonical" href="https://aiosqa.dpdns.org/privacy">
+<!-- i18n:alternates -->
+<link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/privacy">
+<link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/privacy">
+<link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/privacy">
+<!-- /i18n:alternates -->
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script src="/lang.js"></script>
 <meta name="theme-color" content="#f7f9fc">
@@ -29,6 +34,19 @@ html, body { overflow-x: clip; }  /* also in base.css; restated so the page hold
 .nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
 .wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
 .wordmark__mark { width: 28px; height: 28px; flex: none; }
+/* language menu: one small key in the bar; the list grows with each language the site has */
+.nav__end { display: flex; align-items: center; gap: var(--space-xs); }
+.langs { position: relative; }
+.langs summary { list-style: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs); min-width: 44px; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-input); font: 500 var(--text-sm)/1 var(--font-display); color: var(--color-ink-2); cursor: pointer; }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.langs summary:hover, .langs[open] summary { color: var(--color-ink); background: var(--color-paper-2); }
+.langs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.langs ul { position: absolute; right: 0; top: calc(100% + var(--space-2xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-2xs); min-width: 11rem; background: var(--color-key-face); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); box-shadow: 0 8px 24px oklch(21% 0.028 262 / 0.12); }
+.langs a { display: flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: 4px; font-size: var(--text-sm); text-decoration: none; color: var(--color-ink); }
+.langs a:hover { background: var(--color-paper-2); }
+.langs a[aria-current] { font-weight: 500; color: var(--color-accent-deep); }
+.langs a[aria-current]::after { content: "✓"; margin-left: auto; padding-left: var(--space-md); }
 .key { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
 .key:hover { transform: translateY(-1px); }
 .key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
@@ -66,7 +84,18 @@ th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-
 <header class="nav">
   <div class="container">
     <a class="wordmark" href="/" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
-    <a class="key" href="/#download">Download</a>
+    <div class="nav__end">
+      <!-- i18n:switcher -->
+      <details class="langs">
+        <summary aria-label="Language: English"><span aria-hidden="true">EN</span></summary>
+        <ul>
+          <li><a href="/privacy" hreflang="en" lang="en" aria-current="page">English</a></li>
+          <li><a href="/vi/privacy" hreflang="vi" lang="vi">Tiếng Việt</a></li>
+        </ul>
+      </details>
+      <!-- /i18n:switcher -->
+      <a class="key" href="/#download">Download</a>
+    </div>
   </div>
 </header>
 
@@ -127,7 +156,7 @@ th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-
   <p>These services have their own privacy terms: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a>, <a href="https://www.apple.com/legal/privacy/">Apple</a> and <a href="https://docs.brew.sh/Analytics">Homebrew</a>.</p>
 
   <h2 id="website">The website</h2>
-  <p>This site is served by <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>. To run and protect it, Cloudflare keeps the site’s request logs for 3 days (the request, the response and related metadata, which may include your IP address). The site’s pages load their fonts from Google Fonts, so your browser also contacts Google, under <a href="https://policies.google.com/privacy">Google’s privacy policy</a>. The site sets no cookies and stores nothing in your browser.</p>
+  <p>This site is served by <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>. To run and protect it, Cloudflare keeps the site’s request logs for 3 days (the request, the response and related metadata, which may include your IP address). The site’s pages load their fonts from Google Fonts, so your browser also contacts Google, under <a href="https://policies.google.com/privacy">Google’s privacy policy</a>. The site sets no cookies; the only thing it keeps in your browser is the language you read it in (see Language below).</p>
   <p>To learn whether the page is useful, the site keeps a few counts that do not identify anyone:</p>
   <div class="table"><table>
     <thead><tr><th scope="col">When</th><th scope="col">What is counted</th></tr></thead>
@@ -171,5 +200,11 @@ th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-
     <p class="legal">© 2026 Bruce Vu. Free to use, all rights reserved.</p>
   </div>
 </footer>
+<script>
+document.querySelectorAll('details.langs').forEach((d) => {  // the language menu closes on a click outside it or Escape
+  document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+});
+</script>
 </body>
 </html>

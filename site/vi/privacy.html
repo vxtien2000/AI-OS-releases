@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="vi" data-localized>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quyền riêng tư · AI-OS</title>
+<meta name="description" content="AI-OS xử lý dữ liệu gì, dữ liệu nằm ở đâu, cái gì rời khỏi Mac của bạn, và website đếm những gì.">
+<link rel="canonical" href="https://aiosqa.dpdns.org/vi/privacy">
+<!-- i18n:alternates -->
+<link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/privacy">
+<link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/privacy">
+<link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/privacy">
+<!-- /i18n:alternates -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/lang.js"></script>
+<meta name="theme-color" content="#f7f9fc">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · checked: 2026-11-02 · genre: modern-minimal · theme: Cobalt (by request)
+ * built: Hallmark · the privacy notice, a long document in the landing page's tokens, not a redesign · v2.0.0
+ * critique: one column of text at reading measure; tables keep the page's hairlines; no measurement script
+ * answered: 58 a legal notice is read in full, not scanned; 19 the footer line matches the home page's, the owner's words
+ */
+/* The privacy notice, in the landing page's tokens. Source text: AI-OS/analysis/publish-drafts/PRIVACY.md; keep the two in step.
+ * No measurement script on this page. */
+@import url("/tokens.css");
+@import url("/base.css");
+html, body { overflow-x: clip; }  /* also in base.css; restated so the page holds without it */
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
+.wordmark__mark { width: 28px; height: 28px; flex: none; }
+/* language menu: one small key in the bar; the list grows with each language the site has */
+.nav__end { display: flex; align-items: center; gap: var(--space-xs); }
+.langs { position: relative; }
+.langs summary { list-style: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs); min-width: 44px; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-input); font: 500 var(--text-sm)/1 var(--font-display); color: var(--color-ink-2); cursor: pointer; }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.langs summary:hover, .langs[open] summary { color: var(--color-ink); background: var(--color-paper-2); }
+.langs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.langs ul { position: absolute; right: 0; top: calc(100% + var(--space-2xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-2xs); min-width: 11rem; background: var(--color-key-face); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); box-shadow: 0 8px 24px oklch(21% 0.028 262 / 0.12); }
+.langs a { display: flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: 4px; font-size: var(--text-sm); text-decoration: none; color: var(--color-ink); }
+.langs a:hover { background: var(--color-paper-2); }
+.langs a[aria-current] { font-weight: 500; color: var(--color-accent-deep); }
+.langs a[aria-current]::after { content: "✓"; margin-left: auto; padding-left: var(--space-md); }
+.key { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+a:not(.key):not(.wordmark):hover { text-decoration-color: var(--color-accent); }
+.doc { max-width: 48rem; padding-block: var(--space-3xl) var(--section-gap-s); }
+.doc .updated { margin-top: var(--space-md); color: var(--color-muted); font-size: var(--text-sm); }
+.doc .short { margin-top: var(--space-xl); padding: var(--space-lg); border: var(--rule-hair) solid var(--color-rule); background: var(--color-paper-2); border-radius: var(--radius-input); max-width: none; }
+.doc h2 { margin-top: var(--space-3xl); font-size: var(--text-2xl); text-wrap: balance; }
+.doc p, .doc ul, .doc .table { margin-top: var(--space-md); }
+.doc ul { padding-left: 1.25em; max-width: 65ch; }
+.doc li + li { margin-top: var(--space-xs); }
+.doc a { overflow-wrap: anywhere; }
+.doc code { font-family: var(--font-outlier); font-size: 0.88em; background: var(--color-paper-2); border: var(--rule-hair) solid var(--color-rule); border-radius: 4px; padding: 0.05em 0.3em; overflow-wrap: anywhere; }
+.table { overflow-x: auto; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-input); }
+table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+th, td { text-align: left; vertical-align: top; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+tr:last-child td { border-bottom: 0; }
+th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-2); }
+.foot { padding-block: var(--space-2xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.foot nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-xl); }
+.foot .legal { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+@media (max-width: 40rem) {
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  tr { display: block; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+  tr:last-child { border-bottom: 0; }
+  td { display: block; padding: var(--space-3xs) 0; border: 0; }
+  td::before { content: attr(data-label); display: block; color: var(--color-muted); font-size: var(--text-xs); }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Bỏ qua, tới nội dung</a>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="/vi/" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
+    <div class="nav__end">
+      <!-- i18n:switcher -->
+      <details class="langs">
+        <summary aria-label="Ngôn ngữ: Tiếng Việt"><span aria-hidden="true">VI</span></summary>
+        <ul>
+          <li><a href="/privacy" hreflang="en" lang="en">English</a></li>
+          <li><a href="/vi/privacy" hreflang="vi" lang="vi" aria-current="page">Tiếng Việt</a></li>
+        </ul>
+      </details>
+      <!-- /i18n:switcher -->
+      <a class="key" href="/vi/#download">Tải về</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="container">
+<article class="doc">
+  <h1>Thông báo về quyền riêng tư của AI-OS</h1>
+  <p class="updated">Cập nhật lần cuối: 3/11/2026</p>
+
+  <p>AI-OS là một công cụ chạy trên Mac của bạn, giúp AI agent và người dùng test app iOS trên simulator và iPhone. Thông báo này giải thích AI-OS xử lý dữ liệu gì, dữ liệu nằm ở đâu, và cái gì rời khỏi Mac của bạn.</p>
+
+  <p class="short"><strong>Tóm tắt:</strong> AI-OS không có tài khoản, không có analytics và không có telemetry. Mọi thứ nó lưu đều nằm trên Mac của bạn. Bản thân AI-OS không bao giờ gửi dữ liệu của bạn tới một model AI; chính AI agent của bạn làm việc đó, theo điều khoản của nhà cung cấp agent.</p>
+
+  <h2 id="who">Chúng tôi là ai</h2>
+  <p>AI-OS do Bruce Vu làm ra. Liên hệ: <a href="mailto:vxtien2000@gmail.com">vxtien2000@gmail.com</a>.</p>
+
+  <h2 id="stores">AI-OS lưu gì, và lưu ở đâu</h2>
+  <p>Tất cả đều nằm trên Mac của bạn, chỉ tài khoản macOS của bạn đọc được:</p>
+  <div class="table"><table>
+    <thead><tr><th scope="col">Cái gì</th><th scope="col">Ở đâu</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Cái gì">Cài đặt (tên thiết bị, thư mục, team dùng để ký cho iPhone thật)</td><td data-label="Ở đâu"><code>~/.config/ai-os/config.json</code></td></tr>
+      <tr><td data-label="Cái gì">Mật khẩu bạn chọn thêm vào, dành cho tài khoản test</td><td data-label="Ở đâu"><code>~/.config/ai-os/secrets.env</code> (AI-OS từ chối dùng file này nếu không phải chỉ mình bạn đọc được)</td></tr>
+      <tr><td data-label="Cái gì">Ghi chú mà AI agent của bạn giữ cho từng app</td><td data-label="Ở đâu"><code>~/.config/ai-os/notes/</code></td></tr>
+      <tr><td data-label="Cái gì">Ảnh chụp màn hình, video và bản ghi các lần chạy</td><td data-label="Ở đâu"><code>~/Desktop/ai-os-captures/</code> (bạn có thể đổi chỗ này)</td></tr>
+      <tr><td data-label="Cái gì">Trạng thái làm việc và log</td><td data-label="Ở đâu"><code>~/.cache/ai-os/</code>, <code>~/Library/Application Support/ai-os/</code></td></tr>
+      <tr><td data-label="Cái gì">Thời điểm app kiểm tra bản cập nhật gần nhất</td><td data-label="Ở đâu">Phần tùy chọn của app (<code>local.ai-os.app</code>)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Ảnh chụp và video có thể chứa bất cứ thứ gì app đang test hiển thị. Hãy dùng tài khoản test và dữ liệu test.</p>
+  <p>Gỡ AI-OS bằng <code>~/ai-os/uninstall.sh</code> (lệnh này hỏi trước khi xóa cài đặt, mật khẩu và ảnh chụp của bạn). Nó không xóa các simulator AI-OS đã tạo, app test nó đã ký trên iPhone thật, ảnh chụp bạn lưu ở thư mục khác, hay phần tùy chọn riêng của app (<code>local.ai-os.app</code>); nếu muốn, bạn tự xóa những thứ đó.</p>
+
+  <h2 id="passwords">Mật khẩu</h2>
+  <ul>
+    <li>AI agent của bạn không bao giờ nhìn thấy mật khẩu. Nó nhờ AI-OS gõ mật khẩu theo tên (ví dụ <code>TEST_USER_PW</code>).</li>
+    <li>AI-OS chỉ gõ mật khẩu vào ô mật khẩu của một app bạn đã cho phép, không bao giờ gõ vào trang web, và không bao giờ gõ khi màn hình đang bị quay. Trong 2 giây sau đó, nó không chụp màn hình.</li>
+    <li>Mọi thứ AI-OS trả về hoặc ghi ra (câu trả lời cho agent, output trên terminal, bản ghi các lần chạy) đều được kiểm tra, và mọi giá trị mật khẩu đều được thay bằng <code>[secret]</code>.</li>
+  </ul>
+
+  <h2 id="ai">Xử lý bằng AI</h2>
+  <p>AI-OS không chứa và không gọi model AI nào. Khi bạn kết nối một AI agent (ví dụ Claude Code, Claude Desktop hay Codex), agent đó đọc chữ trên màn hình và ảnh chụp từ AI-OS rồi gửi tới nhà cung cấp AI của nó, theo điều khoản riêng của nhà cung cấp. Hãy đọc các điều khoản đó trước khi test app có dữ liệu bảo mật:</p>
+  <ul>
+    <li>Anthropic (Claude Code): <a href="https://code.claude.com/docs/en/data-usage">cách dùng dữ liệu</a> và <a href="https://www.anthropic.com/legal/privacy">chính sách quyền riêng tư</a></li>
+    <li>OpenAI (Codex): <a href="https://developers.openai.com/api/docs/guides/your-data">dữ liệu của bạn</a> và <a href="https://openai.com/policies/privacy-policy/">chính sách quyền riêng tư</a></li>
+  </ul>
+  <p>Gói doanh nghiệp và gói API của các nhà cung cấp này thường có điều khoản dữ liệu chặt hơn gói cá nhân.</p>
+
+  <h2 id="network">AI-OS gửi gì qua mạng</h2>
+  <div class="table"><table>
+    <thead><tr><th scope="col">Khi nào</th><th scope="col">Tới đâu</th><th scope="col">Cái gì</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Khi nào">App kiểm tra bản cập nhật (tối đa mỗi ngày một lần, và khi bạn chọn Check for Updates)</td><td data-label="Tới đâu">GitHub (<code>github.com/vxtien2000/AI-OS-releases</code>)</td><td data-label="Cái gì">Một yêu cầu tải về bình thường. GitHub thấy địa chỉ IP của bạn. Không thêm mã định danh nào</td></tr>
+      <tr><td data-label="Khi nào">Bạn đồng ý cập nhật</td><td data-label="Tới đâu">GitHub</td><td data-label="Cái gì">Tải bản mới về</td></tr>
+      <tr><td data-label="Khi nào">Lúc cài đặt</td><td data-label="Tới đâu">GitHub (WebDriverAgent, simslim), Apple (iOS cho simulator, qua Xcode), Homebrew (ffmpeg, chỉ khi bạn đồng ý)</td><td data-label="Cái gì">Các lượt tải bình thường</td></tr>
+      <tr><td data-label="Khi nào">Trong lúc test</td><td data-label="Tới đâu">Chỉ Mac của bạn, các simulator và iPhone của bạn (qua cáp hoặc Wi-Fi trong mạng nội bộ)</td><td data-label="Cái gì">Không gì ra khỏi mạng của bạn</td></tr>
+    </tbody>
+  </table></div>
+  <p>Dashboard chỉ lắng nghe trên chính Mac của bạn (<code>127.0.0.1</code>), có một khóa ngẫu nhiên bảo vệ.</p>
+  <p>Các dịch vụ này có điều khoản quyền riêng tư riêng: <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a>, <a href="https://www.apple.com/legal/privacy/">Apple</a> và <a href="https://docs.brew.sh/Analytics">Homebrew</a>.</p>
+
+  <h2 id="website">Website</h2>
+  <p>Site này chạy trên <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>. Để vận hành và bảo vệ site, Cloudflare giữ log các request của site trong 3 ngày (request, response và metadata liên quan, có thể gồm địa chỉ IP của bạn). Các trang của site tải font từ Google Fonts, nên trình duyệt của bạn cũng kết nối tới Google, theo <a href="https://policies.google.com/privacy">chính sách quyền riêng tư của Google</a>. Site không đặt cookie; thứ duy nhất nó giữ trong trình duyệt của bạn là ngôn ngữ bạn đang đọc (xem mục Ngôn ngữ bên dưới).</p>
+  <p>Để biết trang có hữu ích không, site giữ vài con số đếm không nhận diện được ai:</p>
+  <div class="table"><table>
+    <thead><tr><th scope="col">Khi nào</th><th scope="col">Đếm cái gì</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Khi nào">Bạn mở trang chủ</td><td data-label="Đếm cái gì">Site đã dẫn link tới, nếu có (chỉ tên site, ví dụ <code>github.com</code>, không bao giờ là trang hay từ khóa tìm kiếm trên đó), và quốc gia của bạn</td></tr>
+      <tr><td data-label="Khi nào">Bạn tải AI-OS qua link <code>/download</code> của site</td><td data-label="Đếm cái gì">Bạn đã dùng nút Download for Mac nào trong hai nút (nếu có), quốc gia của bạn, và site chứa link đó (chỉ tên site)</td></tr>
+      <tr><td data-label="Khi nào">Bạn rời trang chủ</td><td data-label="Đếm cái gì">Bạn ở lại bao nhiêu giây (thời gian ở tab bị ẩn không tính), bạn cuộn xuống tới đâu (theo phần trăm), phần nào đã hiện ra trên màn hình và bạn đã mở tab nào</td></tr>
+    </tbody>
+  </table></div>
+  <p>Quốc gia của bạn do Cloudflare cung cấp. Các con số này không kèm địa chỉ IP, cookie hay mã định danh nào, nên không thể gắn với bạn hay gắn chúng với nhau. Cloudflare (Workers Analytics Engine) giữ chúng trong 3 tháng rồi xóa.</p>
+  <p>Nếu trình duyệt của bạn yêu cầu các site không theo dõi bạn (Global Privacy Control hoặc Do Not Track), trang sẽ không gửi gì cả. Site không dùng analytics, quảng cáo, heatmap hay ghi lại phiên truy cập của bên thứ ba.</p>
+
+  <h2 id="rights">Lựa chọn và quyền của bạn</h2>
+  <p>Vì AI-OS giữ dữ liệu của bạn trên Mac của bạn, bạn có thể xem, sửa hay xóa nó bất cứ lúc nào trong các thư mục nêu trên. Nếu có câu hỏi về dữ liệu trên website hay trong email hỗ trợ, hãy viết tới <a href="mailto:vxtien2000@gmail.com">vxtien2000@gmail.com</a>. Tùy nơi bạn sống, bạn có thể có quyền truy cập, sửa hoặc xóa dữ liệu cá nhân về bạn, và quyền khiếu nại tới cơ quan bảo vệ dữ liệu.</p>
+
+  <h2 id="language">Ngôn ngữ</h2>
+  <p>Khi bạn đọc site bằng một ngôn ngữ, hoặc chọn một ngôn ngữ trong menu, trình duyệt của bạn ghi nhớ nó trong bộ nhớ riêng của trình duyệt (localStorage) để lần sau site hiện lại đúng ngôn ngữ đó. Thông tin này không được gửi cho chúng tôi hay bất kỳ ai; xóa dữ liệu của site trong trình duyệt là nó mất.</p>
+
+  <h2 id="feedback">Form góp ý</h2>
+  <p>Nếu bạn gửi tin nhắn bằng <a href="/vi/feedback">form góp ý</a>, chúng tôi nhận những gì bạn nhập (loại góp ý, nội dung, và phiên bản AI-OS, máy Mac, địa chỉ email nếu bạn có ghi) cùng quốc gia gửi request, theo thông tin Cloudflare cung cấp. Website không lưu lại: tin nhắn được gửi ngay qua email tới chúng tôi bằng Resend, một dịch vụ email (<a href="https://resend.com/legal/privacy-policy">chính sách quyền riêng tư của Resend</a>). Chúng tôi chỉ giữ email trong thời gian cần để trả lời bạn. Website chỉ đếm số tin nhắn của mỗi loại, không giữ nội dung.</p>
+
+  <h2 id="support">Email hỗ trợ</h2>
+  <p>Nếu bạn gửi email cho chúng tôi, chúng tôi giữ thư và địa chỉ của bạn để trả lời, và xóa khi không còn cần để trả lời nữa. Xin đừng gửi mật khẩu hay dữ liệu khách hàng; <code>run.json</code> và <code>doctor</code> đã được xóa sẵn mật khẩu.</p>
+
+  <h2 id="changes">Thay đổi</h2>
+  <p>Chúng tôi sẽ cập nhật thông báo này khi cách AI-OS xử lý dữ liệu thay đổi, và ghi chú thay đổi trong release note.</p>
+</article>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <nav aria-label="Chân trang">
+      <ul>
+        <li><a href="/vi/">Trang chủ</a></li>
+        <li><a href="/vi/#download">Tải về</a></li>
+        <li><a href="/releases">Mọi bản phát hành</a></li>
+        <li><a href="/vi/privacy" aria-current="page">Quyền riêng tư</a></li>
+        <li><a href="/vi/feedback">Góp ý</a></li>
+      </ul>
+    </nav>
+    <p class="legal">© 2026 Bruce Vu. Dùng miễn phí, bảo lưu mọi quyền.</p>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('details.langs').forEach((d) => {  // the language menu closes on a click outside it or Escape
+  document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+});
+</script>
+</body>
+</html>
