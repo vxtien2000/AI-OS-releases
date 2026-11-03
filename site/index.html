@@ -159,6 +159,19 @@ code, pre, kbd { font-family: var(--font-outlier); }
 .foot nav a { white-space: nowrap; }
 .foot .legal { margin-top: var(--space-xl); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
 
+/* how it compares: one row per question, one column per tool; the table scrolls sideways on a narrow screen */
+.compare { overflow-x: auto; }
+.compare table { width: 100%; min-width: 60rem; border-collapse: collapse; }
+.compare th, .compare td { padding: var(--space-md) var(--space-md) var(--space-md) 0; text-align: left; vertical-align: top; border-top: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); line-height: 1.4; }
+.compare thead th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-muted); border-top: 0; }
+.compare thead th.us, .compare .us { color: var(--color-ink); font-weight: 600; }
+.compare tbody th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-ink); width: 13rem; }
+.compare td { color: var(--color-ink-2); }
+.compare-note { margin-top: var(--space-lg); color: var(--color-muted); font-size: var(--text-sm); max-width: 80ch; }
+.measured { margin-top: var(--space-3xl); }
+.measured h3 { font: 500 var(--text-title)/1.2 var(--font-display); letter-spacing: var(--tracking-display); margin: 0 0 var(--space-lg); }
+.measured table { min-width: 36rem; }
+
 @media (max-width: 60rem) {
   .headblock, .mapping__head, .mapping li, .panel, .pair, .measure, .rows, .rows .row, .close .container { grid-template-columns: minmax(0, 1fr); }
   .mapping__head span + span { display: none; }
@@ -168,6 +181,7 @@ code, pre, kbd { font-family: var(--font-outlier); }
   .api tbody th { width: auto; white-space: normal; }
 }
 @media (max-width: 40rem) {
+  .compare tbody th { width: 8.5rem; }
   .api thead { display: none; }
   .api tr { display: grid; padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-rule); }
   .api th, .api td { border-top: 0; padding: var(--space-2xs) 0; }
@@ -357,6 +371,58 @@ html:not(.js) .demo__pause { display: none; }
     </div>
   </section>
 
+  <section class="section" id="why" aria-labelledby="why-head">
+    <div class="container rows">
+      <h2 id="why-head">Why AI-OS</h2>
+      <dl>
+        <div class="row"><dt>A whole test in one call</dt><dd>Your agent sends every step at once. AI-OS reads the screen before each one, waits until it stops moving, and prefers the exact label. In our test below, the agent needed 6 turns where the other tools needed 19 to 21.</dd></div>
+        <div class="row"><dt>It asks instead of hanging</dt><dd>When something unexpected shows up, like a permission prompt or a missing button, AI-OS stops and asks your agent, with the screen and the closest matches. The agent answers and the test carries on from that step.</dd></div>
+        <div class="row"><dt>Passwords stay out of the chat</dt><dd>Your agent asks for a password by its name and AI-OS types it. The value never reaches the AI and is blanked in every result.</dd></div>
+        <div class="row"><dt>Real iPhones with a free Apple ID</dt><dd>Setup signs the iPhone driver with your own Apple ID. A free one works; it is signed again every 7 days.</dd></div>
+        <div class="row"><dt>Several devices, and you can take over</dt><dd>Run on several simulators at once and watch them live. Take control of a device and the AI's next actions on it are refused until you hand it back.</dd></div>
+        <div class="row"><dt>Nothing about you leaves your Mac</dt><dd>No telemetry. AI-OS runs on this Mac and only goes online to check for updates and, during setup, to download what it needs: the simulator driver, simslim, iOS for simulators and, if you agree, ffmpeg.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="compare" aria-labelledby="compare-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="compare-head">How it compares</h2>
+        <p class="lead">Other tools that let an AI agent use an iPhone, as their own docs and code describe them. Where AI-OS does less, the table says so.</p>
+      </div>
+      <div class="compare" role="region" aria-label="Comparison table" tabindex="0">
+        <table>
+          <thead><tr><th scope="col"><span class="visually-hidden">Question</span></th><th scope="col" class="us">AI-OS</th><th scope="col">Mobile MCP</th><th scope="col">MobileBuildMCP</th><th scope="col">Maestro</th><th scope="col">Appium MCP</th><th scope="col">MobAI</th><th scope="col">Xcode 27</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">The agent drives a real iPhone</th><td class="us">Yes; setup signs it with your Apple ID, a free one works</td><td>Yes, over USB; you supply a provisioning profile</td><td>No: its screen tools need a simulator</td><td>No: iOS simulators only</td><td>Yes; you choose a provisioning profile</td><td>Yes</td><td>Apple has not said</td></tr>
+            <tr><th scope="row">A whole test in one call, with waits and checks</th><td class="us">Yes</td><td>A batch of actions, without waits or checks between them</td><td>A batch of up to 100 taps; waiting is a separate call</td><td>Yes, as a YAML flow</td><td>No: one action per call</td><td>Yes, in its own script language</td><td>Not documented</td></tr>
+            <tr><th scope="row">Android</th><td class="us">No</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+            <tr><th scope="row">Source</th><td class="us">Closed</td><td>Open (Apache-2.0); its device layer is source-available (FSL)</td><td>Open (MIT)</td><td>Open (Apache-2.0)</td><td>Open (Apache-2.0)</td><td>Its MCP server is open (Apache-2.0); the app's licence is not stated</td><td>Closed</td></tr>
+            <tr><th scope="row">Price</th><td class="us">Free</td><td>Free; it also offers cloud devices</td><td>Free</td><td>Free on your Mac; Cloud $250 per device a month</td><td>Free</td><td>Free for one device; Pro $9.99 a month</td><td>Free</td></tr>
+            <tr><th scope="row">Usage data sent by default</th><td class="us">None</td><td>Yes (PostHog); a setting turns it off</td><td>Error reports (Sentry); a setting turns them off</td><td>Not checked</td><td>Not checked</td><td>Not checked</td><td>Not checked</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">Checked on 3 November 2026 against each project's documentation, pricing page and source code. Tools change quickly: if something here is out of date, <a href="https://github.com/vxtien2000/AI-OS-releases/issues">tell us</a>.</p>
+
+      <div class="measured">
+        <h3>Measured: the same test, run by an AI agent</h3>
+        <div class="compare" role="region" aria-label="Measured results" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Tool</th><th scope="col">Passed</th><th scope="col">Time (median)</th><th scope="col">Agent turns (median)</th><th scope="col">Cost per run (median)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row" class="us">AI-OS 0.18</th><td class="us">5 of 5</td><td class="us">39 s</td><td class="us">6</td><td class="us">$0.08</td></tr>
+              <tr><th scope="row">Mobile MCP 1.0.16</th><td>4 of 5</td><td>42 s</td><td>21</td><td>$0.16</td></tr>
+              <tr><th scope="row">MobileBuildMCP 2.7.1</th><td>5 of 5</td><td>52 s</td><td>19</td><td>$0.15</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="compare-note">Add a contact in Contacts and check it is in the list, on an iPhone 17 Pro simulator with iOS 26.5, on an Apple M4 with 16 GB. Claude Code with Claude Sonnet, given one tool at a time and the same request; 5 runs each on 3 November 2026; every contact an agent reported was checked in the simulator's contacts. AI-OS ran from its source a few hours before 0.18.0 was released; the one later change is not used by this test. A small test: one app, one flow. An earlier run of Mobile MCP the same day: 5 of 5, 37 s, 16 turns, $0.15.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="tools-head">
     <div class="container">
       <div class="headblock">
@@ -415,6 +481,8 @@ html:not(.js) .demo__pause { display: none; }
     <nav aria-label="Footer">
       <ul>
         <li><a href="#run">A test run</a></li>
+        <li><a href="#why">Why AI-OS</a></li>
+        <li><a href="#compare">How it compares</a></li>
         <li><a href="#needs">What it needs</a></li>
         <li><a href="#download">Download</a></li>
         <li><a href="/releases">All releases</a></li>
