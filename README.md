@@ -6,7 +6,7 @@ Codex, any MCP client) and for QA (a local dashboard and a CLI). Free to use.
 ## Download
 **[Download the latest AI-OS for Mac](https://aiosqa.dpdns.org/download)** (or from
 [Releases](https://github.com/vxtien2000/AI-OS-releases/releases/latest)), the file
-`AI-OS-<version>.zip`. It needs a Mac with Apple silicon and Xcode (setup opens the App Store if Xcode is missing).
+`AI-OS-<version>.zip`. It needs a Mac with Apple silicon (M1 or later) and macOS 26 (Tahoe) or later, and Xcode 26 or later (setup opens the App Store if Xcode is missing). macOS 15 and older, and Intel Macs, are not supported.
 
 1. Open the zip, then open **AI-OS.app**. The first time, macOS stops it because it is not signed by an Apple
    developer: click Done, open System Settings > Privacy & Security, click **Open Anyway**, then Open Anyway again.
