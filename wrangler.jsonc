@@ -7,6 +7,10 @@
   "assets": { "directory": "./site", "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "404-page" },
   // Counts for /download and the page's /e beacon (no cookies, no IPs); read them with tools/site-stats.sh.
   "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "aios_site" }],
+  // The feedback form (/feedback) emails this address. RESEND_API_KEY is NOT here: this repository is public. It is a
+  // Secret (encrypted) on the Worker, set in the dashboard (Settings > Variables and Secrets > type Secret) or with
+  // `npx wrangler secret put RESEND_API_KEY`; secrets are kept across deploys, plain variables are replaced by this file.
+  "vars": { "FEEDBACK_TO": "vxtien2000@gmail.com" },
   "observability": {
     "logs": {
       "enabled": true,

@@ -80,7 +80,11 @@ textarea.input { min-height: 10rem; resize: vertical; }
 .status[data-state="error"] { color: var(--color-error); }
 .status[data-state="sent"] { color: var(--color-success); }
 .fine { font-size: var(--text-sm); color: var(--color-muted); max-width: 60ch; }
-@media (max-width: 40rem) { .pair { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 40rem) {
+  .pair { grid-template-columns: minmax(0, 1fr); }
+  .kinds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kinds label { justify-content: center; text-align: center; padding: var(--space-xs) var(--space-sm); line-height: 1.2; }
+}
 </style>
 </head>
 <body>
