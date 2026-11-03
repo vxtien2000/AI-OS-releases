@@ -123,12 +123,13 @@ code, pre, kbd { font-family: var(--font-outlier); }
 .big small { font-size: 0.4em; font-weight: 500; color: var(--color-ink-2); }
 .measure .cond { margin-top: var(--space-md); color: var(--color-ink-2); max-width: 44ch; }
 .ruler { margin: 0; }
-.ruler ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-lg); }
+.ruler ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-md); }
 .ruler li { display: grid; gap: var(--space-xs); }
 .ruler .label { display: flex; justify-content: space-between; gap: var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
 .ruler .label b { font: 500 var(--text-md)/1.2 var(--font-display); color: var(--color-ink); }
 .ruler .track { position: relative; height: 12px; border-bottom: var(--rule-hair) solid var(--color-rule-2); }
-.ruler .span { position: absolute; bottom: -1px; height: 12px; left: calc(var(--from) / 1.5 * 100%); width: calc((var(--to) - var(--from)) / 1.5 * 100%); min-width: 3px; border-inline: 2px solid var(--color-accent); background: var(--color-accent-wash); }
+.ruler .span { position: absolute; bottom: -1px; height: 12px; left: calc(var(--from) / var(--max, 1.5) * 100%); width: calc((var(--to) - var(--from)) / var(--max, 1.5) * 100%); min-width: 3px; border-inline: 2px solid var(--color-accent); background: var(--color-accent-wash); }
+.ruler figcaption { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
 .ruler .scale { display: flex; justify-content: space-between; margin-top: var(--space-sm); font: 400 var(--text-xs)/1 var(--font-outlier); color: var(--color-muted); }
 
 /* the API table */
@@ -361,12 +362,19 @@ html:not(.js) .demo__pause { display: none; }
         <p class="big">20 to 24 <small>s</small></p>
         <p class="cond">Add a contact in Contacts: open the app, fill three boxes, save, check the list. It passed in every run of AI-OS 0.18.0 we made: an iPhone 17 Pro simulator with iOS 26.5, on an Apple M4 with 16 GB, 3 November 2026.</p>
       </div>
-      <figure class="ruler" aria-label="Chart: measured time per action, in seconds">
+      <figure class="ruler" style="--max: 4" aria-label="Chart: measured time per step, in seconds">
         <ul>
-          <li><span class="label"><b>Read the screen</b><span>0.3 to 0.8 s</span></span><span class="track"><span class="span" style="--from: 0.3; --to: 0.8"></span></span></li>
-          <li><span class="label"><b>A tap step</b><span>0.8 to 1.5 s</span></span><span class="track"><span class="span" style="--from: 0.8; --to: 1.5"></span></span></li>
+          <li><span class="label"><b>Read the screen</b><span>0.2 to 0.8 s</span></span><span class="track"><span class="span" style="--from: 0.22; --to: 0.8"></span></span></li>
+          <li><span class="label"><b>Wait for something to show</b><span>0.2 to 1.9 s</span></span><span class="track"><span class="span" style="--from: 0.24; --to: 1.86"></span></span></li>
+          <li><span class="label"><b>Tap</b><span>0.8 to 1.4 s</span></span><span class="track"><span class="span" style="--from: 0.75; --to: 1.37"></span></span></li>
+          <li><span class="label"><b>Go back</b><span>1.2 to 1.3 s</span></span><span class="track"><span class="span" style="--from: 1.2; --to: 1.32"></span></span></li>
+          <li><span class="label"><b>Check that something shows</b><span>1.3 to 1.6 s</span></span><span class="track"><span class="span" style="--from: 1.31; --to: 1.57"></span></span></li>
+          <li><span class="label"><b>Open an app</b><span>2.2 to 3.6 s</span></span><span class="track"><span class="span" style="--from: 2.25; --to: 3.62"></span></span></li>
+          <li><span class="label"><b>Fill a text box (typed, then read back)</b><span>2.8 to 3.6 s</span></span><span class="track"><span class="span" style="--from: 2.82; --to: 3.64"></span></span></li>
+          <li><span class="label"><b>Scroll to an item</b><span>2.8 to 3.3 s</span></span><span class="track"><span class="span" style="--from: 2.83; --to: 3.28"></span></span></li>
         </ul>
-        <div class="scale" aria-hidden="true"><span>0</span><span>0.5 s</span><span>1 s</span><span>1.5 s</span></div>
+        <div class="scale" aria-hidden="true"><span>0</span><span>1 s</span><span>2 s</span><span>3 s</span><span>4 s</span></div>
+        <figcaption class="cond">Most steps (from the 10th to the 90th percentile) in 10 runs of two tests, Contacts and Settings: 145 steps and 230 screen reads.</figcaption>
       </figure>
     </div>
   </section>
@@ -389,22 +397,18 @@ html:not(.js) .demo__pause { display: none; }
     <div class="container">
       <div class="headblock">
         <h2 id="compare-head">How it compares</h2>
-        <p class="lead">Other tools that let an AI agent use an iPhone, as their own docs and code describe them. Where AI-OS does less, the table says so.</p>
+        <p class="lead">Where AI-OS stands out, next to other tools that let an AI agent use an iPhone, as their own docs and code describe them.</p>
       </div>
       <div class="compare" role="region" aria-label="Comparison table" tabindex="0">
         <table>
           <thead><tr><th scope="col"><span class="visually-hidden">Question</span></th><th scope="col" class="us">AI-OS</th><th scope="col">Mobile MCP</th><th scope="col">MobileBuildMCP</th><th scope="col">Maestro</th><th scope="col">Appium MCP</th><th scope="col">MobAI</th><th scope="col">Xcode 27</th></tr></thead>
           <tbody>
-            <tr><th scope="row">The agent drives a real iPhone</th><td class="us">Yes; setup signs it with your Apple ID, a free one works</td><td>Yes, over USB; you supply a provisioning profile</td><td>No: its screen tools need a simulator</td><td>No: iOS simulators only</td><td>Yes; you choose a provisioning profile</td><td>Yes</td><td>Apple has not said</td></tr>
+            <tr><th scope="row">The agent drives a real iPhone, with no signing to set up</th><td class="us">Yes: setup signs it with your Apple ID, a free one works</td><td>You supply a provisioning profile</td><td>No real iPhone: its screen tools need a simulator</td><td>No real iPhone: iOS simulators only</td><td>You choose a provisioning profile</td><td>Real iPhones; how it signs is not stated</td><td>Apple has not said agents can</td></tr>
             <tr><th scope="row">A whole test in one call, with waits and checks</th><td class="us">Yes</td><td>A batch of actions, without waits or checks between them</td><td>A batch of up to 100 taps; waiting is a separate call</td><td>Yes, as a YAML flow</td><td>No: one action per call</td><td>Yes, in its own script language</td><td>Not documented</td></tr>
-            <tr><th scope="row">Android</th><td class="us">No</td><td>Yes</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td><td>No</td></tr>
-            <tr><th scope="row">Source</th><td class="us">Closed</td><td>Open (Apache-2.0); its device layer is source-available (FSL)</td><td>Open (MIT)</td><td>Open (Apache-2.0)</td><td>Open (Apache-2.0)</td><td>Its MCP server is open (Apache-2.0); the app's licence is not stated</td><td>Closed</td></tr>
-            <tr><th scope="row">Price</th><td class="us">Free</td><td>Free; it also offers cloud devices</td><td>Free</td><td>Free on your Mac; Cloud $250 per device a month</td><td>Free</td><td>Free for one device; Pro $9.99 a month</td><td>Free</td></tr>
-            <tr><th scope="row">Usage data sent by default</th><td class="us">None</td><td>Yes (PostHog); a setting turns it off</td><td>Error reports (Sentry); a setting turns them off</td><td>Not checked</td><td>Not checked</td><td>Not checked</td><td>Not checked</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="compare-note">Checked on 3 November 2026 against each project's documentation, pricing page and source code. Tools change quickly: if something here is out of date, <a href="https://github.com/vxtien2000/AI-OS-releases/issues">tell us</a>.</p>
+      <p class="compare-note">Checked on 3 November 2026 against each project's documentation, pricing page and source code. Tools change quickly: if something here is out of date, <a href="/feedback">tell us</a>.</p>
 
       <div class="measured">
         <h3>Measured: the same test, run by an AI agent</h3>
@@ -487,7 +491,7 @@ html:not(.js) .demo__pause { display: none; }
         <li><a href="#download">Download</a></li>
         <li><a href="/releases">All releases</a></li>
         <li><a href="/privacy">Privacy</a></li>
-        <li><a href="https://github.com/vxtien2000/AI-OS-releases/issues">Report a problem</a></li>
+        <li><a href="/feedback">Feedback</a></li>
       </ul>
     </nav>
     <p class="legal">© 2026 Bruce Vu. Free to use, all rights reserved. Uses <a href="https://github.com/appium/WebDriverAgent">WebDriverAgent</a> and <a href="https://github.com/MobAI-App/simslim">simslim</a>.</p>
