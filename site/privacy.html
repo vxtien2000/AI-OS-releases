@@ -26,7 +26,7 @@ html, body { overflow-x: clip; }  /* also in base.css; restated so the page hold
 .skip:focus-visible { top: var(--space-md); }
 .nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
 .nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
-.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); }
+.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
 .wordmark__mark { width: 28px; height: 28px; flex: none; }
 .key { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
 .key:hover { transform: translateY(-1px); }
