@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-OS: test end-to-end app iOS do AI agent của bạn chạy</title>
+<meta name="description" content="AI-OS giúp AI agent và QA chạy test end-to-end trên iOS simulator và iPhone thật, từ Claude Code, Claude Desktop, Codex hoặc bất kỳ MCP client nào. Dùng miễn phí, cho macOS 26 trở lên trên Apple silicon.">
+<link rel="canonical" href="https://aiosqa.dpdns.org/vi/">
+<!-- i18n:alternates -->
+<link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/">
+<link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/">
+<link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/">
+<!-- /i18n:alternates -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#f7f9fc">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://aiosqa.dpdns.org/vi/">
+<meta property="og:title" content="AI-OS: để AI test app iPhone của bạn">
+<meta property="og:description" content="Simulator và iPhone thật, điều khiển qua MCP từ Claude hoặc Codex. Dùng miễn phí.">
+<meta property="og:image" content="https://aiosqa.dpdns.org/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AI-OS chạy một test đã ghi lại: iPhone simulator bên cạnh các bước đã pass">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Hallmark · shape: Workbench (swapped from Marquee Hero: the page must show the product) · genre: modern-minimal · theme: Cobalt (by request) · job: try · draw: adb16b
+ * hero: Counter · nav: edge-aligned · footer: mast · imagery: screenshots 4 (capture.mjs), no photographs · signature: the real setup window mid-run, beside the download
+ * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: P, a tool page argues little; it argues that a test should ask instead of hang, and shows that exchange */
+/* Hallmark · dismissed 58 · the window holds the five-step listing, whose JSON lines count as words but read as one code object */
+/* Hallmark · dismissed 19 · the owner's licence line: from 0.17.0 the LICENSE itself says all rights reserved, beside free to use */
+/* Hallmark · answered F25 · on a phone the run log shows only the step running now; the recorded video carries the whole run */
+@import url("/tokens.css");
+@import url("/base.css");
+
+/* chrome */
+html { scroll-behavior: smooth; }  /* base.css turns it off under reduced motion */
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
+.wordmark__mark { width: 28px; height: 28px; flex: none; }
+
+/* language menu: one small key in the bar; the list grows with each language the site has */
+.nav__end { display: flex; align-items: center; gap: var(--space-xs); }
+.langs { position: relative; }
+.langs summary { list-style: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs); min-width: 44px; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-input); font: 500 var(--text-sm)/1 var(--font-display); color: var(--color-ink-2); cursor: pointer; }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.langs summary:hover, .langs[open] summary { color: var(--color-ink); background: var(--color-paper-2); }
+.langs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.langs ul { position: absolute; right: 0; top: calc(100% + var(--space-2xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-2xs); min-width: 11rem; background: var(--color-key-face); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); box-shadow: 0 8px 24px oklch(21% 0.028 262 / 0.12); }
+.langs a { display: flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: 4px; font-size: var(--text-sm); text-decoration: none; color: var(--color-ink); }
+.langs a:hover { background: var(--color-paper-2); }
+.langs a[aria-current] { font-weight: 500; color: var(--color-accent-deep); }
+.langs a[aria-current]::after { content: "✓"; margin-left: auto; padding-left: var(--space-md); }
+
+/* keys */
+.key { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-display); white-space: nowrap; text-decoration: none; cursor: pointer; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.key:disabled, .key[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+.key--primary { background: var(--color-accent); border-color: var(--color-accent-edge); color: var(--color-accent-ink); box-shadow: var(--shadow-key-accent); }
+.key--small { min-height: 44px; padding: 0 var(--space-md); }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+a:not(.key):not(.wordmark):hover { text-decoration-color: var(--color-accent); }
+a:not(.key):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* hero */
+.hero { position: relative; padding-block: var(--space-2xl); }
+.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(var(--color-glyph-1) 1px, transparent 1.5px); background-size: var(--cell-w) var(--cell-h); mask-image: linear-gradient(90deg, transparent 0, var(--color-ink) 55%, var(--color-ink) 100%); /* a mask reads alpha only */ }
+.hero .container { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; min-height: calc(100dvh - 72px - 2 * var(--space-2xl)); }
+.hero h1 { max-width: 12ch; }
+.hero .lead { margin-top: var(--space-lg); color: var(--color-ink-2); max-width: 34ch; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.terms { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
+.shot { margin: 0; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); box-shadow: var(--shadow-card); }
+@supports (corner-shape: bevel) { .shot { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+[data-kind="product"] > img { filter: none; mix-blend-mode: normal; }
+[data-kind="product"]:has(> img)::before { content: none; }
+.shot > picture { position: absolute; inset: 0; z-index: 1; }
+.shot > picture > img { width: 100%; height: 100%; object-fit: cover; object-position: 0 0; }
+@media (max-width: 60rem) {
+  .hero .container { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); min-height: 0; }
+}
+@media (max-width: 40rem) {
+  .shot[data-m] { aspect-ratio: var(--m) !important; }
+}
+
+/* sections */
+.section { padding-block: var(--section-gap) 0; }
+.section--l { padding-block: var(--section-gap-l) 0; }
+.section--s { padding-block: var(--section-gap-s) 0; }
+.headblock { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
+.headblock .lead { color: var(--color-ink-2); }
+code, pre, kbd { font-family: var(--font-outlier); }
+
+/* the mapping: steps in, what AI-OS does out */
+.mapping { background: var(--color-graphite); color: var(--color-graphite-ink); border-radius: var(--radius-card); overflow: hidden; }
+@supports (corner-shape: bevel) { .mapping { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+.mapping__head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); padding: var(--space-sm) var(--space-xl); background: var(--color-graphite-2); color: var(--color-graphite-muted); font-size: var(--text-sm); }
+.mapping ol { list-style: none; margin: 0; padding: var(--space-lg) var(--space-xl) var(--space-xl); display: grid; gap: var(--space-xs); }
+.mapping li { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--gap-columns); align-items: baseline; padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-graphite-glyph-1); }
+.mapping li:first-child { border-top: 0; }
+.mapping code { font-size: var(--text-sm); color: var(--color-accent-2); overflow-wrap: anywhere; }
+.mapping p { color: var(--color-graphite-ink); }
+
+/* screens behind a switch */
+.switch .tabs { display: inline-flex; gap: var(--space-2xs); padding: var(--space-2xs); background: var(--color-paper-3); border-radius: var(--radius-input); margin-bottom: var(--space-xl); }
+.tab { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid transparent; border-radius: var(--radius-input); background: transparent; color: var(--color-ink-2); font: 500 var(--text-md)/1 var(--font-display); cursor: pointer; white-space: nowrap; transition: transform var(--dur-micro) var(--ease-out); }
+.tab:hover { color: var(--color-ink); }
+.tab:active { transform: translateY(1px); }
+.tab:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.tab[aria-selected="true"] { background: var(--color-key-face); color: var(--color-ink); border-color: var(--color-rule-2); box-shadow: var(--shadow-key); }
+.tab:disabled { opacity: 0.55; cursor: not-allowed; }
+.panel { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--gap-columns); align-items: start; }
+.panel + .panel { margin-top: var(--space-2xl); }
+.js .panel + .panel { margin-top: 0; }
+.panel .shot { aspect-ratio: 4 / 3; }
+.panel .shot > img { object-position: 0 0; }
+.panel h3 { margin-bottom: var(--space-sm); }
+.panel p { color: var(--color-ink-2); }
+
+/* questions, not hangs */
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--gap-columns); }
+.pane { padding: var(--space-xl); border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); }
+@supports (corner-shape: bevel) { .pane { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+.pane--wash { background: var(--color-accent-wash); border-color: var(--color-glyph-2); }
+.pane h3 { margin-bottom: var(--space-md); }
+.pane p { color: var(--color-ink-2); }
+.pane pre { margin: var(--space-lg) 0 0; padding: var(--space-md); background: var(--color-graphite); color: var(--color-accent-2); border-radius: var(--radius-input); font-size: var(--text-sm); white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* the ruler: measured seconds */
+.measure { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+.big { font: 600 clamp(4rem, 8vw, 7.5rem)/0.95 var(--font-display); letter-spacing: var(--tracking-display); font-variant-numeric: tabular-nums; }
+.measure h2 + .big { margin-top: var(--space-lg); }
+.big small { font-size: 0.4em; font-weight: 500; color: var(--color-ink-2); }
+.measure .cond { margin-top: var(--space-md); color: var(--color-ink-2); max-width: 44ch; }
+.ruler { margin: 0; }
+.ruler ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-md); }
+.ruler li { display: grid; gap: var(--space-xs); }
+.ruler .label { display: flex; justify-content: space-between; gap: var(--space-md); font-size: var(--text-sm); color: var(--color-ink-2); }
+.ruler .label b { font: 500 var(--text-md)/1.2 var(--font-display); color: var(--color-ink); }
+.ruler .label span { white-space: nowrap; }
+.ruler .track { position: relative; height: 12px; border-bottom: var(--rule-hair) solid var(--color-rule-2); }
+.ruler .span { position: absolute; bottom: -1px; height: 12px; left: calc(var(--from) / var(--max, 1.5) * 100%); width: calc((var(--to) - var(--from)) / var(--max, 1.5) * 100%); min-width: 3px; border-inline: 2px solid var(--color-accent); background: var(--color-accent-wash); }
+.ruler figcaption { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); }
+.ruler .scale { display: flex; justify-content: space-between; margin-top: var(--space-sm); font: 400 var(--text-xs)/1 var(--font-outlier); color: var(--color-muted); }
+
+/* the API table */
+.api { width: 100%; border-collapse: collapse; }
+.api th, .api td { padding: var(--space-md) var(--space-lg) var(--space-md) 0; text-align: left; vertical-align: baseline; border-top: var(--rule-hair) solid var(--color-rule); }
+.api thead th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-muted); border-top: 0; white-space: nowrap; }
+.api tbody th { width: 30%; font: 400 var(--text-md)/1.3 var(--font-outlier); color: var(--color-ink); white-space: nowrap; }
+.api td { color: var(--color-ink-2); }
+
+/* what it needs */
+.rows { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gap-columns); }
+.rows dl { margin: 0; }
+.rows .row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: var(--gap-columns); padding-block: var(--space-lg); border-top: var(--rule-hair) solid var(--color-rule); }
+.rows .row:first-child { border-top: 0; padding-top: 0; }
+.rows dt { font: 500 var(--text-title)/1.2 var(--font-display); letter-spacing: var(--tracking-display); }
+.rows dd { margin: 0; color: var(--color-ink-2); }
+
+/* the close */
+.close { margin-top: var(--section-gap); padding-block: var(--section-gap-s); background: var(--color-paper-2); border-top: var(--rule-hair) solid var(--color-rule); }
+.close .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+.close .lead { margin-top: var(--space-md); color: var(--color-ink-2); }
+.close .shot { aspect-ratio: 1296 / 750; }
+
+/* footer: a mast */
+.foot { padding-block: var(--space-3xl) var(--space-xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.foot .mast { font: 600 clamp(4rem, 12vw, 10rem)/0.9 var(--font-display); letter-spacing: var(--tracking-display); color: var(--color-ink); }
+.foot nav ul { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-xl); }
+.foot nav a { white-space: nowrap; }
+.foot .legal { margin-top: var(--space-xl); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
+
+/* how it compares: one row per question, one column per tool; the table scrolls sideways on a narrow screen */
+.compare { overflow-x: auto; }
+.compare table { width: 100%; min-width: 60rem; border-collapse: collapse; }
+.compare th, .compare td { padding: var(--space-md) var(--space-md) var(--space-md) 0; text-align: left; vertical-align: top; border-top: var(--rule-hair) solid var(--color-rule); font-size: var(--text-sm); line-height: 1.4; }
+.compare thead th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-muted); border-top: 0; }
+.compare thead th.us, .compare .us { color: var(--color-ink); font-weight: 600; }
+.compare tbody th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-ink); width: 13rem; }
+.compare tbody th, .compare thead th:first-child { position: sticky; left: 0; z-index: 1; background: var(--color-paper); box-shadow: 1px 0 0 var(--color-rule); }
+.compare-hint { margin-bottom: var(--space-sm); font-size: var(--text-sm); color: var(--color-muted); }
+.compare td { color: var(--color-ink-2); }
+.compare-note { margin-top: var(--space-lg); color: var(--color-muted); font-size: var(--text-sm); max-width: 80ch; }
+.measured { margin-top: var(--space-3xl); }
+.measured h3 { font: 500 var(--text-title)/1.2 var(--font-display); letter-spacing: var(--tracking-display); margin: 0 0 var(--space-lg); }
+.measured table { min-width: 36rem; }
+
+@media (max-width: 60rem) {
+  .headblock, .mapping__head, .mapping li, .panel, .pair, .measure, .rows, .rows .row, .close .container { grid-template-columns: minmax(0, 1fr); }
+  .mapping__head span + span { display: none; }
+  .mapping li { gap: var(--space-2xs); }
+  .measure, .close .container { gap: var(--space-xl); }
+  .switch .tabs { display: flex; overflow-x: auto; }
+  .api tbody th { width: auto; white-space: normal; }
+}
+@media (max-width: 40rem) {
+  .compare tbody th { width: 8.5rem; }
+  .api thead { display: none; }
+  .api tr { display: grid; padding-block: var(--space-sm); border-top: var(--rule-hair) solid var(--color-rule); }
+  .api th, .api td { border-top: 0; padding: var(--space-2xs) 0; }
+}
+
+/* the hero demo: the phone as recorded, the run's steps as AI-OS logged them */
+.demo { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-lg); align-items: center; margin: 0; }
+.demo__phone { position: relative; aspect-ratio: 600 / 1304; max-height: calc(100dvh - 200px); width: 100%; justify-self: end; border-radius: var(--cut-l); overflow: hidden; background: var(--color-graphite); outline: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent); outline-offset: -1px; }
+.demo__phone video, .demo__phone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.demo__log { background: var(--color-graphite); color: var(--color-graphite-ink); border-radius: var(--radius-card); overflow: hidden; }
+@supports (corner-shape: bevel) { .demo__log { border-radius: var(--cut-l) 4px var(--cut-l) 4px; corner-shape: bevel round bevel round; } }
+.demo__head { display: flex; justify-content: space-between; gap: var(--space-md); padding: var(--space-sm) var(--space-lg); background: var(--color-graphite-2); font-size: var(--text-sm); color: var(--color-graphite-muted); }
+.demo__head b { font-weight: 500; color: var(--color-graphite-ink); }
+.demo__head span { white-space: nowrap; }
+.demo__steps { list-style: none; margin: 0; padding: var(--space-sm) var(--space-lg); display: grid; }
+.demo__steps li { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: var(--space-sm); align-items: baseline; padding-block: var(--space-2xs); }
+.demo__steps code { font-size: var(--text-xs); color: var(--color-graphite-ink); overflow-wrap: anywhere; }
+.demo__steps .ms { font: 400 var(--text-xs)/1 var(--font-outlier); color: var(--color-graphite-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.demo__steps .mark { width: 12px; height: 12px; align-self: center; border-radius: 50%; border: 1.5px solid var(--color-graphite-glyph-2); }
+.demo__steps li[data-state="ok"] .mark { border: 0; border-radius: 0; background: var(--color-success); clip-path: polygon(14% 52%, 0 66%, 38% 100%, 100% 22%, 86% 8%, 38% 72%); }
+.demo__steps li[data-state="run"] .mark { border-color: var(--color-accent-2); border-top-color: transparent; animation: demo-spin 0.9s linear infinite; }
+.demo__steps li[data-state="wait"] code, .demo__steps li[data-state="wait"] .ms { color: var(--color-graphite-glyph-3); }
+.demo__steps li[data-state="wait"] .ms, .demo__steps li[data-state="run"] .ms { visibility: hidden; }
+@keyframes demo-spin { to { transform: rotate(360deg); } }
+.demo__foot { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); padding: var(--space-sm) var(--space-lg); border-top: var(--rule-hair) solid var(--color-graphite-glyph-1); font-size: var(--text-sm); }
+.demo__status { color: var(--color-accent-2); }
+.demo__pause { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-graphite-glyph-2); border-radius: var(--radius-input); background: transparent; color: var(--color-graphite-ink); font: 500 var(--text-sm)/1 var(--font-display); cursor: pointer; transition: transform var(--dur-micro) var(--ease-out); }
+.demo__pause:hover { border-color: var(--color-graphite-muted); }
+.demo__pause:active { transform: translateY(1px); }
+.demo__pause:focus-visible { outline: 2px solid var(--color-accent-2); outline-offset: 2px; }
+.demo__pause:disabled { opacity: 0.55; cursor: not-allowed; }
+html:not(.js) .demo__pause { display: none; }
+@media (prefers-reduced-motion: reduce) { .demo__pause { display: none; } .demo__steps li[data-state="run"] .mark { animation: none; } }
+@media (max-width: 60rem) { .demo { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); } .demo__phone { max-height: none; } }
+@media (max-width: 40rem) {
+  .demo { grid-template-columns: minmax(0, 1fr); }
+  .demo__phone { width: 72%; justify-self: center; }
+  .demo__steps li[data-state="wait"], .demo__steps li[data-state="ok"]:not(.is-last) { display: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Bỏ qua, tới nội dung</a>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="/vi/#main" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
+    <div class="nav__end">
+      <!-- i18n:switcher -->
+      <details class="langs">
+        <summary aria-label="Ngôn ngữ: Tiếng Việt"><span aria-hidden="true">VI</span></summary>
+        <ul>
+          <li><a href="/" hreflang="en" lang="en">English</a></li>
+          <li><a href="/vi/" hreflang="vi" lang="vi" aria-current="page">Tiếng Việt</a></li>
+        </ul>
+      </details>
+      <!-- /i18n:switcher -->
+      <a class="key key--small" href="#download">Tải về</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-head">
+    <div class="container">
+      <div>
+        <h1 id="hero-head">Để AI test app iPhone của bạn</h1>
+        <p class="lead">Nó tự tap, gõ và kiểm tra, trên simulator lẫn iPhone thật.</p>
+        <div class="actions">
+          <a class="key key--primary" href="/download?from=hero">Tải cho Mac</a>
+          <a class="key" href="#run">Xem cách nó test</a>
+        </div>
+        <p class="terms">Dùng miễn phí. Cho Mac dùng Apple silicon, macOS 26 (Tahoe) trở lên và Xcode 26 trở lên.</p>
+      </div>
+      <figure class="demo" data-loop data-demo data-total="22659" data-t-passed="Pass {done}/{total}, trong {secs} s" data-t-step="Bước {n}/{total}" data-t-play="Phát" data-t-pause="Tạm dừng" data-decimal="," aria-label="Một lần chạy AI-OS thật, đã ghi lại: iPhone 18 Pro simulator thêm một contact trong Contacts trong khi các bước lần lượt pass">
+        <div class="demo__phone">
+          <video muted loop playsinline preload="metadata" poster="/images/demo-poster.jpg" width="600" height="1304" aria-hidden="true">
+            <source src="/images/demo-phone.webm" type="video/webm">
+            <source src="/images/demo-phone.mp4" type="video/mp4">
+          </video>
+        </div>
+        <figcaption class="demo__log">
+          <div class="demo__head"><b>Contacts: thêm một contact</b><span>iPhone 18 Pro</span></div>
+          <ol class="demo__steps" data-steps='[1021,  2793,  450,  948,  1606,  3482,  2645,  2678,  1772,  2119,  1520,  427,  1198]'>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="terminate 'com.apple.MobileAddressBook'">terminate Contacts</code><span class="ms">1,0 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code title="launch 'com.apple.MobileAddressBook'">launch Contacts</code><span class="ms">2,8 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">450 ms</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Add'</code><span class="ms">948 ms</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'New Contact'</code><span class="ms">1,6 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'First name'</code><span class="ms">3,5 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Last name'</code><span class="ms">2,6 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>fill 'Company'</code><span class="ms">2,7 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>tap 'Done'</code><span class="ms">1,8 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'Mai Example'</code><span class="ms">2,1 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>back</code><span class="ms">1,5 s</span></li>
+            <li data-state="ok"><span class="mark" aria-hidden="true"></span><code>wait_for 'John Appleseed'</code><span class="ms">427 ms</span></li>
+            <li data-state="ok" class="is-last"><span class="mark" aria-hidden="true"></span><code>assert 'Mai Example'</code><span class="ms">1,2 s</span></li>
+          </ol>
+          <div class="demo__foot"><span class="demo__status" role="status">Pass 13/13, trong 22,7 s</span><button class="demo__pause" type="button" data-loop-toggle>Tạm dừng</button></div>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="run" aria-labelledby="run-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="run-head">Mỗi bước đều nhìn màn hình trước khi làm</h2>
+      </div>
+      <div class="mapping" aria-label="Các bước agent gửi, và AI-OS làm gì với từng bước">
+        <div class="mapping__head"><span>các bước</span><span>AI-OS</span></div>
+        <ol>
+          <li><code>{"tap": "Log in"}</code><p>Chỉ tap vào phần tử đang bấm được.</p></li>
+          <li><code>{"fill": {"field": "Email Address", "text": "qa@example.com"}}</code><p>Tìm ô nhập theo nhãn, gõ, rồi kiểm tra lại.</p></li>
+          <li><code>{"type_secret": {"field": "Password", "key": "APP_PASSWORD"}}</code><p>Gõ mật khẩu đã lưu; kết quả trả về chỉ hiện [secret].</p></li>
+          <li><code>{"wait_for": "Home", "timeout": 8}</code><p>Chờ theo màn hình, không chờ theo đồng hồ.</p></li>
+          <li><code>{"assert": "Welcome"}</code><p>Đúng từng chữ, không lấy chữ gần giống.</p></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--l" aria-labelledby="ask-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="ask-head">Hỏi lại, không treo</h2>
+        <p class="lead">Bước nào kẹt thì hỏi agent của bạn.</p>
+      </div>
+      <div class="pair">
+        <div class="pane">
+          <h3>Lần đầu</h3>
+          <p>Hộp “Save Password?” hiện lên. Agent trả lời, lượt chạy đi tiếp.</p>
+        </div>
+        <div class="pane pane--wash">
+          <h3>Những lần sau</h3>
+          <p>Thêm một rule là không bao giờ phải hỏi lại.</p>
+<pre><code>{"when": "Save Password?", "tap": "Not Now"}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="app-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="app-head">Cài đặt trong một cửa sổ</h2>
+        <p class="lead">iOS, driver cho simulator và simslim đều được cài sẵn cho bạn. Không cần Terminal.</p>
+      </div>
+      <div class="switch" data-switch>
+        <div class="tabs" role="tablist" aria-label="Các màn hình của app AI-OS">
+          <button class="tab" type="button" role="tab" id="t-setup" aria-controls="p-setup" aria-selected="true">Setup</button>
+          <button class="tab" type="button" role="tab" id="t-check" aria-controls="p-check" aria-selected="false" tabindex="-1">Setup check</button>
+          <button class="tab" type="button" role="tab" id="t-logins" aria-controls="p-logins" aria-selected="false" tabindex="-1">Logins</button>
+        </div>
+        <div class="panel" role="tabpanel" id="p-setup" aria-labelledby="t-setup">
+          <figure class="shot" style="aspect-ratio: 1296 / 770; --m: 760 / 560" data-m data-slot="setup" data-kind="product" data-alt="Cửa sổ setup của AI-OS khi đang chạy giữa chừng">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="/images/setup-m.png" width="760" height="560">
+              <img src="/images/setup-top.png" width="1296" height="770" loading="lazy" alt="Cửa sổ setup của AI-OS: bốn bước đã xong, đang build driver cho simulator">
+            </picture>
+          </figure>
+          <div><h3>Setup</h3><p>Chỉ cài những gì Mac của bạn còn thiếu, và hiện rõ từng bước.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-check" aria-labelledby="t-check">
+          <figure class="shot" style="aspect-ratio: 1520 / 1124; --m: 1060 / 620" data-m data-slot="check" data-kind="product" data-alt="Thẻ Setup check trong app AI-OS">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="/images/check-m.png" width="1060" height="620">
+              <img src="/images/dash-check-home-desktop-part.png" width="1520" height="1124" loading="lazy" alt="Setup check: Xcode, phiên bản iOS, ổ đĩa, bộ nhớ, simslim và kết nối AI đều đạt; còn thiếu driver cho simulator, kèm cách sửa">
+            </picture>
+          </figure>
+          <div><h3>Setup check</h3><p>Xem cái gì đã sẵn sàng, và cách sửa phần còn lại.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-logins" aria-labelledby="t-logins">
+          <figure class="shot" style="aspect-ratio: 1520 / 1309; --m: 1060 / 470" data-m data-slot="logins" data-kind="product" data-alt="Thẻ Logins trong app AI-OS">
+            <picture>
+              <source media="(max-width: 40rem)" srcset="/images/logins-m.png" width="1060" height="470">
+              <img src="/images/dash-logins-home-desktop-part.png" width="1520" height="1309" loading="lazy" alt="Logins: một mật khẩu đã lưu tên APP_PASSWORD, hai app được phép nhận nó, và thư mục builds">
+            </picture>
+          </figure>
+          <div><h3>Logins</h3><p>Lưu mật khẩu test theo tên. AI của bạn gõ chúng mà không nhìn thấy.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--l" aria-labelledby="speed-head">
+    <div class="container measure">
+      <div>
+        <h2 id="speed-head">Một test 13 bước trong khoảng 21 giây</h2>
+        <p class="big">20–24 <small>s</small></p>
+        <p class="cond">Thêm một contact trong Contacts: mở app, điền ba ô, lưu, kiểm tra danh sách. Test pass ở mọi lần chúng tôi chạy AI-OS 0.18.0: iPhone 17 Pro simulator với iOS 26.5, trên Apple M4 16 GB, ngày 3/11/2026.</p>
+      </div>
+      <figure class="ruler" style="--max: 4" aria-label="Biểu đồ: thời gian đo được của từng loại bước, tính bằng giây">
+        <ul>
+          <li><span class="label"><b>Đọc màn hình</b><span>0,2 đến 0,8 s</span></span><span class="track"><span class="span" style="--from: 0.22; --to: 0.8"></span></span></li>
+          <li><span class="label"><b>Chờ một thứ hiện ra</b><span>0,2 đến 1,9 s</span></span><span class="track"><span class="span" style="--from: 0.24; --to: 1.86"></span></span></li>
+          <li><span class="label"><b>Tap</b><span>0,8 đến 1,4 s</span></span><span class="track"><span class="span" style="--from: 0.75; --to: 1.37"></span></span></li>
+          <li><span class="label"><b>Quay lại</b><span>1,2 đến 1,3 s</span></span><span class="track"><span class="span" style="--from: 1.2; --to: 1.32"></span></span></li>
+          <li><span class="label"><b>Kiểm tra một thứ có hiện</b><span>1,3 đến 1,6 s</span></span><span class="track"><span class="span" style="--from: 1.31; --to: 1.57"></span></span></li>
+          <li><span class="label"><b>Mở một app</b><span>2,2 đến 3,6 s</span></span><span class="track"><span class="span" style="--from: 2.25; --to: 3.62"></span></span></li>
+          <li><span class="label"><b>Điền ô nhập (gõ rồi đọc lại)</b><span>2,8 đến 3,6 s</span></span><span class="track"><span class="span" style="--from: 2.82; --to: 3.64"></span></span></li>
+          <li><span class="label"><b>Cuộn tới một mục</b><span>2,8 đến 3,3 s</span></span><span class="track"><span class="span" style="--from: 2.83; --to: 3.28"></span></span></li>
+        </ul>
+        <div class="scale" aria-hidden="true"><span>0</span><span>1 s</span><span>2 s</span><span>3 s</span><span>4 s</span></div>
+        <figcaption class="cond">Phần lớn các bước (từ phân vị 10 đến 90) trong 10 lần chạy hai test Contacts và Settings: 145 bước và 230 lần đọc màn hình.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="why" aria-labelledby="why-head">
+    <div class="container rows">
+      <h2 id="why-head">Vì sao chọn AI-OS</h2>
+      <dl>
+        <div class="row"><dt>Cả bài test trong một lần gọi</dt><dd>Agent của bạn gửi mọi bước cùng lúc. AI-OS đọc màn hình trước từng bước, chờ tới khi màn hình đứng yên, và ưu tiên nhãn khớp đúng. Trong bài đo bên dưới, agent chỉ cần 6 lượt, trong khi các tool khác cần 19 đến 21 lượt.</dd></div>
+        <div class="row"><dt>Hỏi lại thay vì treo</dt><dd>Khi có gì bất ngờ hiện lên, như hộp xin quyền hay một nút không thấy đâu, AI-OS dừng lại và hỏi agent của bạn, kèm màn hình và các phần tử gần giống nhất. Agent trả lời, rồi test chạy tiếp từ đúng bước đó.</dd></div>
+        <div class="row"><dt>Mật khẩu không lọt vào cuộc chat</dt><dd>Agent gọi mật khẩu theo tên, AI-OS gõ giúp. Giá trị thật không bao giờ tới tay AI, và được che đi trong mọi kết quả.</dd></div>
+        <div class="row"><dt>iPhone thật với Apple ID miễn phí</dt><dd>Setup ký driver cho iPhone bằng chính Apple ID của bạn. Apple ID miễn phí cũng được; cứ 7 ngày ký lại một lần.</dd></div>
+        <div class="row"><dt>Nhiều máy cùng lúc, và bạn có thể giành quyền</dt><dd>Chạy trên nhiều simulator cùng lúc và xem trực tiếp. Khi bạn giành quyền điều khiển một máy, các thao tác tiếp theo của AI trên máy đó sẽ bị từ chối cho tới khi bạn trả lại quyền.</dd></div>
+        <div class="row"><dt>Không gì về bạn rời khỏi Mac</dt><dd>Không có telemetry. AI-OS chạy ngay trên máy Mac này, chỉ lên mạng để kiểm tra bản cập nhật và, lúc setup, để tải những gì cần: driver cho simulator, simslim, iOS cho simulator, và ffmpeg nếu bạn đồng ý.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section" id="compare" aria-labelledby="compare-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="compare-head">So với các tool khác</h2>
+        <p class="lead">Những điểm AI-OS nổi bật, đặt cạnh các tool khác cũng cho AI agent dùng iPhone, theo đúng tài liệu và mã nguồn của chính họ.</p>
+      </div>
+      <p class="compare-hint" hidden>Vuốt ngang để xem mọi tool.</p>
+      <div class="compare" role="region" aria-label="Bảng so sánh" tabindex="0">
+        <table>
+          <thead><tr><th scope="col"><span class="visually-hidden">Câu hỏi</span></th><th scope="col" class="us">AI-OS</th><th scope="col">Mobile MCP</th><th scope="col">MobileBuildMCP</th><th scope="col">Maestro</th><th scope="col">Appium MCP</th><th scope="col">MobAI</th><th scope="col">Xcode 27</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Agent điều khiển iPhone thật, không phải tự lo việc ký</th><td class="us">Có: setup tự ký bằng Apple ID của bạn, Apple ID miễn phí cũng được</td><td>Bạn phải tự đưa provisioning profile</td><td>Không có iPhone thật: các tool màn hình cần simulator</td><td>Không có iPhone thật: chỉ iOS simulator</td><td>Bạn phải tự chọn provisioning profile</td><td>Có iPhone thật; không nói rõ cách ký</td><td>Apple chưa nói agent làm được</td></tr>
+            <tr><th scope="row">Cả bài test trong một lần gọi, có chờ và kiểm tra</th><td class="us">Có</td><td>Một loạt thao tác, không chờ hay kiểm tra giữa các bước</td><td>Một loạt tối đa 100 lần tap; muốn chờ phải gọi riêng</td><td>Có, dưới dạng flow YAML</td><td>Không: mỗi lần gọi một thao tác</td><td>Có, bằng ngôn ngữ script riêng</td><td>Không có trong tài liệu</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="compare-note">Kiểm tra ngày 3/11/2026 theo tài liệu, trang giá và mã nguồn của từng dự án. Các tool thay đổi nhanh: nếu có gì đã cũ, <a href="/feedback">hãy báo chúng tôi</a>.</p>
+
+      <div class="measured">
+        <h3>Số đo: cùng một test, do AI agent chạy</h3>
+        <p class="compare-hint" hidden>Vuốt ngang để xem mọi cột.</p>
+        <div class="compare" role="region" aria-label="Kết quả đo" tabindex="0">
+          <table>
+            <thead><tr><th scope="col">Tool</th><th scope="col">Pass</th><th scope="col">Thời gian (trung vị)</th><th scope="col">Số lượt của agent (trung vị)</th><th scope="col">Chi phí mỗi lần (trung vị)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row" class="us">AI-OS 0.18</th><td class="us">5/5</td><td class="us">39 s</td><td class="us">6</td><td class="us">$0,08</td></tr>
+              <tr><th scope="row">Mobile MCP 1.0.16</th><td>4/5</td><td>42 s</td><td>21</td><td>$0,16</td></tr>
+              <tr><th scope="row">MobileBuildMCP 2.7.1</th><td>5/5</td><td>52 s</td><td>19</td><td>$0,15</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="compare-note">Thêm một contact trong Contacts rồi kiểm tra nó có trong danh sách, trên iPhone 17 Pro simulator với iOS 26.5, Apple M4 16 GB. Claude Code với Claude Sonnet, mỗi lần chỉ có một tool và cùng một yêu cầu; mỗi tool chạy 5 lần ngày 3/11/2026; mọi contact agent báo đã tạo đều được kiểm tra lại trong danh bạ của simulator. AI-OS chạy từ mã nguồn vài giờ trước khi ra bản 0.18.0; thay đổi duy nhất sau đó không được dùng trong test này. Đây là test nhỏ: một app, một luồng. Một lượt chạy Mobile MCP trước đó cùng ngày: 5/5, 37 s, 16 lượt, $0,15.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="tools-head">
+    <div class="container">
+      <div class="headblock">
+        <h2 id="tools-head">Chạy với Claude, Codex và mọi MCP client</h2>
+      </div>
+      <table class="api">
+        <thead><tr><th scope="col">Tool</th><th scope="col">Làm gì</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">aios_start</th><td>Bật thiết bị; cài app từ đầu.</td></tr>
+          <tr><th scope="row">aios_screen</th><td>Màn hình dưới dạng chữ; có ảnh khi cần.</td></tr>
+          <tr><th scope="row">aios_act</th><td>Chạy các bước; trả về kết quả hoặc một câu hỏi.</td></tr>
+          <tr><th scope="row">aios_run</th><td>Nhiều thiết bị cùng lúc.</td></tr>
+          <tr><th scope="row">aios_capture</th><td>Chụp màn hình và quay video màn hình.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="needs" aria-labelledby="needs-head">
+    <div class="container rows">
+      <h2 id="needs-head">Mac của bạn cần gì</h2>
+      <dl>
+        <div class="row"><dt>macOS 26 (Tahoe) trở lên</dt><dd>Không hỗ trợ macOS 15 trở về trước.</dd></div>
+        <div class="row"><dt>Apple silicon</dt><dd>M1 trở lên. AI-OS không chạy trên Mac Intel.</dd></div>
+        <div class="row"><dt>Xcode 26 trở lên</dt><dd>Miễn phí. Nếu máy chưa có, setup sẽ mở App Store. Xcode trên App Store cần macOS 26.6; với macOS 26.0 đến 26.5, setup sẽ chỉ bạn nên tải Xcode nào.</dd></div>
+        <div class="row"><dt>Ổ đĩa</dt><dd>Khoảng 7,5 GB cho mỗi phiên bản iOS, cộng 1 đến 2 GB cho mỗi simulator.</dd></div>
+        <div class="row"><dt>Một AI agent</dt><dd>Không bắt buộc: dashboard vẫn dùng được khi không có.</dd></div>
+        <div class="row"><dt>Một iPhone thật</dt><dd>Không bắt buộc. Apple ID miễn phí ký được 7 ngày.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="close" id="download" aria-labelledby="dl-head">
+    <div class="container">
+      <div>
+        <h2 id="dl-head">Trao cho AI của bạn một chiếc iPhone</h2>
+        <p class="lead">Dùng miễn phí. Cuối setup có sẵn một test đầu tiên để dán cho agent của bạn.</p>
+        <div class="actions">
+          <a class="key key--primary" href="/download?from=footer">Tải cho Mac</a>
+        </div>
+        <p class="terms">Cho macOS 26 (Tahoe) trở lên trên Apple silicon. Lần đầu mở, macOS sẽ hỏi bạn cho phép: Privacy &amp; Security, Open Anyway.</p>
+      </div>
+      <figure class="shot" style="--m: 1296 / 440" data-m data-slot="close" data-kind="product" data-alt="Màn hình cuối của cửa sổ setup AI-OS">
+        <picture>
+              <source media="(max-width: 40rem)" srcset="/images/done-m.png" width="1296" height="440">
+              <img src="/images/setup-done-home-desktop-part.png" width="1296" height="750" loading="lazy" alt="Màn hình cuối của setup AI-OS: AI-OS đã sẵn sàng">
+            </picture>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <p class="mast" aria-hidden="true">AI-OS</p>
+    <nav aria-label="Chân trang">
+      <ul>
+        <li><a href="#run">Một lần chạy test</a></li>
+        <li><a href="#why">Vì sao chọn AI-OS</a></li>
+        <li><a href="#compare">So với các tool khác</a></li>
+        <li><a href="#needs">Cần gì</a></li>
+        <li><a href="#download">Tải về</a></li>
+        <li><a href="/releases">Mọi bản phát hành</a></li>
+        <li><a href="/privacy">Quyền riêng tư</a></li>
+        <li><a href="/feedback">Góp ý</a></li>
+      </ul>
+    </nav>
+    <p class="legal">© 2026 Bruce Vu. Dùng miễn phí, bảo lưu mọi quyền. Có dùng <a href="https://github.com/appium/WebDriverAgent">WebDriverAgent</a> và <a href="https://github.com/MobAI-App/simslim">simslim</a>.</p>
+  </div>
+</footer>
+<script>
+document.documentElement.classList.add('js');
+// The hero demo: plays the recorded run and ticks each step at the time AI-OS logged for it.
+document.querySelectorAll('[data-demo]').forEach((fig) => {
+  const video = fig.querySelector('video'), btn = fig.querySelector('[data-loop-toggle]'), status = fig.querySelector('.demo__status');
+  const rows = [...fig.querySelectorAll('.demo__steps li')], ms = JSON.parse(fig.querySelector('[data-steps]').dataset.steps);
+  const ends = ms.reduce((a, m) => a.concat((a.length ? a[a.length - 1] : 0) + m), []);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const s = { seen: false, hover: false, focus: false, held: reduce.matches };
+  const paint = () => {
+    const t = video.currentTime * 1000, done = ends.filter((e) => e <= t).length;
+    rows.forEach((r, i) => { r.dataset.state = i < done ? 'ok' : i === done ? 'run' : 'wait'; r.classList.toggle('is-last', i === Math.max(done - 1, 0)); });
+    const say = fig.dataset, secs = (ends[ends.length - 1] / 1000).toFixed(1).replace('.', say.decimal || '.');
+    status.textContent = done >= rows.length ? say.tPassed.replace('{done}', rows.length).replace('{total}', rows.length).replace('{secs}', secs) : say.tStep.replace('{n}', done + 1).replace('{total}', rows.length);
+  };
+  const tick = () => { if (!video.paused) { paint(); requestAnimationFrame(tick); } };
+  const sync = () => {
+    const run = s.seen && !s.hover && !s.focus && !s.held;
+    fig.classList.toggle('is-running', run);
+    if (run) video.play().then(() => requestAnimationFrame(tick)).catch(() => {}); else video.pause();
+    btn.textContent = s.held ? fig.dataset.tPlay : fig.dataset.tPause;
+  };
+  if (reduce.matches) return;  // the poster and every step passed, as the page loads
+  video.addEventListener('loadedmetadata', paint);
+  video.addEventListener('seeked', paint);
+  btn.addEventListener('click', () => { s.held = !s.held; if (!s.held) s.hover = s.focus = false; sync(); });  // Play plays now, though the pointer and focus are on the figure
+  [['pointerenter', 'hover', true], ['pointerleave', 'hover', false], ['focusin', 'focus', true], ['focusout', 'focus', false]].forEach(([e, k, v]) => fig.addEventListener(e, () => { s[k] = v; sync(); }));
+  new IntersectionObserver(([e]) => { s.seen = e.isIntersecting; sync(); }).observe(fig);
+});
+document.querySelectorAll('.compare').forEach((box) => {  // the swipe hint shows only while the table is wider than its box
+  const hint = box.previousElementSibling, fit = () => { if (hint) hint.hidden = box.scrollWidth <= box.clientWidth + 1; };
+  fit(); new ResizeObserver(fit).observe(box);
+});
+document.querySelectorAll('details.langs').forEach((d) => {  // the language menu closes on a click outside it or Escape
+  document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+});
+document.querySelectorAll('[data-switch]').forEach((sw) => {
+  const tabs = [...sw.querySelectorAll('[role="tab"]')];
+  const show = (t, focus) => {
+    tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+    if (focus) t.focus();
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => show(t));
+    t.addEventListener('keydown', (e) => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (d) { e.preventDefault(); show(tabs[(i + d + tabs.length) % tabs.length], true); } });
+  });
+  show(tabs[0]);
+});
+</script>
+<script>window.hallmarkSlots = (m) => { for (const [k, v] of Object.entries(m)) { const s = document.querySelector(`[data-slot="${k}"]`); if (!s) continue; const im = new Image(); im.src = typeof v === 'string' ? v : v.src; im.alt = (typeof v === 'object' && v.alt) || s.dataset.alt || ''; s.querySelectorAll(':scope > img').forEach((o) => o.remove()); s.prepend(im); } };
+document.querySelectorAll('[data-slot] img').forEach((i) => { if (i.complete && !i.naturalWidth) i.remove(); else i.addEventListener('error', () => i.remove(), { once: true }); });</script>
+<script>
+// Measurement: counts only. No cookies, no storage, no visitor id; nothing is sent when the browser asks not to be
+// tracked. On open: the referring site. On leaving: seconds on the page, how far it was scrolled (%), which sections
+// came into view and which tabs were opened. The Worker (/e) keeps only known names and numbers.
+(() => {
+  if (navigator.globalPrivacyControl || navigator.doNotTrack === '1' || !navigator.sendBeacon) return;
+  const send = (e) => { try { navigator.sendBeacon('/e', JSON.stringify(e)); } catch {} };
+  const start = Date.now(), seen = new Set(), tabs = new Set();
+  let depth = 0, sent = false, hidden = 0, hiddenAt = 0;
+  const from = document.referrer ? new URL(document.referrer) : null;  // only the site's origin, never its path or query
+  send({ k: 'view', r: from && from.host !== location.host ? from.origin : '' });
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) seen.add(e.target.getAttribute('aria-labelledby').replace(/-head$/, ''));
+  }), { threshold: 0.4 });
+  document.querySelectorAll('main section[aria-labelledby]').forEach((x) => io.observe(x));
+  const scrolled = () => {
+    const h = document.documentElement.scrollHeight - innerHeight;
+    depth = Math.max(depth, h > 0 ? Math.round(100 * scrollY / h) : 100);
+  };
+  addEventListener('scroll', scrolled, { passive: true });
+  scrolled();
+  document.querySelectorAll('[role="tab"]').forEach((t) => t.addEventListener('click', () => tabs.add(t.id.replace(/^t-/, ''))));
+  const leave = () => {  // once per page view; time in a hidden tab does not count
+    if (sent) return;
+    sent = true;
+    const away = hiddenAt ? Date.now() - hiddenAt : 0;
+    send({ k: 'engage', s: Math.round((Date.now() - start - hidden - away) / 1000), d: depth, v: [...seen], t: [...tabs] });
+  };
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { hiddenAt = Date.now(); leave(); }
+    else if (hiddenAt) { hidden += Date.now() - hiddenAt; hiddenAt = 0; }
+  });
+  addEventListener('pagehide', leave);
+})();
+</script>
+</body>
+</html>

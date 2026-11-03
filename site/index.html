@@ -6,9 +6,15 @@
 <title>AI-OS: end-to-end iOS tests your AI agent runs</title>
 <meta name="description" content="AI-OS lets AI agents and QA run end-to-end tests on iOS simulators and real iPhones, from Claude Code, Claude Desktop, Codex or any MCP client. Free to use, for macOS 26 or later on Apple silicon.">
 <link rel="canonical" href="https://aiosqa.dpdns.org/">
+<!-- i18n:alternates -->
+<link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/">
+<link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/">
+<link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/">
+<!-- /i18n:alternates -->
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#f7f9fc">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://aiosqa.dpdns.org/">
 <meta property="og:title" content="AI-OS: let your AI test your iPhone app">
 <meta property="og:description" content="Simulators and real iPhones, driven over MCP from Claude or Codex. Free to use.">
@@ -28,8 +34,8 @@
 /* Hallmark · dismissed 58 · the window holds the five-step listing, whose JSON lines count as words but read as one code object */
 /* Hallmark · dismissed 19 · the owner's licence line: from 0.17.0 the LICENSE itself says all rights reserved, beside free to use */
 /* Hallmark · answered F25 · on a phone the run log shows only the step running now; the recorded video carries the whole run */
-@import url("./tokens.css");
-@import url("./base.css");
+@import url("/tokens.css");
+@import url("/base.css");
 
 /* chrome */
 html { scroll-behavior: smooth; }  /* base.css turns it off under reduced motion */
@@ -39,6 +45,20 @@ html { scroll-behavior: smooth; }  /* base.css turns it off under reduced motion
 .nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
 .wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
 .wordmark__mark { width: 28px; height: 28px; flex: none; }
+
+/* language menu: one small key in the bar; the list grows with each language the site has */
+.nav__end { display: flex; align-items: center; gap: var(--space-xs); }
+.langs { position: relative; }
+.langs summary { list-style: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs); min-width: 44px; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-input); font: 500 var(--text-sm)/1 var(--font-display); color: var(--color-ink-2); cursor: pointer; }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.langs summary:hover, .langs[open] summary { color: var(--color-ink); background: var(--color-paper-2); }
+.langs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.langs ul { position: absolute; right: 0; top: calc(100% + var(--space-2xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-2xs); min-width: 11rem; background: var(--color-key-face); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); box-shadow: 0 8px 24px oklch(21% 0.028 262 / 0.12); }
+.langs a { display: flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: 4px; font-size: var(--text-sm); text-decoration: none; color: var(--color-ink); }
+.langs a:hover { background: var(--color-paper-2); }
+.langs a[aria-current] { font-weight: 500; color: var(--color-accent-deep); }
+.langs a[aria-current]::after { content: "✓"; margin-left: auto; padding-left: var(--space-md); }
 
 /* keys */
 .key { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-display); white-space: nowrap; text-decoration: none; cursor: pointer; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
@@ -232,7 +252,18 @@ html:not(.js) .demo__pause { display: none; }
 <header class="nav">
   <div class="container">
     <a class="wordmark" href="#main" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
-    <a class="key key--small" href="#download">Download</a>
+    <div class="nav__end">
+      <!-- i18n:switcher -->
+      <details class="langs">
+        <summary aria-label="Language: English"><span aria-hidden="true">EN</span></summary>
+        <ul>
+          <li><a href="/" hreflang="en" lang="en" aria-current="page">English</a></li>
+          <li><a href="/vi/" hreflang="vi" lang="vi">Tiếng Việt</a></li>
+        </ul>
+      </details>
+      <!-- /i18n:switcher -->
+      <a class="key key--small" href="#download">Download</a>
+    </div>
   </div>
 </header>
 
@@ -248,7 +279,7 @@ html:not(.js) .demo__pause { display: none; }
         </div>
         <p class="terms">Free to use. For Macs with Apple silicon, macOS 26 (Tahoe) or later, and Xcode 26 or later.</p>
       </div>
-      <figure class="demo" data-loop data-demo data-total="22659" aria-label="A real AI-OS run, recorded: an iPhone 18 Pro simulator adds a contact in Contacts while the steps pass">
+      <figure class="demo" data-loop data-demo data-total="22659" data-t-passed="Passed, {done} of {total}, in {secs} s" data-t-step="Step {n} of {total}" data-t-play="Play" data-t-pause="Pause" data-decimal="." aria-label="A real AI-OS run, recorded: an iPhone 18 Pro simulator adds a contact in Contacts while the steps pass">
         <div class="demo__phone">
           <video muted loop playsinline preload="metadata" poster="images/demo-poster.jpg" width="600" height="1304" aria-hidden="true">
             <source src="images/demo-phone.webm" type="video/webm">
@@ -515,14 +546,15 @@ document.querySelectorAll('[data-demo]').forEach((fig) => {
   const paint = () => {
     const t = video.currentTime * 1000, done = ends.filter((e) => e <= t).length;
     rows.forEach((r, i) => { r.dataset.state = i < done ? 'ok' : i === done ? 'run' : 'wait'; r.classList.toggle('is-last', i === Math.max(done - 1, 0)); });
-    status.textContent = done >= rows.length ? `Passed, ${rows.length} of ${rows.length}, in ${(ends[ends.length - 1] / 1000).toFixed(1)} s` : `Step ${done + 1} of ${rows.length}`;
+    const say = fig.dataset, secs = (ends[ends.length - 1] / 1000).toFixed(1).replace('.', say.decimal || '.');
+    status.textContent = done >= rows.length ? say.tPassed.replace('{done}', rows.length).replace('{total}', rows.length).replace('{secs}', secs) : say.tStep.replace('{n}', done + 1).replace('{total}', rows.length);
   };
   const tick = () => { if (!video.paused) { paint(); requestAnimationFrame(tick); } };
   const sync = () => {
     const run = s.seen && !s.hover && !s.focus && !s.held;
     fig.classList.toggle('is-running', run);
     if (run) video.play().then(() => requestAnimationFrame(tick)).catch(() => {}); else video.pause();
-    btn.textContent = s.held ? 'Play' : 'Pause';
+    btn.textContent = s.held ? fig.dataset.tPlay : fig.dataset.tPause;
   };
   if (reduce.matches) return;  // the poster and every step passed, as the page loads
   video.addEventListener('loadedmetadata', paint);
@@ -534,6 +566,10 @@ document.querySelectorAll('[data-demo]').forEach((fig) => {
 document.querySelectorAll('.compare').forEach((box) => {  // the swipe hint shows only while the table is wider than its box
   const hint = box.previousElementSibling, fit = () => { if (hint) hint.hidden = box.scrollWidth <= box.clientWidth + 1; };
   fit(); new ResizeObserver(fit).observe(box);
+});
+document.querySelectorAll('details.langs').forEach((d) => {  // the language menu closes on a click outside it or Escape
+  document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
 });
 document.querySelectorAll('[data-switch]').forEach((sw) => {
   const tabs = [...sw.querySelectorAll('[role="tab"]')];
