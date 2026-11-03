@@ -88,7 +88,7 @@ def build(code, path, locale):
                  flags=re.S)  # made per language below, not translated
     doc, used, missing = translate(src, spec["strings"], set(spec.get("keep", [])))
     stale = [k for k in spec["strings"] if k not in used]
-    doc = doc.replace('<html lang="en">', f'<html lang="{code}">', 1)
+    doc = doc.replace('<html lang="en" data-localized>', f'<html lang="{code}" data-localized>', 1)
     doc = doc.replace('data-decimal="."', f'data-decimal="{spec.get("decimal", ".")}"')  # the demo's 22.7 s, written the local way
     doc = doc.replace(f'<link rel="canonical" href="{ORIGIN}/">', f'<link rel="canonical" href="{ORIGIN}{path}">', 1)
     doc = doc.replace(f'<meta property="og:url" content="{ORIGIN}/">', f'<meta property="og:url" content="{ORIGIN}{path}">', 1)
@@ -113,6 +113,13 @@ def main():
     if fixed != src:
         open(en, "w", encoding="utf-8").write(fixed)
         print("site/index.html: language menu and hreflang links updated")
+    js = os.path.join(SITE, "lang.js")
+    homes = json.dumps({c: p for c, n, p, l in LANGS}, ensure_ascii=False)
+    old = open(js, encoding="utf-8").read()
+    new = re.sub(r"/\* i18n:homes \*/.*?/\* /i18n:homes \*/", "/* i18n:homes */" + homes + "/* /i18n:homes */", old)
+    if new != old:
+        open(js, "w", encoding="utf-8").write(new)
+        print("site/lang.js: homes updated")
     bad = False
     for code, name, path, locale in LANGS[1:]:
         stale, missing = build(code, path, locale)
