@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI-OS: test end-to-end app iOS do AI agent của bạn chạy</title>
-<meta name="description" content="AI-OS giúp AI agent và QA chạy test end-to-end trên iOS simulator và iPhone thật, từ Claude Code, Claude Desktop, Codex hoặc bất kỳ MCP client nào. Dùng miễn phí, cho macOS 26 trở lên trên Apple silicon.">
+<title>AI-OS: AI agent test app iOS trên simulator và iPhone thật</title>
+<meta name="description" content="App Mac miễn phí kiêm MCP server: Claude Code, Codex hay mọi MCP client chạy test end-to-end app iOS của bạn trên simulator và iPhone thật.">
 <link rel="canonical" href="https://aiosqa.dpdns.org/vi/">
 <!-- i18n:alternates -->
 <link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/">
@@ -24,6 +24,39 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="AI-OS chạy một test đã ghi lại: iPhone simulator bên cạnh các bước đã pass">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "SoftwareApplication",
+   "name": "AI-OS",
+   "applicationCategory": "DeveloperApplication",
+   "operatingSystem": "macOS 26 trở lên",
+   "description": "App Mac miễn phí kiêm MCP server: Claude Code, Codex hay mọi MCP client chạy test end-to-end app iOS của bạn trên simulator và iPhone thật.",
+   "url": "https://aiosqa.dpdns.org/vi/",
+   "downloadUrl": "https://aiosqa.dpdns.org/download",
+   "image": "https://aiosqa.dpdns.org/og.png",
+   "softwareRequirements": "Mac chip Apple silicon, Xcode 26 trở lên",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "author": {
+    "@type": "Person",
+    "name": "Bruce Vu"
+   }
+  },
+  {
+   "@type": "WebSite",
+   "name": "AI-OS",
+   "url": "https://aiosqa.dpdns.org/vi/",
+   "inLanguage": "vi"
+  }
+ ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -273,7 +306,7 @@ html:not(.js) .demo__pause { display: none; }
     <div class="container">
       <div>
         <h1 id="hero-head">Để AI test app iPhone của bạn</h1>
-        <p class="lead">Nó tự tap, gõ và kiểm tra, trên simulator lẫn iPhone thật.</p>
+        <p class="lead">Qua MCP, từ Claude Code, Codex hay mọi MCP client, nó tự tap, gõ và kiểm tra, trên simulator lẫn iPhone thật.</p>
         <div class="actions">
           <a class="key key--primary" href="/download?from=hero">Tải cho Mac</a>
           <a class="key" href="#run">Xem cách nó test</a>
@@ -395,7 +428,7 @@ html:not(.js) .demo__pause { display: none; }
     <div class="container measure">
       <div>
         <h2 id="speed-head">Một test 13 bước trong khoảng 21 giây</h2>
-        <p class="big">20–24 <small>s</small></p>
+        <div class="big">20–24 <small aria-hidden="true">s</small><span class="visually-hidden">giây</span></div>
         <p class="cond">Thêm một contact trong Contacts: mở app, điền ba ô, lưu, kiểm tra danh sách. Test pass ở mọi lần chúng tôi chạy AI-OS 0.18.0: iPhone 17 Pro simulator với iOS 26.5, trên Apple M4 16 GB, ngày 3/11/2026.</p>
       </div>
       <figure class="ruler" style="--max: 4" aria-label="Biểu đồ: thời gian đo được của từng loại bước, tính bằng giây">
@@ -445,7 +478,7 @@ html:not(.js) .demo__pause { display: none; }
           </tbody>
         </table>
       </div>
-      <p class="compare-note">Kiểm tra ngày 3/11/2026 theo tài liệu, trang giá và mã nguồn của từng dự án. Các tool thay đổi nhanh: nếu có gì đã cũ, <a href="/vi/feedback">hãy báo chúng tôi</a>.</p>
+      <p class="compare-note">Kiểm tra ngày 3/11/2026 theo tài liệu, trang giá và mã nguồn của từng dự án. Các tool thay đổi nhanh: nếu có gì đã cũ, <a href="/vi/feedback">hãy báo chúng tôi</a>. Xem kỹ từng tool: <a href="/vi/compare">bảng so sánh đầy đủ</a>.</p>
 
       <div class="measured">
         <h3>Số đo: cùng một test, do AI agent chạy</h3>
@@ -519,7 +552,7 @@ html:not(.js) .demo__pause { display: none; }
 
 <footer class="foot">
   <div class="container">
-    <p class="mast" aria-hidden="true">AI-OS</p>
+    <div class="mast" aria-hidden="true">AI-OS</div>
     <nav aria-label="Chân trang">
       <ul>
         <li><a href="#run">Một lần chạy test</a></li>
@@ -527,6 +560,10 @@ html:not(.js) .demo__pause { display: none; }
         <li><a href="#compare">So với các tool khác</a></li>
         <li><a href="#needs">Cần gì</a></li>
         <li><a href="#download">Tải về</a></li>
+        <li><a href="/vi/claude-code-ios-testing">Hướng dẫn Claude Code và Codex</a></li>
+        <li><a href="/vi/real-iphone">iPhone thật</a></li>
+        <li><a href="/vi/for-qa">Cho QA và tester</a></li>
+        <li><a href="/vi/compare">So sánh các tool</a></li>
         <li><a href="/releases">Mọi bản phát hành</a></li>
         <li><a href="/vi/privacy">Quyền riêng tư</a></li>
         <li><a href="/vi/feedback">Góp ý</a></li>

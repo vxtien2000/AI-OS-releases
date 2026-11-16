@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" data-localized>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test your iOS app with Claude Code or Codex · AI-OS</title>
+<meta name="description" content="Connect Claude Code, Claude Desktop or Codex to AI-OS over MCP, and let the agent run end-to-end tests of your iOS app on a simulator or a real iPhone.">
+<link rel="canonical" href="https://aiosqa.dpdns.org/claude-code-ios-testing">
+<!-- i18n:alternates -->
+<link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/claude-code-ios-testing">
+<link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/claude-code-ios-testing">
+<link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/claude-code-ios-testing">
+<!-- /i18n:alternates -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/lang.js"></script>
+<meta name="theme-color" content="#f7f9fc">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:url" content="https://aiosqa.dpdns.org/claude-code-ios-testing">
+<meta property="og:title" content="Test your iOS app with Claude Code or Codex · AI-OS">
+<meta property="og:description" content="Connect Claude Code, Claude Desktop or Codex to AI-OS over MCP, and let the agent run end-to-end tests of your iOS app on a simulator or a real iPhone.">
+<meta property="og:image" content="https://aiosqa.dpdns.org/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* A guide for iOS developers, in the landing page's tokens (the same look as privacy.html). This page is the source text; its Vietnamese
+ * copy in site/vi/ is built from it (tools/i18n/build.py), so change the English here and the translation in
+ * tools/i18n/vi.json. No measurement script on this page. */
+@import url("/tokens.css");
+@import url("/base.css");
+html, body { overflow-x: clip; }  /* also in base.css; restated so the page holds without it */
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
+.wordmark__mark { width: 28px; height: 28px; flex: none; }
+/* language menu: one small key in the bar; the list grows with each language the site has */
+.nav__end { display: flex; align-items: center; gap: var(--space-xs); }
+.langs { position: relative; }
+.langs summary { list-style: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs); min-width: 44px; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-input); font: 500 var(--text-sm)/1 var(--font-display); color: var(--color-ink-2); cursor: pointer; }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.langs summary:hover, .langs[open] summary { color: var(--color-ink); background: var(--color-paper-2); }
+.langs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.langs ul { position: absolute; right: 0; top: calc(100% + var(--space-2xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-2xs); min-width: 11rem; background: var(--color-key-face); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); box-shadow: 0 8px 24px oklch(21% 0.028 262 / 0.12); }
+.langs a { display: flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: 4px; font-size: var(--text-sm); text-decoration: none; color: var(--color-ink); }
+.langs a:hover { background: var(--color-paper-2); }
+.langs a[aria-current] { font-weight: 500; color: var(--color-accent-deep); }
+.langs a[aria-current]::after { content: "✓"; margin-left: auto; padding-left: var(--space-md); }
+.key { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+a:not(.key):not(.wordmark):hover { text-decoration-color: var(--color-accent); }
+.doc { max-width: 48rem; padding-block: var(--space-3xl) var(--section-gap-s); }
+.doc .updated { margin-top: var(--space-md); color: var(--color-muted); font-size: var(--text-sm); }
+.doc .short { margin-top: var(--space-xl); padding: var(--space-lg); border: var(--rule-hair) solid var(--color-rule); background: var(--color-paper-2); border-radius: var(--radius-input); max-width: none; }
+.doc h2 { margin-top: var(--space-3xl); font-size: var(--text-2xl); text-wrap: balance; }
+.doc p, .doc ul, .doc .table { margin-top: var(--space-md); }
+.doc ul { padding-left: 1.25em; max-width: 65ch; }
+.doc li + li { margin-top: var(--space-xs); }
+.doc a { overflow-wrap: anywhere; }
+.doc code { font-family: var(--font-outlier); font-size: 0.88em; background: var(--color-paper-2); border: var(--rule-hair) solid var(--color-rule); border-radius: 4px; padding: 0.05em 0.3em; overflow-wrap: anywhere; }
+.table { overflow-x: auto; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-input); }
+.table table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.table th, .table td { text-align: left; vertical-align: top; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.table tr:last-child td { border-bottom: 0; }
+.table th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-2); }
+.foot { padding-block: var(--space-2xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.foot nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-xl); }
+.foot .legal { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+@media (max-width: 40rem) {
+  .table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .table tr { display: block; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+  .table tr:last-child { border-bottom: 0; }
+  .table td { display: block; padding: var(--space-3xs) 0; border: 0; }
+  .table td::before { content: attr(data-label); display: block; color: var(--color-muted); font-size: var(--text-xs); }
+}
+.doc h3 { margin-top: var(--space-xl); font-size: var(--text-xl); }
+.doc ol { padding-left: 1.25em; max-width: 65ch; margin-top: var(--space-md); }
+.doc pre { margin-top: var(--space-md); padding: var(--space-md); background: var(--color-graphite); color: var(--color-accent-2); border-radius: var(--radius-input); font: 400 var(--text-sm)/1.5 var(--font-outlier); white-space: pre-wrap; overflow-wrap: anywhere; }
+.doc pre code { background: none; border: 0; padding: 0; font-size: inherit; color: inherit; }
+.doc blockquote { margin: var(--space-md) 0 0; padding: var(--space-md) var(--space-lg); border-left: 3px solid var(--color-accent); background: var(--color-paper-2); border-radius: 0 var(--radius-input) var(--radius-input) 0; max-width: 65ch; }
+.doc blockquote p { margin: 0; }
+.doc .cta { margin-top: var(--space-2xl); display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="/" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
+    <div class="nav__end">
+      <!-- i18n:switcher -->
+      <details class="langs">
+        <summary aria-label="Language: English"><span aria-hidden="true">EN</span></summary>
+        <ul>
+          <li><a href="/claude-code-ios-testing" hreflang="en" lang="en" aria-current="page">English</a></li>
+          <li><a href="/vi/claude-code-ios-testing" hreflang="vi" lang="vi">Tiếng Việt</a></li>
+        </ul>
+      </details>
+      <!-- /i18n:switcher -->
+      <a class="key" href="/#download">Download</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="container">
+<article class="doc">
+<h1>Test your iOS app with Claude Code or Codex</h1>
+  <p class="updated">Last updated: 16 November 2026</p>
+
+  <p>AI-OS is a free Mac app and a local MCP server. Your AI agent sends the steps of a test; AI-OS runs them on an iOS simulator or a real iPhone, looks at the screen before each step, and sends back what happened. This guide goes from the download to a test of your own app.</p>
+
+  <h2 id="needs">What you need</h2>
+  <ul>
+    <li>A Mac with Apple silicon and macOS 26 (Tahoe) or later.</li>
+    <li>Xcode 26 or later. Setup opens the App Store if it is missing.</li>
+    <li>Claude Code, Claude Desktop, Codex or another MCP client.</li>
+    <li>A simulator build of your app. For a real iPhone, read <a href="/real-iphone">Test on a real iPhone</a>.</li>
+  </ul>
+
+  <h2 id="install">1. Install AI-OS</h2>
+  <ol>
+    <li>Download AI-OS and open the zip.</li>
+    <li>Open AI-OS.app. The first time, macOS stops it: open System Settings, Privacy &amp; Security, and click Open Anyway.</li>
+    <li>Click Set up. It installs only what your Mac is missing (iOS for simulators, the simulator driver and simslim) and shows each step.</li>
+  </ol>
+
+  <h2 id="connect">2. Connect your AI agent</h2>
+  <p>Setup connects AI-OS to Claude Code, Claude Desktop and Codex, if you have them. To connect one later, open the AI-OS app, then Settings, AI connection:</p>
+  <ul>
+    <li>Claude Code: Register in Claude Code, then open a new Claude Code session.</li>
+    <li>Claude Desktop: Add to Claude Desktop, then restart Claude Desktop.</li>
+    <li>Codex: Register in Codex, then open a new Codex session.</li>
+  </ul>
+  <p>The same from Terminal:</p>
+<pre><code>~/ai-os/bin/aios connect --claude-code
+~/ai-os/bin/aios connect --claude-desktop
+~/ai-os/bin/aios connect --codex</code></pre>
+  <p>For any other MCP client, this shows what is connected and the server settings to put in that client's MCP config:</p>
+<pre><code>~/ai-os/bin/aios connect</code></pre>
+  <p>The first time an AI session uses each AI-OS tool, Claude Code asks you to allow it, and the agent waits for your click. To allow every AI-OS tool at once, add this to ~/.claude/settings.json:</p>
+<pre><code>{"permissions": {"allow": ["mcp__ai-os"]}}</code></pre>
+
+  <h2 id="first">3. Run a first test</h2>
+  <p>Paste this into your agent:</p>
+  <blockquote><p>Use AI-OS: turn on an iPhone simulator, open the Settings app and tell me what its first screen shows.</p></blockquote>
+  <p>The agent turns on a simulator, opens Settings and reads the screen as text.</p>
+
+  <h2 id="your-app">4. Test your own app</h2>
+  <p>On a simulator, AI-OS installs a .app built for the iOS Simulator, or a .zip holding one.</p>
+  <ul>
+    <li>Xcode: build for an iOS Simulator destination.</li>
+    <li>Flutter: flutter build ios --simulator</li>
+    <li>An .ipa, a TestFlight link or a build for real iPhones cannot run on a simulator.</li>
+  </ul>
+  <p>Choose a builds folder in the AI-OS app (Settings, Logins) and ask for a build by its name, or give the agent its path. Then describe the test in plain words, for example:</p>
+  <blockquote><p>Use AI-OS: install MyApp.app clean on an iPhone simulator, log in with the test account and the password saved as APP_PASSWORD, and check that the Home screen shows Welcome.</p></blockquote>
+
+  <h2 id="run">What a test looks like</h2>
+  <p>The agent sends every step of a test in one call. AI-OS reads the screen before each step, waits until it stops moving, and checks the result:</p>
+<pre><code>[{"tap": "Log in"},
+ {"fill": {"field": "Email Address", "text": "qa@example.com"}},
+ {"type_secret": {"field": "Password", "key": "APP_PASSWORD"}},
+ {"wait_for": "Home", "timeout": 8},
+ {"assert": "Welcome"}]</code></pre>
+  <ul>
+    <li>When a step cannot go on, for example after a dialog nobody expected, AI-OS asks the agent instead of hanging, with the screen and the closest matches.</li>
+    <li>Passwords are typed by name. The value never reaches the AI.</li>
+    <li>Every AI run goes into the run history in the AI-OS app, with its steps and any screenshots. Passwords are removed.</li>
+  </ul>
+  <p>Measured on 3 November 2026, on the same Contacts test run by Claude Code with Claude Sonnet: AI-OS passed 5 of 5 with 6 agent turns (median); the other tools needed 19 to 21. See <a href="/compare">how AI-OS compares</a>.</p>
+  <div class="cta">
+    <a class="key" href="/download">Download for Mac</a>
+  </div>
+  <p class="updated">Free to use. For Macs with Apple silicon, macOS 26 (Tahoe) or later, and Xcode 26 or later.</p>
+</article>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/#download">Download</a></li>
+        <li><a href="/claude-code-ios-testing" aria-current="page">Claude Code and Codex guide</a></li>
+        <li><a href="/real-iphone">Real iPhone</a></li>
+        <li><a href="/for-qa">For QA and testers</a></li>
+        <li><a href="/compare">Compare tools</a></li>
+        <li><a href="/releases">All releases</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/feedback">Feedback</a></li>
+      </ul>
+    </nav>
+    <p class="legal">© 2026 Bruce Vu. Free to use, all rights reserved.</p>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('details.langs').forEach((d) => {  // the language menu closes on a click outside it or Escape
+  document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+});
+</script>
+</body>
+</html>

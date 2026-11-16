@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Made by tools/i18n/build.py from its PAGES and LANGS: do not edit by hand. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://aiosqa.dpdns.org/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/privacy"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/privacy"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/privacy"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/privacy"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/feedback</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/feedback"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/feedback"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/feedback"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/feedback</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/feedback"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/feedback"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/feedback"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/claude-code-ios-testing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/claude-code-ios-testing"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/claude-code-ios-testing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/claude-code-ios-testing"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/claude-code-ios-testing</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/claude-code-ios-testing"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/claude-code-ios-testing"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/claude-code-ios-testing"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/real-iphone</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/real-iphone"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/real-iphone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/real-iphone"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/real-iphone</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/real-iphone"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/real-iphone"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/real-iphone"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/for-qa</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/for-qa"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/for-qa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/for-qa"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/for-qa</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/for-qa"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/for-qa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/for-qa"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/compare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/compare"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/compare"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/compare"/>
+  </url>
+  <url>
+    <loc>https://aiosqa.dpdns.org/vi/compare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/compare"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/compare"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/compare"/>
+  </url>
+</urlset>

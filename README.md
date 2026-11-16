@@ -3,6 +3,17 @@
 End-to-end app testing on iOS simulators and real iPhones, for AI agents (through MCP: Claude Code, Claude Desktop,
 Codex, any MCP client) and for QA (a local dashboard and a CLI). Free to use.
 
+Your AI agent sends every step of a test in one call; AI-OS looks at the screen before each step, waits until it
+settles, checks the result, and asks the agent instead of hanging when something unexpected shows up. Real iPhones are
+signed with your own Apple ID (a free one works), and test passwords are typed by name, never shown to the AI.
+
+- Website: https://aiosqa.dpdns.org
+- Test your iOS app with Claude Code or Codex: https://aiosqa.dpdns.org/claude-code-ios-testing
+- Test on a real iPhone with a free Apple ID: https://aiosqa.dpdns.org/real-iphone
+- iOS testing with AI, for QA and testers: https://aiosqa.dpdns.org/for-qa
+- How AI-OS compares with Maestro, MobileBuildMCP (formerly XcodeBuildMCP), Mobile MCP and others:
+  https://aiosqa.dpdns.org/compare
+
 ## Download
 **[Download the latest AI-OS for Mac](https://aiosqa.dpdns.org/download)** (or from
 [Releases](https://github.com/vxtien2000/AI-OS-releases/releases/latest)), the file
@@ -31,7 +42,9 @@ click Update. Each update is signed; the app takes no other.
   `CLOUDFLARE_ACCOUNT_ID=... CLOUDFLARE_API_TOKEN=... tools/site-stats.py [days]` (token: Account Analytics Read).
 
 ## Changing the site
-Edit `site/`, then push to `main`: Cloudflare deploys it (Workers Builds, connected to this repository). By hand:
+Edit the English pages in `site/` and the translations in `tools/i18n/vi.json`, then run
+`python3 tools/i18n/build.py`: it builds `site/vi/` and `site/sitemap.xml`, and stops when a translation is missing.
+Then push to `main`: Cloudflare deploys it (Workers Builds, connected to this repository). By hand:
 `npx wrangler deploy` in this folder. Try it first with `npx wrangler dev` (http://127.0.0.1:8787).
 A new release needs no change here: the download buttons point to `/download`.
 

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="vi" data-localized>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test trên iPhone thật với Apple ID miễn phí · AI-OS</title>
+<meta name="description" content="Để AI agent test app trên iPhone thật. AI-OS ký driver trên iPhone bằng Apple ID của bạn, Apple ID miễn phí cũng được. Các bước, giới hạn và an toàn.">
+<link rel="canonical" href="https://aiosqa.dpdns.org/vi/real-iphone">
+<!-- i18n:alternates -->
+<link rel="alternate" hreflang="en" href="https://aiosqa.dpdns.org/real-iphone">
+<link rel="alternate" hreflang="vi" href="https://aiosqa.dpdns.org/vi/real-iphone">
+<link rel="alternate" hreflang="x-default" href="https://aiosqa.dpdns.org/real-iphone">
+<!-- /i18n:alternates -->
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/lang.js"></script>
+<meta name="theme-color" content="#f7f9fc">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:url" content="https://aiosqa.dpdns.org/vi/real-iphone">
+<meta property="og:title" content="Test trên iPhone thật với Apple ID miễn phí · AI-OS">
+<meta property="og:description" content="Để AI agent test app trên iPhone thật. AI-OS ký driver trên iPhone bằng Apple ID của bạn, Apple ID miễn phí cũng được. Các bước, giới hạn và an toàn.">
+<meta property="og:image" content="https://aiosqa.dpdns.org/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* A guide to real iPhones, in the landing page's tokens (the same look as privacy.html). This page is the source text; its Vietnamese
+ * copy in site/vi/ is built from it (tools/i18n/build.py), so change the English here and the translation in
+ * tools/i18n/vi.json. No measurement script on this page. */
+@import url("/tokens.css");
+@import url("/base.css");
+html, body { overflow-x: clip; }  /* also in base.css; restated so the page holds without it */
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: color-mix(in oklab, var(--color-paper) 92%, transparent); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.wordmark { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-xl)/1 var(--font-display); letter-spacing: var(--tracking-display); text-decoration: none; color: var(--color-ink); min-height: 44px;}
+.wordmark__mark { width: 28px; height: 28px; flex: none; }
+/* language menu: one small key in the bar; the list grows with each language the site has */
+.nav__end { display: flex; align-items: center; gap: var(--space-xs); }
+.langs { position: relative; }
+.langs summary { list-style: none; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2xs); min-width: 44px; min-height: 44px; padding: 0 var(--space-sm); border-radius: var(--radius-input); font: 500 var(--text-sm)/1 var(--font-display); color: var(--color-ink-2); cursor: pointer; }
+.langs summary::-webkit-details-marker { display: none; }
+.langs summary::after { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.langs summary:hover, .langs[open] summary { color: var(--color-ink); background: var(--color-paper-2); }
+.langs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.langs ul { position: absolute; right: 0; top: calc(100% + var(--space-2xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-2xs); min-width: 11rem; background: var(--color-key-face); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); box-shadow: 0 8px 24px oklch(21% 0.028 262 / 0.12); }
+.langs a { display: flex; align-items: center; min-height: 44px; padding: 0 var(--space-sm); border-radius: 4px; font-size: var(--text-sm); text-decoration: none; color: var(--color-ink); }
+.langs a:hover { background: var(--color-paper-2); }
+.langs a[aria-current] { font-weight: 500; color: var(--color-accent-deep); }
+.langs a[aria-current]::after { content: "✓"; margin-left: auto; padding-left: var(--space-md); }
+.key { display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-input); background: var(--color-key-face); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: none; white-space: nowrap; box-shadow: var(--shadow-key); transition: transform var(--dur-micro) var(--ease-out); }
+.key:hover { transform: translateY(-1px); }
+.key:active { transform: translateY(3px); box-shadow: var(--shadow-key-press); }
+.key:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+a:not(.key):not(.wordmark):hover { text-decoration-color: var(--color-accent); }
+.doc { max-width: 48rem; padding-block: var(--space-3xl) var(--section-gap-s); }
+.doc .updated { margin-top: var(--space-md); color: var(--color-muted); font-size: var(--text-sm); }
+.doc .short { margin-top: var(--space-xl); padding: var(--space-lg); border: var(--rule-hair) solid var(--color-rule); background: var(--color-paper-2); border-radius: var(--radius-input); max-width: none; }
+.doc h2 { margin-top: var(--space-3xl); font-size: var(--text-2xl); text-wrap: balance; }
+.doc p, .doc ul, .doc .table { margin-top: var(--space-md); }
+.doc ul { padding-left: 1.25em; max-width: 65ch; }
+.doc li + li { margin-top: var(--space-xs); }
+.doc a { overflow-wrap: anywhere; }
+.doc code { font-family: var(--font-outlier); font-size: 0.88em; background: var(--color-paper-2); border: var(--rule-hair) solid var(--color-rule); border-radius: 4px; padding: 0.05em 0.3em; overflow-wrap: anywhere; }
+.table { overflow-x: auto; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-input); }
+.table table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.table th, .table td { text-align: left; vertical-align: top; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.table tr:last-child td { border-bottom: 0; }
+.table th { font-weight: 500; color: var(--color-ink-2); background: var(--color-paper-2); }
+.foot { padding-block: var(--space-2xl); border-top: var(--rule-hair) solid var(--color-rule); }
+.foot nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-xl); }
+.foot .legal { margin-top: var(--space-lg); font-size: var(--text-sm); color: var(--color-muted); max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { .key { transition: none; } .key:hover, .key:active { transform: none; } }
+@media (max-width: 40rem) {
+  .table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .table tr { display: block; padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+  .table tr:last-child { border-bottom: 0; }
+  .table td { display: block; padding: var(--space-3xs) 0; border: 0; }
+  .table td::before { content: attr(data-label); display: block; color: var(--color-muted); font-size: var(--text-xs); }
+}
+.doc h3 { margin-top: var(--space-xl); font-size: var(--text-xl); }
+.doc ol { padding-left: 1.25em; max-width: 65ch; margin-top: var(--space-md); }
+.doc pre { margin-top: var(--space-md); padding: var(--space-md); background: var(--color-graphite); color: var(--color-accent-2); border-radius: var(--radius-input); font: 400 var(--text-sm)/1.5 var(--font-outlier); white-space: pre-wrap; overflow-wrap: anywhere; }
+.doc pre code { background: none; border: 0; padding: 0; font-size: inherit; color: inherit; }
+.doc blockquote { margin: var(--space-md) 0 0; padding: var(--space-md) var(--space-lg); border-left: 3px solid var(--color-accent); background: var(--color-paper-2); border-radius: 0 var(--radius-input) var(--radius-input) 0; max-width: 65ch; }
+.doc blockquote p { margin: 0; }
+.doc .cta { margin-top: var(--space-2xl); display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Bỏ qua, tới nội dung</a>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="/vi/" aria-label="AI-OS, home"><img class="wordmark__mark" src="/favicon.svg" width="28" height="28" alt="">AI-OS</a>
+    <div class="nav__end">
+      <!-- i18n:switcher -->
+      <details class="langs">
+        <summary aria-label="Ngôn ngữ: Tiếng Việt"><span aria-hidden="true">VI</span></summary>
+        <ul>
+          <li><a href="/real-iphone" hreflang="en" lang="en">English</a></li>
+          <li><a href="/vi/real-iphone" hreflang="vi" lang="vi" aria-current="page">Tiếng Việt</a></li>
+        </ul>
+      </details>
+      <!-- /i18n:switcher -->
+      <a class="key" href="/vi/#download">Tải về</a>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="container">
+<article class="doc">
+<h1>Test trên iPhone thật với Apple ID miễn phí</h1>
+  <p class="updated">Cập nhật lần cuối: 16/11/2026</p>
+
+  <p>AI-OS điều khiển được cả iPhone thật lẫn simulator. Nó ký driver trên iPhone bằng chính Apple ID của bạn, nên bạn không cần tài khoản Apple Developer trả phí, cũng không phải tự làm provisioning profile.</p>
+
+  <h2 id="before">Trước khi bắt đầu</h2>
+  <ul>
+    <li>Cài AI-OS và chạy xong setup trên Mac.</li>
+    <li>Cắm iPhone vào Mac bằng cáp một lần, rồi bấm Trust.</li>
+    <li>Bật Developer Mode trên iPhone: Settings, Privacy &amp; Security.</li>
+    <li>Thêm Apple ID vào Xcode: Settings, Accounts. Apple ID miễn phí cũng được.</li>
+  </ul>
+
+  <h2 id="setup">Cài đặt iPhone</h2>
+  <p>Chạy lệnh này trong Terminal:</p>
+<pre><code>~/ai-os/bin/aios phone-setup</code></pre>
+  <p>Lệnh này tìm iPhone và team ký của bạn, build driver cho máy đó (mất vài phút), chạy nó, và cho biết khi nào chữ ký hết hạn. Lần đầu, hãy tin cậy app developer của bạn trên iPhone (Settings, General, VPN &amp; Device Management), rồi bật driver:</p>
+<pre><code>~/ai-os/bin/aios -d phone phone-start</code></pre>
+  <p>Trang thiết bị của app AI-OS cũng hiện iPhone, và bật được driver của nó.</p>
+
+  <h2 id="app">Cài app của bạn</h2>
+  <p>AI-OS không cài app lên iPhone thật. Bạn tự cài app lên máy, bằng Xcode, TestFlight hoặc kho app của công ty. Sau đó bảo agent mở app theo bundle id.</p>
+
+  <h2 id="limits">Nên biết</h2>
+  <ul>
+    <li>Apple ID miễn phí ký được 7 ngày. Chạy lại phone-setup để ký lại; Setup check cho biết còn mấy ngày.</li>
+    <li>iPhone phải đang mở khoá và cùng Wi-Fi với Mac, hoặc cắm cáp, và VPN trên Mac phải tắt.</li>
+    <li>Qua Wi-Fi, mỗi bước tap mất khoảng 1,4 s.</li>
+    <li>Một số app bị crash khi đọc cả màn hình, ví dụ app Flutter build trước Flutter 3.47.</li>
+    <li>Bật Do Not Disturb trước khi chụp: thông báo của app khác sẽ lọt vào ảnh.</li>
+    <li>Quay video màn hình iPhone cần ffmpeg. Setup sẽ hỏi bạn có muốn cài không.</li>
+  </ul>
+
+  <h2 id="safety">An toàn</h2>
+  <p>Khi driver đang chạy, người khác cùng Wi-Fi có thể truy cập nó. Hãy dùng mạng bạn tin cậy, và tắt driver khi xong:</p>
+<pre><code>~/ai-os/bin/aios -d phone phone-stop</code></pre>
+  <p>Muốn khoá driver, đặt phone_driver_token thành true trong ~/.config/ai-os/config.json rồi chạy phone-setup một lần. Từ đó mỗi lần bật, driver nhận một token ngẫu nhiên mới, nên chỉ AI-OS dùng được nó.</p>
+
+  <h2 id="others">Các tool khác</h2>
+  <p>Trong các tool chúng tôi so sánh ngày 3/11/2026, Maestro và MobileBuildMCP không điều khiển iPhone thật, còn Mobile MCP và Appium MCP cần bạn tự đưa provisioning profile. Xem <a href="/vi/compare">AI-OS so với các tool khác</a>.</p>
+  <div class="cta">
+    <a class="key" href="/download">Tải cho Mac</a>
+  </div>
+  <p class="updated">Dùng miễn phí. Cho Mac dùng Apple silicon, macOS 26 (Tahoe) trở lên và Xcode 26 trở lên.</p>
+</article>
+</main>
+
+<footer class="foot">
+  <div class="container">
+    <nav aria-label="Chân trang">
+      <ul>
+        <li><a href="/vi/">Trang chủ</a></li>
+        <li><a href="/vi/#download">Tải về</a></li>
+        <li><a href="/vi/claude-code-ios-testing">Hướng dẫn Claude Code và Codex</a></li>
+        <li><a href="/vi/real-iphone" aria-current="page">iPhone thật</a></li>
+        <li><a href="/vi/for-qa">Cho QA và tester</a></li>
+        <li><a href="/vi/compare">So sánh các tool</a></li>
+        <li><a href="/releases">Mọi bản phát hành</a></li>
+        <li><a href="/vi/privacy">Quyền riêng tư</a></li>
+        <li><a href="/vi/feedback">Góp ý</a></li>
+      </ul>
+    </nav>
+    <p class="legal">© 2026 Bruce Vu. Dùng miễn phí, bảo lưu mọi quyền.</p>
+  </div>
+</footer>
+<script>
+document.querySelectorAll('details.langs').forEach((d) => {  // the language menu closes on a click outside it or Escape
+  document.addEventListener('click', (e) => { if (d.open && !d.contains(e.target)) d.open = false; });
+  d.addEventListener('keydown', (e) => { if (e.key === 'Escape' && d.open) { d.open = false; d.querySelector('summary').focus(); } });
+});
+</script>
+</body>
+</html>

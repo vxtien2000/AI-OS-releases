@@ -11,6 +11,9 @@ In every page, English included, the language menu and the hreflang links come f
 translated page the links to the other translated pages stay in its language. Adding a language: one entry in LANGS
 and one JSON file. Adding a page: one entry in PAGES (its English file needs the i18n markers and data-localized).
 
+It also writes site/sitemap.xml (every page in every language). Words people read in a page's JSON-LD (description,
+softwareRequirements, operatingSystem) are translated from the same strings.
+
   python3 tools/i18n/build.py          # build every language; exit 1 on a stale or missing translation
 """
 import html, json, os, re, sys
@@ -26,10 +29,16 @@ PAGES = [  # English file, its address
     ("index.html", "/"),
     ("privacy.html", "/privacy"),
     ("feedback.html", "/feedback"),
+    ("claude-code-ios-testing.html", "/claude-code-ios-testing"),
+    ("real-iphone.html", "/real-iphone"),
+    ("for-qa.html", "/for-qa"),
+    ("compare.html", "/compare"),
 ]
 MENU_LABEL = {"en": "Language", "vi": "Ngôn ngữ"}
 ATTRS = ("alt", "aria-label", "content", "title", "placeholder", "data-alt", "data-label", "data-t-[a-z]+")
 SKIP = re.compile(r"<(script|style|code|pre)\b.*?</\1>", re.S)
+LDJSON = re.compile(r'(<script type="application/ld\+json">)(.*?)(</script>)', re.S)
+LD_TEXT = ("description", "softwareRequirements", "operatingSystem")  # the words in structured data that people read
 TEXT = re.compile(r">([^<]+)<")
 ATTR = re.compile(r'\s(%s)="([^"]*)"' % "|".join(ATTRS))
 
@@ -93,6 +102,27 @@ def translate(doc, strings, keep):
         blocks.append(ATTR.sub(attr, block[:head_end]) + block[head_end:])
         return f"<!--i18n-hold-{len(blocks) - 1}-->"
 
+    def data(m):  # structured data (JSON-LD): its readable words are translated like the page's, its address and language set
+        info = json.loads(m.group(2))
+
+        def walk(node):
+            if isinstance(node, list):
+                return [walk(x) for x in node]
+            if not isinstance(node, dict):
+                return node
+            out = {}
+            for k, v in node.items():
+                if k in LD_TEXT and isinstance(v, str):
+                    if v in strings:
+                        used.add(v)
+                        v = strings[v]
+                    elif v not in keep:
+                        missing.append(f"@ld+json {k}: {v}")
+                out[k] = walk(v)
+            return out
+        return m.group(1) + "\n" + json.dumps(walk(info), ensure_ascii=False, indent=1) + "\n" + m.group(3)
+
+    doc = LDJSON.sub(data, doc)
     held = SKIP.sub(hold, doc)  # a placeholder keeps the < and > around the text next to it, so that text is seen too
     out = ATTR.sub(attr, TEXT.sub(text, held))
     out = re.sub(r"<!--i18n-hold-(\d+)-->", lambda m: blocks[int(m.group(1))], out)
@@ -110,6 +140,7 @@ def build(code, folder, locale, spec, file, page):
     doc = doc.replace(f'<link rel="canonical" href="{ORIGIN}{page}">', f'<link rel="canonical" href="{ORIGIN}{here}">', 1)
     doc = doc.replace(f'<meta property="og:url" content="{ORIGIN}{page}">', f'<meta property="og:url" content="{ORIGIN}{here}">', 1)
     doc = doc.replace('<meta property="og:locale" content="en_US">', f'<meta property="og:locale" content="{locale}">', 1)
+    doc = doc.replace('"inLanguage": "en"', f'"inLanguage": "{code}"').replace(f'"url": "{ORIGIN}{page}"', f'"url": "{ORIGIN}{here}"')
     # links to the site's other translated pages stay in this language; /download, /releases and the rest do not change
     for f2, p2 in PAGES:
         target = address(folder, p2)
@@ -126,6 +157,24 @@ def build(code, folder, locale, spec, file, page):
     return used, missing
 
 
+def sitemap():
+    """site/sitemap.xml: every page in every language, each with its other languages (hreflang)."""
+    rows = []
+    for file, page in PAGES:
+        alts = "".join(f'\n    <xhtml:link rel="alternate" hreflang="{c}" href="{ORIGIN}{address(f, page)}"/>' for c, n, f, l in LANGS)
+        alts += f'\n    <xhtml:link rel="alternate" hreflang="x-default" href="{ORIGIN}{page}"/>'
+        for c, n, f, l in LANGS:
+            rows.append(f"  <url>\n    <loc>{ORIGIN}{address(f, page)}</loc>{alts}\n  </url>")
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<!-- Made by tools/i18n/build.py from its PAGES and LANGS: do not edit by hand. -->\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+           + "\n".join(rows) + "\n</urlset>\n")
+    path = os.path.join(SITE, "sitemap.xml")
+    old = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+    if xml != old:
+        open(path, "w", encoding="utf-8").write(xml)
+        print("site/sitemap.xml updated")
+
+
 def main():
     for file, page in PAGES:  # the English pages: menu and hreflang links
         path = os.path.join(SITE, file)
@@ -134,6 +183,7 @@ def main():
         if fixed != src:
             open(path, "w", encoding="utf-8").write(fixed)
             print(f"site/{file}: language menu and hreflang links updated")
+    sitemap()
     js = os.path.join(SITE, "lang.js")
     homes = json.dumps({c: address(f, "/") for c, n, f, l in LANGS}, ensure_ascii=False)
     old = open(js, encoding="utf-8").read()
